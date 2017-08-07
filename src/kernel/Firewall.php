@@ -8,17 +8,17 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace MBHF;
+ # Security
+ defined('INDEX_DIR') or exit(APP . 'software says .i.');
 
-# Security
-defined('INDEX_DIR') or exit(APP . 'software says .i.');
+namespace MBHF;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
 class Firewall
 {
-  function __construct(argument)
+  function __construct()
   {
     # code...
   }
