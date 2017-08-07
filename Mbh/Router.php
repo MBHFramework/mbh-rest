@@ -94,11 +94,12 @@ final class Router
         $response = null;
         $requestUri = $this->requestUri;
 
-        $route = array_filter($this->routes, function ($route) use ($requestUri) {
+        $checked = array_filter($this->routes, function ($route) use ($requestUri) {
             return $route->checkIfMatch($requestUri);
-        })[0];
+        });
 
-        $response = $route->execute();
+        $route = ?? $checked[0];
+        $response = !$route ?: $route->execute();
         $this->sendResponse($response);
     }
 }
