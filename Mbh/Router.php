@@ -88,13 +88,13 @@ final class Router
         }
     }
 
-    
+
     final public function run()
     {
         $response = null;
         $requestUri = $this->requestUri;
 
-        $route = array_filter($this->routes, function($route) use($requestUri) {
+        $route = array_filter($this->routes, function ($route) use ($requestUri) {
             return $route->checkIfMatch($requestUri);
         })[0];
 
