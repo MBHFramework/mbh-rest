@@ -11,7 +11,7 @@
 namespace MBHF;
 
 # Security
-defined('INDEX_DIR') or exit(APP . 'software says .i.');
+defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
 
 /**
  * created by Ulises Jeremias Cornejo Fandos

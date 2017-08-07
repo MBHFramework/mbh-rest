@@ -10,6 +10,6 @@ try {
 
 require 'MBHF/config.php';
 require 'vendor/autoload.php';
-require 'MBHF/helpers/functions/autoload_functions.php';
 
+require 'MBHF/kernel/Firewall.php';
 require 'MBHF/kernel/Debug.php';

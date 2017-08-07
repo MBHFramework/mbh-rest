@@ -3,9 +3,6 @@
 # Strict types for PHP 7
 declare(strict_types=1);
 
-# Security
-defined('INDEX_DIR') OR exit('MDHFramework software says .i.');
-
 # Timezone DOC http://php.net/manual/es/timezones.php
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
@@ -46,8 +43,8 @@ define('__ROOT__', '/mbh-framework/');
 
 # App constants
 define('URL', 'http://localhost/mbh-framework/');
-define('APP', 'MDHFramework');
-define('APP_COPY','Copyright &copy; ' . date('Y',time()) . APP);
+define('APP_NAME', 'MDHFramework');
+define('APP_COPY','Copyright &copy; ' . date('Y',time()) . APP_NAME);
 
 # Session control
 define('DB_SESSION', false);
@@ -65,7 +62,7 @@ session_start([
 define('FIREWALL', true);
 
 # DEBUG mode
-define('DEBUG', false);
+define('DEBUG', true);
 
 # Check which is the current template engine (TWIG: true or PLATESPHP: false)
 define('TWIG_TEMPLATE_ENGINE', false);
