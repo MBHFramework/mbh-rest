@@ -8,7 +8,7 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace Slim\Helpers\Functions;
+namespace MBHF\Helpers\Functions;
 
 final class Functions
 {
