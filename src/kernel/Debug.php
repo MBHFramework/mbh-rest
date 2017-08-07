@@ -8,7 +8,6 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-
 namespace MBHF;
 
 final class debug
@@ -104,22 +103,22 @@ final class debug
   if(isset($_SESSION)) {
     $this->listVar($_SESSION,'$_SESSION');
   } else {
-    echo 'Sin variables <span class="variable">$_SESSION</span><br />';
+    echo 'No <span class="variable">$_SESSION</span> variables<br />';
   }
   if($_POST) {
     $this->listVar($_POST,'$_POST');
   } else {
-    echo 'Sin variables <span class="variable">$_POST</span><br />';
+    echo 'No <span class="variable">$_POST</span> variables<br />';
   }
   if($_GET) {
     $this->listVar($_GET,'$_GET');
   } else {
-    echo 'Sin variables <span class="variable">$_GET</span><br />';
+    echo 'No <span class="variable">$_GET</span> variables<br />';
   }
   if($_FILES) {
     $this->listVar($_FILES,'$_FILES');
   } else {
-    echo 'Sin variables <span class="variable">$_FILES</span><br />';
+    echo 'No <span class="variable">$_FILES</span> variables<br />';
   }
 
   //------------------------------------------------
@@ -139,7 +138,7 @@ final class debug
   echo "<br /><b class='cab'>DB_NAME:</b> {$DATABASE['name']} <br />";
   echo "<br /><b class='cab'>Firewall:</b> ${FIREWALL}" ? 'True' : 'False';
   echo "<br /><b class='cab'>Total time :</b> ,{$endtime - $startime}, segundos" ;
-  echo "<br /><b class='cab'>RAM consumida por cada usuario:</b> ${memory}";
+  echo "<br /><b class='cab'>RAM consumed:</b> ${memory}";
 
   //------------------------------------------------
 
