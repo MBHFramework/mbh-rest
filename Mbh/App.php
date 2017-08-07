@@ -10,6 +10,9 @@
 
 namespace Mbh;
 
+use \Mbh\Debug as Debug;
+use \Mbh\Firewall as Firewall;
+
 # Security
 defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
 
@@ -50,12 +53,12 @@ final class App
             die('Current <b>PHP</b> version is <b>' . phpversion() . '</b> and a version greater than or equal to <b>7.0.0</b> is required');
         }
 
-        $this->firewall = !FIREWALL ?: new \Mbh\Firewall;
-        $this->startime = !DEBUG ?: \Mbh\Debug::startime();
+        $this->firewall = !FIREWALL ?: new Firewall;
+        $this->startime = !DEBUG ?: Debug::startime();
     }
 
     final public function run()
     {
-        $this->debug = !DEBUG ?: new \Mbh\Debug($this->startime);
+        $this->debug = !DEBUG ?: new Debug($this->startime);
     }
 }

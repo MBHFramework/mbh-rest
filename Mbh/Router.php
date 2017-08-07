@@ -10,6 +10,8 @@
 
 namespace Mbh;
 
+use \Mbh\Route as Route;
+
 # Security
 defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
 
@@ -21,23 +23,29 @@ final class Router
     protected $request_uri;
     protected $routes;
 
+    const GET_PARAMS_DELIMITER = '?';
+
     final public function __construct(string $request_uri = $_SERVER['REQUEST_URI'])
     {
-          $this->setRequestUri($request_uri);
-          $this->routes = [];
+        $this->setRequestUri($request_uri);
+        $this->routes = [];
     }
 
-    public function setRequestUri($request_uri)
-  	{
-          if (strpos($request_uri, self::GET_PARAMS_DELIMITER))
-          {
-          	$request_uri = strstr($request_uri, self::GET_PARAMS_DELIMITER, true);
-          }
-          $this->requestUri = $request_uri;
-  	}
+    final public function setRequestUri(string $request_uri = $_SERVER['REQUEST_URI'])
+    {
+        if (strpos($request_uri, self::GET_PARAMS_DELIMITER)) {
+            $request_uri = strstr($request_uri, self::GET_PARAMS_DELIMITER, true);
+        }
+        $this->requestUri = $request_uri;
+    }
 
-  	public function getRequestUri()
-  	{
-          return $this->requestUri;
-  	}
+    final public function getRequestUri()
+    {
+        return $this->requestUri;
+    }
+
+    final public function add($uri, $closure)
+    {
+        array_push($this->routes, new Route($uri, $closure));
+    }
 }
