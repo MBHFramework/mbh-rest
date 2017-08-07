@@ -11,3 +11,9 @@ try {
 require('src/config.php');
 require('vendor/autoload.php');
 require('src/helpers/functions/autoload_functions.php');
+
+if (DEBUG) {
+  # code...
+}
+
+!FIREWALL ?: new Firewall;
