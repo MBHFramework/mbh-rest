@@ -1,7 +1,11 @@
 <?php
 
 /**
- * created by Ulises J. Cornejo Fandos in 08/06/2017
+ * MBHFramework
+ *
+ * @link      https://github.com/MBHFramework/mbh-framework
+ * @copyright Copyright (c) 2017 Ulises Jeremias Cornejo Fandos
+ * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
 spl_autoload_register("__kernel_autoload");
