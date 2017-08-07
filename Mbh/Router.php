@@ -20,23 +20,23 @@ defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
  */
 final class Router
 {
-    protected $request_uri;
+    protected $requestUri;
     protected $routes;
 
     const GET_PARAMS_DELIMITER = '?';
 
-    final public function __construct(string $request_uri = $_SERVER['REQUEST_URI'])
+    final public function __construct(string $requestUri = $_SERVER['REQUEST_URI'])
     {
-        $this->setRequestUri($request_uri);
+        $this->setRequestUri($requestUri);
         $this->routes = [];
     }
 
-    final public function setRequestUri(string $request_uri = $_SERVER['REQUEST_URI'])
+    final public function setRequestUri(string $requestUri = $_SERVER['REQUEST_URI'])
     {
-        if (strpos($request_uri, self::GET_PARAMS_DELIMITER)) {
-            $request_uri = strstr($request_uri, self::GET_PARAMS_DELIMITER, true);
+        if (strpos($requestUri, self::GET_PARAMS_DELIMITER)) {
+            $requestUri = strstr($requestUri, self::GET_PARAMS_DELIMITER, true);
         }
-        $this->requestUri = $request_uri;
+        $this->requestUri = $requestUri;
     }
 
     final public function getRequestUri()
@@ -49,5 +49,30 @@ final class Router
         array_push($this->routes, new Route($uri, $closure));
     }
 
+    final public function sendResponse($response)
+    {
+        if (is_string($response)) {
+            echo $response;
+        } elseif (is_array($response)) {
+            echo json_encode($response);
+        } elseif ($response instanceof Response) {
+            $response->execute();
+        } else {
+            header("HTTP/1.0 404 Not Found");
+            exit('404');
+        }
+    }
 
+    final public function run()
+    {
+        $response = null;
+        $requestUri = $this->requestUri;
+
+        $route = array_filter($this->routes, function($route) use($requestUri) {
+            return $route->checkIfMatch($requestUri);
+        })[0] ?? null;
+
+        $response = $route->execute() ?? null;
+        $this->sendResponse($response);
+    }
 }
