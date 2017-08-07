@@ -25,12 +25,20 @@ final class Router
 
     const GET_PARAMS_DELIMITER = '?';
 
+    /**
+      * @param string $requestUri
+      *
+      */
     final public function __construct(string $requestUri = $_SERVER['REQUEST_URI'])
     {
         $this->setRequestUri($requestUri);
         $this->routes = [];
     }
 
+    /**
+      * @param string $requestUri
+      *
+      */
     final public function setRequestUri(string $requestUri = $_SERVER['REQUEST_URI'])
     {
         if (strpos($requestUri, self::GET_PARAMS_DELIMITER)) {
@@ -39,16 +47,33 @@ final class Router
         $this->requestUri = $requestUri;
     }
 
-    final public function getRequestUri()
+    /**
+      * @return string requestUri
+      *
+      */
+    final public function getRequestUri(): string
     {
         return $this->requestUri;
     }
 
-    final public function add($uri, $closure)
+    /**
+      * Loads a route generated from a url pattern and a closure to the route collection.
+      *
+      * @param string $uri, URI pattern
+      * @param $closure, instanceof Closure or function identifier
+      *
+      */
+    final public function add(string $uri, $closure)
     {
         array_push($this->routes, new Route($uri, $closure));
     }
 
+    /**
+      * Sends response.
+      *
+      * @param $response
+      *
+      */
     final public function sendResponse($response)
     {
         if (is_string($response)) {
@@ -63,6 +88,7 @@ final class Router
         }
     }
 
+    
     final public function run()
     {
         $response = null;
@@ -70,9 +96,9 @@ final class Router
 
         $route = array_filter($this->routes, function($route) use($requestUri) {
             return $route->checkIfMatch($requestUri);
-        })[0] ?? null;
+        })[0];
 
-        $response = $route->execute() ?? null;
+        $response = $route->execute();
         $this->sendResponse($response);
     }
 }
