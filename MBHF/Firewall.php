@@ -8,10 +8,10 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
+ namespace MBHF;
+
 # Security
 defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
-
-namespace MBHF;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos

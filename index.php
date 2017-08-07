@@ -3,7 +3,7 @@
 define('INDEX_DIR', true);
 
 require 'MBHF/core.php';
-require 'MBHF/kernel/App.php';
+require 'MBHF/App.php';
 use MBHF\App;
 
 App::registerAutoload();

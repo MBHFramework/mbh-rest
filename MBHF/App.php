@@ -8,7 +8,8 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
- namespace MBHF;
+namespace MBHF;
+
 
 # Security
 defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
@@ -18,6 +19,7 @@ defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
  */
 final class App
 {
+
   final public static function autoload($className)
   {
       require_once 'MBHF/core.php';

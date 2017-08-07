@@ -8,8 +8,14 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace MBHF\Helpers\Functions;
+namespace MBHF\Helpers;
 
+# Security
+defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
+
+/**
+ * created by Ulises Jeremias Cornejo Fandos
+ */
 final class Functions
 {
     final public static function encrypt(string $e) : string
@@ -53,7 +59,7 @@ final class Functions
     {
         header('location: ' . $url);
     }
-    
+
     /**
       * Alias of the "empty" function, more complete
       *
@@ -122,5 +128,16 @@ final class Functions
         return $output;
     }
 
+    /**
+    * Gives units of weight to an integer according to their assumed size in bytes
+    *
+    * @param int $size
+    *
+    * @return string
+  */
+  final public static function convert(int $size) : string {
+      $unit = array('bytes','kb','mb','gb','tb','pb');
+      return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+  }
 
 }

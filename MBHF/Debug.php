@@ -8,7 +8,9 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
- namespace MBHF;
+namespace MBHF;
+
+use MBHF\Helpers\Functions as Functions;
 
  # Security
  defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
@@ -99,12 +101,10 @@ final class Debug
     #Templates names
     $template_engine = ['PlatesPHP','Twig'];
 
-
-
     # End of Speed test
     $endtime = explode(" ",microtime());
     $endtime = $endtime[0] + $endtime[1];
-    $memory = memory_get_usage(); // Functions::convert(memory_get_usage());
+    $memory = Functions::convert(memory_get_usage());
 
 
 
