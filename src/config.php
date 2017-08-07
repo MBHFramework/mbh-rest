@@ -47,7 +47,6 @@ define('__ROOT__', '/mbh-framework/');
 # App constants
 define('URL', 'http://localhost/mbh-framework/');
 define('APP', 'MDHFramework');
-define('HTML_DIR', 'templates/');
 define('APP_COPY','Copyright &copy; ' . date('Y',time()) . APP);
 
 # Session control
