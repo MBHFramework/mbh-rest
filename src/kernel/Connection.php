@@ -13,6 +13,9 @@ namespace MBHF;
 # Security
 defined('INDEX_DIR') or exit(APP . 'software says .i.');
 
+/**
+ * created by Ulises Jeremias Cornejo Fandos
+ */
 final class Connection extends PDO
 {
 

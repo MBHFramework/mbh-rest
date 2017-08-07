@@ -9,3 +9,17 @@
  */
 
 namespace MBHF;
+
+# Security
+defined('INDEX_DIR') or exit(APP . 'software says .i.');
+
+/**
+ * created by Ulises Jeremias Cornejo Fandos
+ */
+class Firewall
+{
+  function __construct(argument)
+  {
+    # code...
+  }
+}
