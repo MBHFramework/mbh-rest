@@ -10,7 +10,7 @@
 
 namespace MBHF;
 
-# Seguridad
+# Security
 defined('INDEX_DIR') or exit(APP . 'software says .i.');
 
 final class Connection extends PDO
