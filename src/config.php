@@ -67,6 +67,9 @@ define('FIREWALL', true);
 # DEBUG mode
 define('DEBUG', false);
 
+# Check which is the current template engine (TWIG: true or PLATESPHP: false)
+define('TWIG_TEMPLATE_ENGINE', false);
+
 define('E_ERNO','69');
 
 # Current version of the framework
