@@ -53,6 +53,7 @@ final class Functions
     {
         header('location: ' . $url);
     }
+    
     /**
       * Alias of the "empty" function, more complete
       *
