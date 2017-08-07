@@ -18,11 +18,22 @@ defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
  */
 final class App
 {
-    final public static function autoload($className)
+    final public static function autoload($class)
     {
-        require_once __DIR__ . '/helpers/classes/Functions.php';
-        require_once __DIR__ . '/Debug.php';
-        require_once __DIR__ . '/Firewall.php';
+        $prefix = 'Mbh\\';
+      	$length = strlen($prefix) - 1;
+        $base_directory = __DIR__;
+
+      	if(strncmp($prefix, $class, $length) !== 0) {
+          return;
+        }
+
+        $class_end = substr($class, $length);
+        $file = $base_directory . str_replace('\\', '/', $class_end) . '.php';
+
+        if(is_readable($file)) {
+          require $file;
+        }
     }
 
     final public static function registerAutoload()
