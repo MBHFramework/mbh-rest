@@ -13,7 +13,8 @@ require('vendor/autoload.php');
 require('src/helpers/functions/autoload_functions.php');
 
 if (DEBUG) {
-  # code...
+  $startime = explode(" ",microtime());
+  $startime = $startime[0] + $startime[1];
 }
 
 !FIREWALL ?: new Firewall;
