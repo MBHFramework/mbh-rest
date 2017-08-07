@@ -8,8 +8,8 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
- # Security
- defined('INDEX_DIR') or exit(APP . 'software says .i.');
+# Security
+defined('INDEX_DIR') or exit(APP . 'software says .i.');
 
 namespace MBHF;
 
