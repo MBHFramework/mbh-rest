@@ -10,7 +10,7 @@
 
 namespace Mbh;
 
-use \Mbh\Route as Route;
+use \Mbh\Route;
 
 # Security
 defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
@@ -48,4 +48,6 @@ final class Router
     {
         array_push($this->routes, new Route($uri, $closure));
     }
+
+
 }
