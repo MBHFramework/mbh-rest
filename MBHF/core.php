@@ -8,13 +8,8 @@ try {
   die('Current <b>PHP</b> version is <b>' . phpversion() . '</b> and a version greater than or equal to <b>7.0.0</b> is required');
 }
 
-require('src/config.php');
-require('vendor/autoload.php');
-require('src/helpers/functions/autoload_functions.php');
+require 'MBHF/config.php';
+require 'vendor/autoload.php';
+require 'MBHF/helpers/functions/autoload_functions.php';
 
-if (DEBUG) {
-  $startime = explode(" ",microtime());
-  $startime = $startime[0] + $startime[1];
-}
-
-!FIREWALL ?: new Firewall;
+require 'MBHF/kernel/Debug.php';

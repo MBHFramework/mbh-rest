@@ -19,7 +19,6 @@ namespace MBHF;
 final class Debug
 {
 
- //------------------------------------------------
 
  const HEAD = '<style>
  #debug {
@@ -53,9 +52,20 @@ final class Debug
  }
  </style>
  <br /><div id="debug">';
+
  const FOOT = '</div>';
 
- //------------------------------------------------
+ /**
+  * Start time
+  *
+  * @return Start-Time, Start time of code execution
+ */
+ final public static function startime()
+ {
+   $startime = explode(" ",microtime());
+   return $startime[0] + $startime[1];
+ }
+
 
  /**
   * List an array, displaying its contents
@@ -89,23 +99,23 @@ final class Debug
     #Templates names
     $template_engine = ['PlatesPHP','Twig'];
 
-    //------------------------------------------------
+
 
     # End of Speed test
     $endtime = explode(" ",microtime());
     $endtime = $endtime[0] + $endtime[1];
     $memory = Functions::convert(memory_get_usage());
 
-    //------------------------------------------------
+
 
     echo self::HEAD;
-    echo "<b class='cab'>File:</b> {$_SERVER['PHP_SELF']}<br />";
-    echo "<b class='cab'>PHP:</b> {$phpversion()} <br />";
-    echo "<b class='cab'>FRAMEWORK:</b> ${VERSION} , '<br />";
-    echo "<b class='cab'>Template Engine:</b> {$template_engine[(int) TWIG_TEMPLATE_ENGINE]} <br />";
-    //------------------------------------------------
+    echo "<b class=\"cab\">File:</b> {$_SERVER['PHP_SELF']}<br />";
+    echo "<b class=\"cab\">PHP:</b> {$phpversion()} <br />";
+    echo "<b class=\"cab\">FRAMEWORK:</b> ${VERSION} , '<br />";
+    echo "<b class=\"cab\">Template Engine:</b> {$template_engine[(int) TWIG_TEMPLATE_ENGINE]} <br />";
 
-    //------------------------------------------------
+
+
   if(isset($_SESSION)) {
     $this->listVar($_SESSION,'$_SESSION');
   } else {
@@ -127,26 +137,23 @@ final class Debug
     echo 'No <span class="variable">$_FILES</span> variables<br />';
   }
 
-  //------------------------------------------------
 
   if(isset($_SESSION['___QUERY_DEBUG___']) and sizeof($_SESSION['___QUERY_DEBUG___']) > 0) {
     echo '<br /><strong class="cab">QUERYS:</strong><br />';
     echo '<ul style="list-style:none;padding:0;">';
     foreach ($_SESSION['___QUERY_DEBUG___'] as $query) {
-      echo "<li><ul><li><span class='variable'>query: </span>${query}</li></ul></li>";
+      echo "<li><ul><li><span class=\"variable\">query: </span>${query}</li></ul></li>";
     }
     echo '</ul>';
   }
 
-  //------------------------------------------------
 
-  echo "<br /><b class='cab'>DB_HOST:</b> {$DATABASE['host']}";
-  echo "<br /><b class='cab'>DB_NAME:</b> {$DATABASE['name']} <br />";
-  echo "<br /><b class='cab'>Firewall:</b>" . FIREWALL ? "True" : "False" ;
-  echo "<br /><b class='cab'>Total time :</b> {$endtime - $startime} segundos" ;
-  echo "<br /><b class='cab'>RAM consumed:</b> ${memory}";
+  echo "<br /><b class=\"cab\">DB_HOST:</b> {$DATABASE['host']}";
+  echo "<br /><b class=\"cab\">DB_NAME:</b> {$DATABASE['name']} <br />";
+  echo "<br /><b class=\"cab\">Firewall:</b>" . FIREWALL ? "True" : "False" ;
+  echo "<br /><b class=\"cab\">Total time :</b> {$endtime - $startime} segundos" ;
+  echo "<br /><b class=\"cab\">RAM consumed:</b> ${memory}";
 
-  //------------------------------------------------
 
   /**
     * End debug mode

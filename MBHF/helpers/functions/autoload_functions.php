@@ -14,7 +14,7 @@ spl_autoload_register("__functions_autoload");
 
 function __kernel_autoload(string $exec)
 {
-  $exec = "src/kernel/$exec.php";
+  $exec = "MBHF/kernel/$exec.php";
   if(is_readable($exec)) {
     require_once($exec);
   }
@@ -22,7 +22,7 @@ function __kernel_autoload(string $exec)
 
 function __helpers_autoload(string $helper)
 {
-  $helper = "src/helpers/$helper.php";
+  $helper = "MBHF/helpers/$helper.php";
   if(is_readable($helper)) {
     require_once($helper);
   }
@@ -30,7 +30,7 @@ function __helpers_autoload(string $helper)
 
 function __model_autoload(string $model)
 {
-  $model = "src/models/$model.php";
+  $model = "MBHF/models/$model.php";
   if(is_readable($model)) {
     require_once($model);
   }

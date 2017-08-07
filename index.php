@@ -1,10 +1,12 @@
 <?php
 
+require 'MBHF/App.php';
+use MBHF\App;
+
+App::registerAutoload();
+
+$app = new App();
 
 
 
-
-
-
-
-!DEBUG ?: new Debug($startime);
+$app->run();
