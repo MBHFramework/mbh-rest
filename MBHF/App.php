@@ -20,7 +20,9 @@ final class App
 {
     final public static function autoload($className)
     {
-        require_once 'MBHF/core.php';
+        require_once __DIR__ . '/helpers/classes/Functions.php';
+        require_once __DIR__ . '/Debug.php';
+        require_once __DIR__ . '/Firewall.php';
     }
 
     final public static function registerAutoload()
@@ -30,12 +32,19 @@ final class App
 
     final public function __construct()
     {
-        $this->firewall = !FIREWALL ?: new Firewall;
-        $this->startime = !DEBUG ?: Debug::startime();
+        try {
+            if (version_compare(phpversion(), '7.0.0', '<'))
+                throw new Exception(true);
+        } catch (Exception $e) {
+            die('Current <b>PHP</b> version is <b>' . phpversion() . '</b> and a version greater than or equal to <b>7.0.0</b> is required');
+        }
+
+        $this->firewall = !FIREWALL ?: new \MBHF\Firewall;
+        $this->startime = !DEBUG ?: \MBHF\Debug::startime();
     }
 
     final public function run()
     {
-        $this->debug = !DEBUG ?: new Debug($this->startime);
+        $this->debug = !DEBUG ?: new \MBHF\Debug($this->startime);
     }
 }

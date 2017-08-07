@@ -2,13 +2,15 @@
 
 define('INDEX_DIR', true);
 
-require 'MBHF/core.php';
+require 'vendor/autoload.php';
+
+require 'config/config.php';
 require 'MBHF/App.php';
-use MBHF\App;
 
-App::registerAutoload();
 
-$app = new App();
+\MBHF\App::registerAutoload();
+
+$app = new \MBHF\App();
 
 
 
