@@ -160,7 +160,6 @@ final class Functions extends \Twig_Extension
 
     /**
       *
-      *
       * @return string
       */
     public function getName() : string
