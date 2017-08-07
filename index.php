@@ -3,7 +3,6 @@
 define('INDEX_DIR', true);
 
 require 'vendor/autoload.php';
-
 require 'config/config.php';
 require 'MBHF/App.php';
 
