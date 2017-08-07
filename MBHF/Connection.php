@@ -18,7 +18,6 @@ defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
  */
 final class Connection extends PDO
 {
-
     private static $instance;
 
 
@@ -28,7 +27,7 @@ final class Connection extends PDO
       * @param string $DATABASE, A database other than the one defined in DATABASE ['name'] is optionally passed to connect
       *
       * @return connection instance
-    */
+      */
     final public static function start(string $DATABASE = DATABASE['name'], string $MOTOR = DATABASE['motor'], bool $new_instance = false) : Conexion
     {
         if (!self::$instance instanceof self or $new_instance) {
@@ -45,7 +44,7 @@ final class Connection extends PDO
       * @param string $DATABASE, A database other than the one defined in DATABASE ['name'] is optionally passed to connect
       *
       * @return void
-    */
+      */
     final public function __construct(string $DATABASE = DATABASE['name'], string $MOTOR = DATABASE['motor'])
     {
         try {
@@ -120,7 +119,7 @@ final class Connection extends PDO
       * @param object PDOStatement $query, return value of the query
       *
       * @return associative array
-    */
+      */
     final public function fetch_array(PDOStatement $query) : array
     {
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -133,7 +132,7 @@ final class Connection extends PDO
       * @param object PDOStatement $query, return value of the query
       *
       * @return number of rows found
-    */
+      */
     final public function rows(PDOStatement $query) : int
     {
         return $query->rowCount();
@@ -146,7 +145,7 @@ final class Connection extends PDO
       * @param string/int/float
       *
       * @return int/float/string
-    */
+      */
     final public function escape($e)
     {
         if (!isset($e)) {
@@ -169,7 +168,7 @@ final class Connection extends PDO
       * @param SQL string, recieve a SQL query to execute
       *
       * @return object PDOStatement
-    */
+      */
     final public function query(string $q) : PDOStatement
     {
         try {
@@ -196,7 +195,7 @@ final class Connection extends PDO
       * @param string $limit: By default it is limited to deleting a single element that matches the $ where
       *
       * @return object PDOStatement
-    */
+      */
     final public function delete(string $table, string $where, string $limit = 'LIMIT 1') : PDOStatement
     {
         return $this->query("DELETE FROM $table WHERE $where $limit;");
@@ -210,7 +209,7 @@ final class Connection extends PDO
       *                  all elements of the array $ e, will be healed by the method without having to do it manually when creating the array...
       *
       * @return object PDOStatement
-    */
+      */
     final public function insert(string $table, array $e) : PDOStatement
     {
         if (sizeof($e) == 0) {
@@ -240,7 +239,7 @@ final class Connection extends PDO
       * @param string $limite: Limit modified elements, by default modifies them all
       *
       * @return object PDOStatement
-    */
+      */
     final public function update(string $table, array $e, string $where, string $limit = '') : PDOStatement
     {
         if (sizeof($e) == 0) {
@@ -266,7 +265,7 @@ final class Connection extends PDO
       * @param string $limite: Limit of items to bring, by default brings ALL those that match $where
       *
       * @return False if you do not find any results, array associative / numeric if you get at least one
-    */
+      */
     final public function select(string $e, string $table, string $where = '1 = 1', string $limit = "")
     {
         $sql = $this->query("SELECT $e FROM $table WHERE $where $limit;");
@@ -280,7 +279,7 @@ final class Connection extends PDO
       * Alert to avoid cloning
       *
       * @return void
-    */
+      */
     final public function __clone()
     {
         trigger_error('Estás intentando clonar la Conexión', E_ERROR);

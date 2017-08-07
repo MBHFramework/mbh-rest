@@ -16,7 +16,7 @@ defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Functions
+final class Functions extends Twig_Extension
 {
     final public static function encrypt(string $e) : string
     {
@@ -66,7 +66,7 @@ final class Functions
       * @param midex $var: Variable to analyze
       *
       * @return true if empty, false otherwise, empty space counts as empty
-    */
+      */
     final public static function empty($var) : bool
     {
         return (isset($var) && empty(trim(str_replace(' ', '', $var))));
@@ -79,7 +79,7 @@ final class Functions
       * @param array $array, array to analyze
       *
       * @return true if they are all filled, false if at least one is empty
-    */
+      */
     final public static function all_full(array $array) : bool
     {
         foreach ($array as $e) {
@@ -96,7 +96,7 @@ final class Functions
       * @param infinite parameters
       *
       * @return true if at least one is empty, false if all are full
-    */
+      */
     final public static function e() : bool
     {
         for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
@@ -114,7 +114,7 @@ final class Functions
       * @param int $limit
       *
       * @return string
-    */
+      */
     final public static function reduce_string(string $string, int $limit) : string
     {
         if (strlen($string) <= $limit) {
@@ -129,15 +129,40 @@ final class Functions
     }
 
     /**
-    * Gives units of weight to an integer according to their assumed size in bytes
-    *
-    * @param int $size
-    *
-    * @return string
-  */
-  final public static function convert(int $size) : string {
-      $unit = array('bytes','kb','mb','gb','tb','pb');
-      return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
-  }
+      * Gives units of weight to an integer according to their assumed size in bytes
+      *
+      * @param int $size
+      *
+      * @return string
+      */
+    final public static function convert(int $size) : string
+    {
+        $unit = array('bytes','kb','mb','gb','tb','pb');
+        return round($size/pow(1024, ($i=floor(log($size, 1024)))), 2) . " " . $unit[$i];
+    }
 
+    /**
+      * It is obtained from Twig_Extension and is used to make each function available as a twig tag
+      *
+      * @return array
+      */
+    public function getFunctions() : array
+    {
+        return [
+           new Twig_Function('convert', array($this, 'convert')),
+           new Twig_Function('empty', array($this, 'empty')),
+           new Twig_Function('e_dynamic', array($this, 'e')),
+           new Twig_Function('all_full', array($this, 'all_full'))
+        ];
+    }
+
+    /**
+      *
+      *
+      * @return string
+      */
+    public function getName() : string
+    {
+        return 'mbh_framework_func_class';
+    }
 }

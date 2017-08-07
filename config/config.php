@@ -44,7 +44,7 @@ define('__ROOT__', '/mbh-framework/');
 # App constants
 define('URL', 'http://localhost/mbh-framework/');
 define('APP_NAME', 'MDHFramework');
-define('APP_COPY','Copyright &copy; ' . date('Y',time()) . APP_NAME);
+define('APP_COPY', 'Copyright &copy; ' . date('Y', time()) . APP_NAME);
 
 # Session control
 define('DB_SESSION', false);
@@ -67,7 +67,7 @@ define('DEBUG', true);
 # Check which is the current template engine (TWIG: true or PLATESPHP: false)
 define('TWIG_TEMPLATE_ENGINE', false);
 
-define('E_ERNO','69');
+define('E_ERNO', '69');
 
 # Current version of the framework
 define('VERSION', '1.0');
