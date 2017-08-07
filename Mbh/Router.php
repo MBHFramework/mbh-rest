@@ -91,7 +91,6 @@ final class Router
 
     final public function run()
     {
-        $response = null;
         $requestUri = $this->requestUri;
 
         $checked = array_filter($this->routes, function ($route) use ($requestUri) {
