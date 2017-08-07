@@ -8,6 +8,8 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
+namespace Slim\Helpers\Functions;
+
 final class Functions
 {
     final public static function encrypt(string $e) : string
@@ -22,7 +24,7 @@ final class Functions
 
     final public static function encrypt_with_key(string $e, string $key) : string
     {
-        // Function made to be used in networks passwords
+        // Function made to be used in data
         $result = '';
         for ($i = 0; $i < strlen($e); $i++) {
             $char = substr($e, $i, 1);
@@ -35,7 +37,7 @@ final class Functions
 
     final public static function decrypt_with_key(string $e, string $key) : string
     {
-        // Function made to be used in networks passwords
+        // Function made to be used in data
         $result = '';
         $e = base64_decode($e);
         for ($i = 0; $i < strlen($e); $i++) {
@@ -51,27 +53,25 @@ final class Functions
     {
         header('location: ' . $url);
     }
-    //------------------------------------------------
     /**
-      * Alias de Empty, más completo
+      * Alias of the "empty" function, more complete
       *
-      * @param midex $var: Variable a analizar
+      * @param midex $var: Variable to analyze
       *
-      * @return true si está vacío, false si no, un espacio en blanco cuenta como vacío
+      * @return true if empty, false otherwise, empty space counts as empty
     */
-    final public static function emp($var) : bool
+    final public static function empty($var) : bool
     {
         return (isset($var) && empty(trim(str_replace(' ', '', $var))));
     }
 
-    //------------------------------------------------
     /**
-      * Analiza que TODOS los elementos de un arreglo estén llenos, útil para analizar por ejemplo que todos los elementos de un formulario esté llenos
-      * pasando como parámetro $_POST
+      * It analyzes that ALL the elements of an array are full, useful to analyze for example
+      * that all the elements of a form are filled passing as parameter $ _POST
       *
-      * @param array $array, arreglo a analizar
+      * @param array $array, array to analyze
       *
-      * @return true si están todos llenos, false si al menos uno está vacío
+      * @return true if they are all filled, false if at least one is empty
     */
     final public static function all_full(array $array) : bool
     {
@@ -83,13 +83,12 @@ final class Functions
         return true;
     }
 
-    //------------------------------------------------
     /**
-      * Alias de Empty() pero soporta más de un parámetro
+      * Alias of the "empty" function, but supports more than one parameter
       *
-      * @param infinitos parámetros
+      * @param infinite parameters
       *
-      * @return true si al menos uno está vacío, false si todos están llenos
+      * @return true if at least one is empty, false if all are full
     */
     final public static function e() : bool
     {
