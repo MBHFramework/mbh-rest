@@ -8,7 +8,6 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-'PROTECTION_DOS' => IS_API ? true : true,
 
 namespace MBHF;
 
