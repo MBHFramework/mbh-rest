@@ -94,7 +94,7 @@ final class Debug
     # End of Speed test
     $endtime = explode(" ",microtime());
     $endtime = $endtime[0] + $endtime[1];
-    $memory = Func::convert(memory_get_usage());
+    $memory = Functions::convert(memory_get_usage());
 
     //------------------------------------------------
 
