@@ -4,13 +4,19 @@
  * MBHFramework
  *
  * @link      https://github.com/MBHFramework/mbh-framework
- * @copyright Copyright (c) 2017 Federico Ramón Gasquez
+ * @copyright Copyright (c) 2017 Ulises Jeremias Cornejo Fandos
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
+ # Security
+ defined('INDEX_DIR') or exit(APP . 'software says .i.');
+
 namespace MBHF;
 
-final class debug
+/**
+ * created by Federico Ramón Gasquez
+ */
+final class Debug
 {
 
  //------------------------------------------------
