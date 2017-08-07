@@ -8,9 +8,9 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace MBHF;
+namespace Mbh;
 
-use MBHF\Helpers\Functions as Functions;
+use Mbh\Helpers\Functions as Functions;
 
 # Security
  defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');

@@ -4,12 +4,12 @@ define('INDEX_DIR', true);
 
 require 'vendor/autoload.php';
 require 'config/config.php';
-require 'MBHF/App.php';
+require 'Mbh/App.php';
 
 
-\MBHF\App::registerAutoload();
+\Mbh\App::registerAutoload();
 
-$app = new \MBHF\App();
+$app = new \Mbh\App();
 
 
 

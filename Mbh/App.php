@@ -8,7 +8,7 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace MBHF;
+namespace Mbh;
 
 # Security
 defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
@@ -39,12 +39,12 @@ final class App
             die('Current <b>PHP</b> version is <b>' . phpversion() . '</b> and a version greater than or equal to <b>7.0.0</b> is required');
         }
 
-        $this->firewall = !FIREWALL ?: new \MBHF\Firewall;
-        $this->startime = !DEBUG ?: \MBHF\Debug::startime();
+        $this->firewall = !FIREWALL ?: new \Mbh\Firewall;
+        $this->startime = !DEBUG ?: \Mbh\Debug::startime();
     }
 
     final public function run()
     {
-        $this->debug = !DEBUG ?: new \MBHF\Debug($this->startime);
+        $this->debug = !DEBUG ?: new \Mbh\Debug($this->startime);
     }
 }

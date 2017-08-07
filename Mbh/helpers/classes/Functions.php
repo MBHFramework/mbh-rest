@@ -8,7 +8,7 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace MBHF\Helpers;
+namespace Mbh\Helpers;
 
 use AppBoundle\Twig;
 
