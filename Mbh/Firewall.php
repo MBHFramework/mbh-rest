@@ -91,7 +91,7 @@ final class Firewall
       */
     private function getReferer()
     {
-        return $this->get_env('HTTP_REFERER');
+        return $this->getEnv('HTTP_REFERER');
     }
 
     /**
