@@ -51,11 +51,13 @@ define('DB_SESSION', false);
 define('SESSION_TIME', 18000); # life time for session cookies -> 5 hs = 18000 seconds.
 define('SESS_APP_ID', '_sess_app_id_');
 define('KEY', '__\$mbh\$__');
-session_start([
-  'use_strict_mode' => true,
-  'use_cookies' => true,
-  'cookie_lifetime' => SESSION_TIME,
-  'cookie_httponly' => true # Avoid access to the cookie using scripting languages (such as javascript)
+define('SESSION', [
+  'CONF' => [
+    'use_strict_mode' => true,
+    'use_cookies' => true,
+    'cookie_lifetime' => SESSION_TIME,
+    'cookie_httponly' => true # Avoid access to the cookie using scripting languages (such as javascript)
+  ]
 ]);
 
 # Firewall
