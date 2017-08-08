@@ -21,7 +21,7 @@ final class Route
     protected $uri;
     protected $closure;
 
-    const PARAMETER_PATTERN = '/:([^\/]+)/';
+    const PARAMETER_PATTERN = '/:([\w-%]+)/';
     const PARAMETER_REPLACEMENT = '(?<\1>[^/]+)';
 
     protected $parameters;
@@ -48,7 +48,6 @@ final class Route
     public function getUriPattern(): string
     {
         $uriPattern = preg_replace(self::PARAMETER_PATTERN, self::PARAMETER_REPLACEMENT, $this->uri);
-        echo json_encode($uriPattern);
         $uriPattern = str_replace('/', '\/', $uriPattern);
         $uriPattern = '/^' . $uriPattern . '\/*$/s';
         return $uriPattern;
