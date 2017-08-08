@@ -12,8 +12,6 @@ namespace Mbh;
 
 use Mbh\Helpers\Functions as Functions;
 
-# Security
- defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
 
 /**
  * created by Federico Ramón Gasquez
