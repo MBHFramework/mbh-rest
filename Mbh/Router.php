@@ -20,8 +20,8 @@ defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
  */
 final class Router
 {
-    protected $requestUri;
-    protected $routes;
+    private $requestUri;
+    private $routes;
 
     const GET_PARAMS_DELIMITER = '?';
 
@@ -29,7 +29,7 @@ final class Router
       * @param string $requestUri
       *
       */
-    final public function __construct(string $requestUri = $_SERVER['REQUEST_URI'])
+    final public function __construct(string $requestUri)
     {
         $this->setRequestUri($requestUri);
         $this->routes = [];
@@ -39,7 +39,7 @@ final class Router
       * @param string $requestUri
       *
       */
-    final public function setRequestUri(string $requestUri = $_SERVER['REQUEST_URI'])
+    final public function setRequestUri(string $requestUri)
     {
         if (strpos($requestUri, self::GET_PARAMS_DELIMITER)) {
             $requestUri = strstr($requestUri, self::GET_PARAMS_DELIMITER, true);
@@ -65,7 +65,8 @@ final class Router
       */
     final public function add(string $uri, $closure)
     {
-        array_push($this->routes, new Route($uri, $closure));
+        $route = new Route($uri, $closure);
+        array_push($this->routes, $route);
     }
 
     /**
@@ -97,7 +98,7 @@ final class Router
             return $route->checkIfMatch($requestUri);
         });
 
-        $route = ?? $checked[0];
+        $route = $checked[0] ?? null;
         $response = !$route ?: $route->execute();
         $this->sendResponse($response);
     }

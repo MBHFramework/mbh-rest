@@ -9,13 +9,17 @@
  */
 
 namespace Mbh;
+
+# Security
+defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
+
 /**
  * created by Federico Ramón Gasquez
  */
 final class Route
 {
     protected $uri;
-    protected $closure
+    protected $closure;
 
     const PARAMETER_PATTERN = '/:([^\/]+)/';
     const PARAMETER_REPLACEMENT = '(?<\1>[^/]+)';
@@ -44,6 +48,7 @@ final class Route
     public function getUriPattern(): string
     {
         $uriPattern = preg_replace(self::PARAMETER_PATTERN, self::PARAMETER_REPLACEMENT, $this->uri);
+        echo json_encode($uriPattern);
         $uriPattern = str_replace('/', '\/', $uriPattern);
         $uriPattern = '/^' . $uriPattern . '\/*$/s';
         return $uriPattern;
@@ -70,7 +75,7 @@ final class Route
       *
       * @return array
       */
-    public function getParameters(): array
+    public function getParameters()
     {
         return $this->parameters;
     }

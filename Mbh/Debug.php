@@ -81,7 +81,7 @@ final class Debug
         echo '<ul>';
         foreach ($VAR as $key => $value) {
             if ($key != '___QUERY_DEBUG___') {
-                echo '<li><span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span>', d($value) ,'</li>';
+                echo '<li><span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $value ,'</li>';
             }
         }
         echo "</ul>";
