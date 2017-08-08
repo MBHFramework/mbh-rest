@@ -12,9 +12,6 @@ namespace Mbh\Helpers;
 
 use AppBoundle\Twig;
 
-# Security
-defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
-
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */

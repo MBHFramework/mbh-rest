@@ -13,9 +13,6 @@ namespace Mbh;
 use \Mbh\Debug;
 use \Mbh\Firewall;
 
-# Security
-defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
-
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */

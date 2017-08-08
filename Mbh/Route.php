@@ -10,8 +10,6 @@
 
 namespace Mbh;
 
-# Security
-defined('INDEX_DIR') or exit(APP_NAME . 'software says .i.');
 
 /**
  * created by Federico Ramón Gasquez
