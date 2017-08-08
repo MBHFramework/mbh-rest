@@ -18,5 +18,6 @@ use \Mbh\Route;
  */
 final class Router
 {
-    
+
+
 }
