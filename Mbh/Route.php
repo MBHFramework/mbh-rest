@@ -49,7 +49,7 @@ final class Route
     {
         $uriPattern = preg_replace(self::PARAMETER_PATTERN, self::PARAMETER_REPLACEMENT, $this->uri);
         $uriPattern = str_replace('/', '\/', $uriPattern);
-        $uriPattern = '/^' . $uriPattern . '\/*$/s';
+        $uriPattern = '/^' . $uriPattern . '\/*$/';
         return $uriPattern;
     }
 
