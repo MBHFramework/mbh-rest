@@ -57,7 +57,7 @@ final class Router
      */
     public function get($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'get' ], $route, $callback, $injectArgs);
+        return $this->map([ 'get' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -70,7 +70,7 @@ final class Router
      */
     public function post($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'post' ], $route, $callback, $injectArgs);
+        return $this->map([ 'post' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -83,7 +83,7 @@ final class Router
      */
     public function put($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'put' ], $route, $callback, $injectArgs);
+        return $this->map([ 'put' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -96,7 +96,7 @@ final class Router
      */
     public function patch($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'patch' ], $route, $callback, $injectArgs);
+        return $this->map([ 'patch' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -109,7 +109,7 @@ final class Router
      */
     public function delete($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'delete' ], $route, $callback, $injectArgs);
+        return $this->map([ 'delete' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -122,7 +122,7 @@ final class Router
      */
     public function head($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'head' ], $route, $callback, $injectArgs);
+        return $this->map([ 'head' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -135,7 +135,7 @@ final class Router
      */
     public function trace($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'trace' ], $route, $callback, $injectArgs);
+        return $this->map([ 'trace' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -148,7 +148,7 @@ final class Router
      */
     public function options($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'options' ], $route, $callback, $injectArgs);
+        return $this->map([ 'options' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -161,7 +161,7 @@ final class Router
      */
     public function connect($route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute([ 'connect' ], $route, $callback, $injectArgs);
+        return $this->map([ 'connect' ], $route, $callback, $injectArgs);
     }
 
     /**
@@ -175,7 +175,7 @@ final class Router
      */
     public function any(array $requestMethods, $route, $callback = null, $injectArgs = null)
     {
-        return $this->addRoute($requestMethods, $route, $callback, $injectArgs);
+        return $this->map($requestMethods, $route, $callback, $injectArgs);
     }
 
     /**
@@ -248,7 +248,7 @@ final class Router
      * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    private function addRoute(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null)
+    private function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null)
     {
         $expectedRequestMethods = array_map('strtolower', $expectedRequestMethods);
 
