@@ -10,7 +10,7 @@
 
 namespace Mbh;
 
-use Mbh\Connection as Connection;
+use Mbh\Connection;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos

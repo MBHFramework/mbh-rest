@@ -8,7 +8,7 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace Mbh;
+namespace Mbh\Helpers;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos

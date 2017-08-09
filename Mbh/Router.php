@@ -11,8 +11,8 @@
 namespace Mbh;
 
 use \Mbh\Route;
-use \Mbh\Path;
-use \Mbh\Uri;
+use \Mbh\Helpers\Path;
+use \Mbh\Helpers\Uri;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos

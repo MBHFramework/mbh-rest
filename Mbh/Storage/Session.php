@@ -43,9 +43,7 @@ final class Session
 
     final public function get($key)
     {
-        if ($this->has($key)) {
-            return $_SESSION[$key];
-        }
+        return $_SESSION[$key] ?? null;
     }
 
     final public function has($key)

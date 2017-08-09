@@ -1,12 +1,14 @@
 <?php
 
 require 'vendor/autoload.php';
-require 'Mbh/config/config.php';
+require 'Mbh/Settings/config.php';
 require 'Mbh/App.php';
 
-\Mbh\App::registerAutoload();
+use \Mbh\App;
 
-$app = new \Mbh\App();
+App::registerAutoload();
+
+$app = new App();
 
 /**
   * Specific routes should be defined here

@@ -8,7 +8,9 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
- namespace Mbh;
+namespace Mbh;
+
+use Twig_Environment;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -28,18 +30,18 @@ final class Helper
       *
       * @return void
       */
-    final static public function load(string $helper, \Twig_Environment $object = null)
+    final static public function load(string $helper, Twig_Environment $object = null)
     {
       $helper = ucwords($helper);
       $file = self::ROUTE . $helper . '.php';
       if(file_exists($file)) {
         include_once($file);
         # Twig integration
-        if($object instanceof \Twig_Environment) {
+        if($object instanceof Twig_Environment) {
           $object->addExtension(new $helper());
         }
       } else {
-        trigger_error('The helper ' . $helper . ' does not exist in the helpers library.', E_USER_ERROR);
+        trigger_error("The helper $helper does not exist in the helpers library.", E_USER_ERROR);
       }
     }
 }

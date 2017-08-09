@@ -10,8 +10,10 @@
 
 namespace Mbh;
 
+use Exception;
 use \Mbh\Debug;
 use \Mbh\Firewall;
+use \Mbh\Storage\Session;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -50,7 +52,9 @@ final class App
             die('Current <b>PHP</b> version is <b>' . phpversion() . '</b> and a version greater than or equal to <b>7.0.0</b> is required');
         }
 
-        $this->firewall = !FIREWALL ?: new Firewall;
+        !FIREWALL ?: new Firewall;
+
+        $this->storage['session'] = new Session();
         $this->startime = !DEBUG ?: Debug::startime();
     }
 
