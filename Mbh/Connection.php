@@ -13,7 +13,7 @@ namespace Mbh;
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Connection extends PDO
+final class Connection extends \PDO
 {
     private static $instance;
 
@@ -46,59 +46,59 @@ final class Connection extends PDO
     {
         try {
             switch ($MOTOR) {
-        case 'sqlite':
-          parent::__construct('sqlite:'.$DATABASE);
-        break;
-        case 'cubrid':
-          parent::__construct('cubrid:host='.DATABASE['host'].';dbname='.$DATABASE.';port='.DATABASE['port'], DATABASE['user'], DATABASE['pass'], array(
-          PDO::ATTR_EMULATE_PREPARES => false,
-          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        break;
-        case 'firebird':
-          parent::__construct('firebird:dbname='.DATABASE['host'].':'.$DATABASE, DATABASE['user'], DATABASE['pass'], array(
-          PDO::ATTR_EMULATE_PREPARES => false,
-          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        break;
-        case 'odbc':
-          parent::__construct('odbc:'.$DATABASE, DATABASE['user'], DATABASE['pass']);
-        break;
-        case 'oracle':
-          parent::__construct(
-              'oci:dbname=(DESCRIPTION =
-            (ADDRESS_LIST =
-              (ADDRESS = (PROTOCOL = '.DATABASE['protocol'].')(HOST = '.$MOTOR.')(PORT = '.DATABASE['port'].'))
-            )
-            (CONNECT_DATA =
-              (SERVICE_NAME = '.$DATABASE.')
-            )
-          );charset=utf8',
-              ['user'],
-              ['pass'],
-          array(PDO::ATTR_EMULATE_PREPARES => false,
-          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-          PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC)
-          );
-        break;
-        case 'postgresql':
-          parent::__construct('pgsql:host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8', DATABASE['user'], DATABASE['pass'], array(
-          PDO::ATTR_EMULATE_PREPARES => false,
-          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        break;
-        case 'mysql':
-          parent::__construct('mysql:host='.DATABASE['host'].';dbname='.$DATABASE, DATABASE['user'], DATABASE['pass'], array(
-          PDO::ATTR_EMULATE_PREPARES => false,
-          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-          PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
-        break;
-        default:
-          if (IS_API) {
-              die(json_encode(array('success' => 0, 'message' => 'Motor de conexión no identificado.')));
-          } else {
-              die('Motor de conexión no identificado.');
-          }
-        break;
-      }
-        } catch (PDOException $e) {
+              case 'sqlite':
+                parent::__construct('sqlite:'.$DATABASE);
+              break;
+              case 'cubrid':
+                parent::__construct('cubrid:host='.DATABASE['host'].';dbname='.$DATABASE.';port='.DATABASE['port'], DATABASE['user'], DATABASE['pass'], array(
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+              break;
+              case 'firebird':
+                parent::__construct('firebird:dbname='.DATABASE['host'].':'.$DATABASE, DATABASE['user'], DATABASE['pass'], array(
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+              break;
+              case 'odbc':
+                parent::__construct('odbc:'.$DATABASE, DATABASE['user'], DATABASE['pass']);
+              break;
+              case 'oracle':
+                parent::__construct(
+                    'oci:dbname=(DESCRIPTION =
+                  (ADDRESS_LIST =
+                    (ADDRESS = (PROTOCOL = '.DATABASE['protocol'].')(HOST = '.$MOTOR.')(PORT = '.DATABASE['port'].'))
+                  )
+                  (CONNECT_DATA =
+                    (SERVICE_NAME = '.$DATABASE.')
+                  )
+                );charset=utf8',
+                    ['user'],
+                    ['pass'],
+                array(PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC)
+                );
+              break;
+              case 'postgresql':
+                parent::__construct('pgsql:host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8', DATABASE['user'], DATABASE['pass'], array(
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+              break;
+              case 'mysql':
+                parent::__construct('mysql:host='.DATABASE['host'].';dbname='.$DATABASE, DATABASE['user'], DATABASE['pass'], array(
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+              break;
+              default:
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => 'Motor de conexión no identificado.')));
+                } else {
+                    die('Motor de conexión no identificado.');
+                }
+              break;
+            }
+        } catch (\PDOException $e) {
             if (IS_API) {
                 die(json_encode(array('success' => 0, 'message' => 'Error intentando conectar con la base de datos.')));
             } else {
@@ -113,11 +113,11 @@ final class Connection extends PDO
     /**
       * Returns an associative array of all the results thrown by a query
       *
-      * @param object PDOStatement $query, return value of the query
+      * @param object \PDOStatement $query, return value of the query
       *
       * @return associative array
       */
-    final public function fetch_array(PDOStatement $query) : array
+    final public function fetch_array(\PDOStatement $query) : array
     {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -126,11 +126,11 @@ final class Connection extends PDO
     /**
       * Get the number of rows found after a SELECT
       *
-      * @param object PDOStatement $query, return value of the query
+      * @param object \PDOStatement $query, return value of the query
       *
       * @return number of rows found
       */
-    final public function rows(PDOStatement $query) : int
+    final public function rows(\PDOStatement $query) : int
     {
         return $query->rowCount();
     }
@@ -164,9 +164,9 @@ final class Connection extends PDO
       *
       * @param SQL string, recieve a SQL query to execute
       *
-      * @return object PDOStatement
+      * @return object \PDOStatement
       */
-    final public function query(string $q) : PDOStatement
+    final public function query(string $q) : \PDOStatement
     {
         try {
             if (DEBUG) {
@@ -191,9 +191,9 @@ final class Connection extends PDO
       * @param string $where: Deletion condition that defines who are those elements
       * @param string $limit: By default it is limited to deleting a single element that matches the $ where
       *
-      * @return object PDOStatement
+      * @return object \PDOStatement
       */
-    final public function delete(string $table, string $where, string $limit = 'LIMIT 1') : PDOStatement
+    final public function delete(string $table, string $where, string $limit = 'LIMIT 1') : \PDOStatement
     {
         return $this->query("DELETE FROM $table WHERE $where $limit;");
     }
@@ -205,9 +205,9 @@ final class Connection extends PDO
       * @param array $e: Associative arrangement of elements, with the 'field_en_la_tabla' => 'value_to_insertar_en_ese_campo',
       *                  all elements of the array $ e, will be healed by the method without having to do it manually when creating the array...
       *
-      * @return object PDOStatement
+      * @return object \PDOStatement
       */
-    final public function insert(string $table, array $e) : PDOStatement
+    final public function insert(string $table, array $e) : \PDOStatement
     {
         if (sizeof($e) == 0) {
             trigger_error('array passed in $this->db->insert(...) is empty.', E_ERROR);
@@ -235,9 +235,9 @@ final class Connection extends PDO
       * @param string $where: Condition indicating who will be modified
       * @param string $limite: Limit modified elements, by default modifies them all
       *
-      * @return object PDOStatement
+      * @return object \PDOStatement
       */
-    final public function update(string $table, array $e, string $where, string $limit = '') : PDOStatement
+    final public function update(string $table, array $e, string $where, string $limit = '') : \PDOStatement
     {
         if (sizeof($e) == 0) {
             trigger_error('El arreglo pasado por $this->db->update(...) está vacío.', E_ERROR);

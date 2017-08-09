@@ -28,14 +28,14 @@ final class Helper
       *
       * @return void
       */
-    final static public function load(string $helper, Twig_Environment $object = null)
+    final static public function load(string $helper, \Twig_Environment $object = null)
     {
       $helper = ucwords($helper);
       $file = self::ROUTE . $helper . '.php';
       if(file_exists($file)) {
         include_once($file);
         # Twig integration
-        if($object instanceof Twig_Environment) {
+        if($object instanceof \Twig_Environment) {
           $object->addExtension(new $helper());
         }
       } else {
