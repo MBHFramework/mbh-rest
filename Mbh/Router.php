@@ -10,14 +10,14 @@
 
 namespace Mbh;
 
-use InvalidArgumentException;
 use \Mbh\Helpers\Path;
 use \Mbh\Helpers\Uri;
+use \Mbh\Interfaces\RouterInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Router
+final class Router implements RouterInterface
 {
     /** Router for PHP. Simple, lightweight and convenient. */
 
@@ -248,7 +248,7 @@ final class Router
      * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    private function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null)
+    public function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null)
     {
         $expectedRequestMethods = array_map('strtolower', $expectedRequestMethods);
 
@@ -271,7 +271,7 @@ final class Router
                     }
                     // if the callback is invalid
                     else {
-                        throw new InvalidArgumentException('Invalid callback for methods `'.implode('|', $expectedRequestMethods).'` at route `'.$expectedRoute.'`');
+                        throw new \InvalidArgumentException('Invalid callback for methods `'.implode('|', $expectedRequestMethods).'` at route `'.$expectedRoute.'`');
                     }
                 }
 

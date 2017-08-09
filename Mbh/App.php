@@ -10,11 +10,11 @@
 
 namespace Mbh;
 
-use Exception;
 use \Mbh\Debug;
 use \Mbh\Firewall;
 use \Mbh\Router;
 use \Mbh\Storage\Session;
+use \Mbh\Interfaces\RouterInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -52,8 +52,8 @@ final class App
     {
         try {
             if (version_compare(phpversion(), '7.0.0', '<'))
-                throw new Exception(true);
-        } catch (Exception $e) {
+                throw new \Exception(true);
+        } catch (\Exception $e) {
             die('Current <b>PHP</b> version is <b>' . phpversion() . '</b> and a version greater than or equal to <b>7.0.0</b> is required');
         }
 
@@ -65,12 +65,12 @@ final class App
         $this->setRouter(new Router());
     }
 
-    final public function getRouter()
+    final public function getRouter(): RouterInterface
     {
         return $this->router;
     }
 
-    final public function setRouter($router = null)
+    final public function setRouter(RouterInterface $router = null)
     {
         $this->router = $router;
     }

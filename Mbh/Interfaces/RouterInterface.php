@@ -8,7 +8,7 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace Mbh;
+namespace Mbh\Interfaces;
 
 /**
  * created by Federico Ramón Gasquez
@@ -126,6 +126,6 @@ interface RouterInterface
    * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
    * @return bool whether the route matched the current request
    */
-  private function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null);
+  public function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null);
 
 }
