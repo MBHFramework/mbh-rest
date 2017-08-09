@@ -3,18 +3,17 @@
 /**
  * MBHFramework
  *
- * @link    https://github.com/MBHFramework/mbh-framework
+ * @link      https://github.com/MBHFramework/mbh-framework
  * @copyright Copyright (c) 2017 Ulises Jeremias Cornejo Fandos
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace Mbh;
-
+ namespace Mbh\Settings;
 
 /**
- * created by Federico Ramón Gasquez
+ * created by Ulises Jeremias Cornejo Fandos
  */
-final class Route
+final class Config
 {
     
 }

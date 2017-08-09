@@ -10,6 +10,7 @@
 
 namespace Mbh;
 
+use PDOStatement;
 use Mbh\Connection;
 
 /**
@@ -18,15 +19,17 @@ use Mbh\Connection;
 class Model
 {
     protected $db;
+    protected $id;
+
     protected $table;
 
-    public function __construct()
+    protected function __construct()
     {
-        $this->db = new Connection();
+        $this->db = Connection::start();
         $this->$table = [];
     }
 
-    public function __destruct()
+    protected function __destruct()
     {
         $this->db = null;
     }

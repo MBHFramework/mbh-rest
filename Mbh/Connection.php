@@ -19,6 +19,7 @@ use PDOStatement;
  */
 final class Connection extends PDO
 {
+    private static $id;
     private static $instance;
 
 
@@ -78,39 +79,53 @@ final class Connection extends PDO
                 );charset=utf8',
                     ['user'],
                     ['pass'],
-                array(PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC)
-                );
+                [
+                  PDO::ATTR_EMULATE_PREPARES => false,
+                  PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                ]);
               break;
               case 'postgresql':
-                parent::__construct('pgsql:host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8', DATABASE['user'], DATABASE['pass'], array(
-                PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+                parent::__construct('pgsql:host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8', DATABASE['user'], DATABASE['pass'], [
+                  PDO::ATTR_EMULATE_PREPARES => false,
+                  PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                ]);
               break;
               case 'mysql':
-                parent::__construct('mysql:host='.DATABASE['host'].';dbname='.$DATABASE, DATABASE['user'], DATABASE['pass'], array(
-                PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+                parent::__construct('mysql:host='.DATABASE['host'].';dbname='.$DATABASE, DATABASE['user'], DATABASE['pass'], [
+                  PDO::ATTR_EMULATE_PREPARES => false,
+                  PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                  PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+                ]);
               break;
               default:
                 if (IS_API) {
-                    die(json_encode(array('success' => 0, 'message' => 'Motor de conexión no identificado.')));
+                    die(json_encode([
+                      'success' => 0,
+                      'message' => 'Unidentified connection engine.'
+                    ]));
                 } else {
-                    die('Motor de conexión no identificado.');
+                    die('Unidentified connection engine.');
                 }
               break;
             }
         } catch (PDOException $e) {
             if (IS_API) {
-                die(json_encode(array('success' => 0, 'message' => 'Error intentando conectar con la base de datos.')));
+                die(json_encode([
+                  'success' => 0,
+                  'message' => 'Error attempting to connect to database.'
+                ]));
             } else {
-                die('Error intentando conectar con la base de datos.');
+                die('Error attempting to connect to database.');
             }
         } finally {
             unset($DATABASE, $MOTOR);
         }
+    }
+
+    final public function lastInsertId()
+    {
+        return parent::lastInsertId() ?? $this->id;
     }
 
 
@@ -121,7 +136,7 @@ final class Connection extends PDO
       *
       * @return associative array
       */
-    final public function fetch_array(PDOStatement $query) : array
+    final public function fetchArray(PDOStatement $query) : array
     {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -226,6 +241,8 @@ final class Connection extends PDO
         $query[strlen($query) - 1] = ')';
         $values[strlen($values) - 1] = ')';
         $query .= ' VALUES (' . $values . ';';
+
+        self::$id = parent::lastInsertId($table);
 
         return $this->query($query);
     }

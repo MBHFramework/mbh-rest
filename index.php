@@ -1,17 +1,26 @@
 <?php
 
-require 'vendor/autoload.php';
-require 'Mbh/Settings/config.php';
-require 'Mbh/App.php';
+require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/Mbh/Settings/config.php';
+require __DIR__ . '/Mbh/App.php';
 
 use \Mbh\App;
+use \Mbh\Router;
 
 App::registerAutoload();
 
 $app = new App();
 
+$router = new Router(__ROOT__);
+
 /**
   * Specific routes should be defined here
   */
+
+
+$router->get('/:controller', function($controller) {
+    echo $controller
+});
+
 
 $app->run();
