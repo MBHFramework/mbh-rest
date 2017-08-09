@@ -13,6 +13,7 @@ namespace Mbh;
 use Exception;
 use \Mbh\Debug;
 use \Mbh\Firewall;
+use \Mbh\Router;
 use \Mbh\Storage\Session;
 
 /**
@@ -20,6 +21,10 @@ use \Mbh\Storage\Session;
  */
 final class App
 {
+    private $router;
+    private $startime;
+    private $storage;
+
     final public static function autoload($class)
     {
         $prefix = 'Mbh\\';
@@ -54,8 +59,20 @@ final class App
 
         !FIREWALL ?: new Firewall;
 
-        $this->storage['session'] = new Session();
         $this->startime = !DEBUG ?: Debug::startime();
+        $this->storage['session'] = new Session();
+
+        $this->setRouter(new Router());
+    }
+
+    final public function getRouter()
+    {
+        return $this->router;
+    }
+
+    final public function setRouter($router = null)
+    {
+        $this->router = $router;
     }
 
     final public function run()

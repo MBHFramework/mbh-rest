@@ -10,18 +10,18 @@
 
 namespace Mbh;
 
+use InvalidArgumentException;
 use \Mbh\Helpers\Path;
 use \Mbh\Helpers\Uri;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
- /** Router for PHP. Simple, lightweight and convenient. */
- /** Router for PHP. Simple, lightweight and convenient. */
 final class Router
 {
+    /** Router for PHP. Simple, lightweight and convenient. */
 
-  /** Regular expression used to find named parameters in routes */
+    /** Regular expression used to find named parameters in routes */
     const REGEX_PATH_PARAMS = '/(?<=\/):([^\/]+)(?=\/|$)/';
     /** Regular expression used to match a single segment of a path */
     const REGEX_PATH_SEGMENT = '([^\/]+)';
@@ -40,7 +40,7 @@ final class Router
      *
      * @param string $rootPath the base path to use for routing (optional)
      */
-    public function __construct($rootPath = '')
+    public function __construct($rootPath = __ROOT__)
     {
         $this->rootPath = (string) (new Path($rootPath))->normalize()->removeTrailingSlashes();
         $this->route = urldecode((string) (new Uri($_SERVER['REQUEST_URI']))->removeQuery());
@@ -271,7 +271,7 @@ final class Router
                     }
                     // if the callback is invalid
                     else {
-                        throw new \InvalidArgumentException('Invalid callback for methods `'.implode('|', $expectedRequestMethods).'` at route `'.$expectedRoute.'`');
+                        throw new InvalidArgumentException('Invalid callback for methods `'.implode('|', $expectedRequestMethods).'` at route `'.$expectedRoute.'`');
                     }
                 }
 

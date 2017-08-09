@@ -11,16 +11,18 @@ App::registerAutoload();
 
 $app = new App();
 
-$router = new Router(__ROOT__);
+$router = new Router();
 
 /**
   * Specific routes should be defined here
   */
 
-
-$router->get('/:controller', function($controller) {
-    echo $controller
+$router->get('/', function() {
+    echo "Router is working!";
 });
 
+$router->get('/:controller', function($controller) {
+    echo $controller;
+});
 
 $app->run();
