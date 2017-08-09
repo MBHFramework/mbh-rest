@@ -11,8 +11,8 @@
 namespace Mbh;
 
 use \Mbh\Route;
-use \Mbh\Path as Path;
-use \Mbh\Uri as Uri;
+use \Mbh\Path;
+use \Mbh\Uri;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -23,7 +23,7 @@ final class Router
     private $requestUri;
     private $routes;
     const GET_PARAMS_DELIMITER = '?';
-    
+
     /**
       * @param string $requestUri
       *
@@ -80,7 +80,7 @@ final class Router
             echo $response;
         } elseif (is_array($response)) {
             echo json_encode($response);
-        } elseif ($response instanceof Response) {
+        } elseif ($response instanceof \Response) {
             $response->execute();
         } else {
             header("HTTP/1.0 404 Not Found");
