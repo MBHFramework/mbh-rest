@@ -209,7 +209,7 @@ final class Router implements RouterInterface
     		{
     			   echo json_encode($response);
     		}
-    		else if ($response instanceof Response)
+    		else if ($response instanceof \Response)
     		{
     			   $response->execute();
     		}
