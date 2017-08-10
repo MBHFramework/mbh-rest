@@ -10,14 +10,28 @@
 
 namespace Mbh;
 
+use Mbh\App;
+use Mbh\Storage\Session;
+
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
 class Controller
 {
+    protected $template;
+    protected $sessions = null;
+    protected $app;
+    private static $instance;
 
-  function __construct()
-  {
-    # code...
-  }
+    public static function getInstance() {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    public function __construct(App $app = null, bool $LOGED = false, bool $UNLOGED = false)
+    {
+        
+    }
 }

@@ -18,9 +18,7 @@ $app->any('/', function() {
     return "Router is working!";
 });
 
-$app->any('/:controller', function($controller) {
-    $controller = ucwords($controller) . "Controller";
-    return new $controller;
-});
+$app->any('/:controller', "Mbh\\Controller::getInstance");
+
 
 $app->run();
