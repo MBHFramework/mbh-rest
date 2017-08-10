@@ -12,11 +12,11 @@ App::registerAutoload();
 
 $app = new App();
 
-$app->any('/api/', function() {
+$app->any('/api', function() {
     return "MBHFramework working!";
 });
 
-$app->any('/api/teapot/', function() {
+$app->any('/api/teapot', function() {
     return [
       "header" => "HTTP/1.1 418",
       "message" => "I'm a teapot!"
