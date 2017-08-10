@@ -10,7 +10,6 @@
 
 namespace Mbh;
 
-use PDOStatement;
 use Mbh\Connection;
 
 /**
