@@ -5,7 +5,6 @@ require __DIR__ . '/Mbh/Settings/config.php';
 require __DIR__ . '/Mbh/App.php';
 
 use \Mbh\App;
-use \Mbh\Router;
 
 App::registerAutoload();
 
