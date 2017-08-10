@@ -105,6 +105,11 @@ class Route implements RouteInterface
         return $this->rootPath;
     }
 
+    public function setRootPath(string $path)
+    {
+        $this->rootPath = $path;
+    }
+
     /**
      * Returns the route of the current request
      *
@@ -115,6 +120,11 @@ class Route implements RouteInterface
         return $this->route;
     }
 
+    public function setRoute(string $route)
+    {
+        $this->route = $route;
+    }
+
     /**
      * Returns the request method of the current request
      *
@@ -123,6 +133,11 @@ class Route implements RouteInterface
     public function getRequestMethod()
     {
         return $this->requestMethod;
+    }
+
+    public function setRequestMethod(string $method)
+    {
+        $this->requestMethod = $method;
     }
 
     /**

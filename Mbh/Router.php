@@ -23,7 +23,7 @@ final class Router implements RouterInterface
 {
     /** Router for PHP. Simple, lightweight and convenient. */
 
-    private $routes;
+    private $routes = [];
 
     public function __construct()
     {
@@ -38,6 +38,36 @@ final class Router implements RouterInterface
     public function getRoutes()
     {
         return $this->routes;
+    }
+
+    /**
+     * Returns the root path that this instance is working under
+     *
+     * @return string the path
+     */
+    public function getRootPath()
+    {
+        return $this->rootPath;
+    }
+
+    /**
+     * Returns the route of the current request
+     *
+     * @return string the route
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * Returns the request method of the current request
+     *
+     * @return string the method name
+     */
+    public function getRequestMethod()
+    {
+        return $this->requestMethod;
     }
 
     /**
