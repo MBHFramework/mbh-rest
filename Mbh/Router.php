@@ -44,7 +44,7 @@ final class Router implements RouterInterface
     {
         $this->rootPath = (string) (new Path($rootPath))->normalize()->removeTrailingSlashes();
         $this->route = urldecode((string) (new Uri($_SERVER['REQUEST_URI']))->removeQuery());
-        $this->requestMethod = strtolower($_SERVER['REQUEST_METHOD']);
+        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
 
         $this->methods = [
           'GET',
@@ -262,7 +262,8 @@ final class Router implements RouterInterface
      */
     public function map(array $methods, $pattern, $callback = null, $inject = null)
     {
-        $methods = array_map('strtolower', $methods);
+        // According to RFC methods are defined in uppercase (See RFC 7231)
+        $methods = array_map("strtoupper", $methods);
 
         if (in_array($this->requestMethod, $methods, true)) {
             $matches = $this->matchRoute($pattern);
