@@ -22,4 +22,8 @@ $app->map(['GET', 'POST'], '/:controller', function($controller) {
     echo $controller;
 });
 
+$app->get('/users/:username', function($username) {
+    echo "Hello " . ucwords($username) . "!";
+});
+
 $app->run();
