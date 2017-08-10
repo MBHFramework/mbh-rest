@@ -15,15 +15,15 @@ $app = new App();
   */
 
 $app->any('/', function() {
-    echo "Router is working!";
+    return "Router is working!";
 });
 
 $app->map(['GET', 'POST'], '/:controller', function($controller) {
-    echo $controller;
+    return $controller;
 });
 
 $app->get('/users/:username', function($username) {
-    echo "Hello " . ucwords($username) . "!";
+    return "Hello " . ucwords($username) . "!";
 });
 
 $app->run();

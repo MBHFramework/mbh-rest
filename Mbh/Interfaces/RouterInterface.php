@@ -120,12 +120,13 @@ interface RouterInterface
   /**
    * Checks the specified request method and route against the current request to see whether it matches
    *
-   * @param string[] $expectedRequestMethods the request methods, one of which must be detected in order to have a match
-   * @param string $expectedRoute the route that must be found in order to have a match
+   * @param string[] $methods the request methods, one of which must be detected in order to have a match
+   * @param string $pattern the route that must be found in order to have a match
    * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
    * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
    * @return bool whether the route matched the current request
    */
-  public function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $inject = null);
+  public function map(array $methods, $pattern, $callback = null, $inject = null);
 
+  public function run();
 }

@@ -77,61 +77,62 @@ final class App
 
     final public function get()
     {
-        return $this->getRouter()->get(...func_get_args());
+        $this->getRouter()->get(...func_get_args());
     }
 
     final public function post()
     {
-        return $this->getRouter()->post(...func_get_args());
+        $this->getRouter()->post(...func_get_args());
     }
 
     final public function put()
     {
-        return $this->getRouter()->put(...func_get_args());
+        $this->getRouter()->put(...func_get_args());
     }
 
     final public function patch()
     {
-        return $this->getRouter()->patch(...func_get_args());
+        $this->getRouter()->patch(...func_get_args());
     }
 
     final public function delete()
     {
-        return $this->getRouter()->delete(...func_get_args());
+        $this->getRouter()->delete(...func_get_args());
     }
 
     final public function head()
     {
-        return $this->getRouter()->head(...func_get_args());
+        $this->getRouter()->head(...func_get_args());
     }
 
     final public function trace()
     {
-        return $this->getRouter()->trace(...func_get_args());
+        $this->getRouter()->trace(...func_get_args());
     }
 
     final public function options()
     {
-        return $this->getRouter()->options();
+        $this->getRouter()->options();
     }
 
     final public function connect()
     {
-        return $this->getRouter()->connect(...func_get_args());
+        $this->getRouter()->connect(...func_get_args());
     }
 
     final public function any()
     {
-        return $this->getRouter()->any(...func_get_args());
+        $this->getRouter()->any(...func_get_args());
     }
 
     final public function map()
     {
-        return $this->getRouter()->map(...func_get_args());
+        $this->getRouter()->map(...func_get_args());
     }
 
     final public function run()
     {
+        $this->getRouter()->run();
         $this->debug = !DEBUG ?: new Debug($this->startime);
     }
 }
