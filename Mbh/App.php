@@ -27,7 +27,7 @@ final class App
 
     final public static function autoload($class)
     {
-        $prefix = 'Mbh\\';
+        $prefix = __NAMESPACE__ . '\\';
       	$length = strlen($prefix) - 1;
         $base_directory = __DIR__;
 
