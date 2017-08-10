@@ -11,7 +11,7 @@ App::registerAutoload();
 $app = new App();
 
 $app->any('/', function() {
-    return "Router is working!";
+    return "MBHFramework working!";
 });
 
 $app->run();

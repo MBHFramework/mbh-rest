@@ -64,7 +64,7 @@ define('SESSION', [
 define('FIREWALL', true);
 
 # DEBUG mode
-define('DEBUG', true);
+define('DEBUG', false);
 
 # Check which is the current template engine (TWIG: true or PLATESPHP: false)
 define('TWIG_TEMPLATE_ENGINE', false);
