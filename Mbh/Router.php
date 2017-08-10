@@ -47,15 +47,15 @@ final class Router implements RouterInterface
         $this->requestMethod = strtolower($_SERVER['REQUEST_METHOD']);
 
         $this->methods = [
-          'get',
-          'post',
-          'put',
-          'patch',
-          'delete',
-          'head',
-          'trace',
-          'options',
-          'connect'
+          'GET',
+          'POST',
+          'PUT',
+          'PATCH',
+          'DELETE',
+          'HEAD',
+          'TRACE',
+          'OPTIONS',
+          'CONNECT'
         ];
     }
 
@@ -64,130 +64,130 @@ final class Router implements RouterInterface
      *
      * @param string $route the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function get($route, $callback = null, $injectArgs = null)
+    public function get($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'get' ], $route, $callback, $injectArgs);
+        return $this->map([ 'GET' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for the HTTP request method `POST` and executes the specified callback if the route matches
      *
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function post($route, $callback = null, $injectArgs = null)
+    public function post($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'post' ], $route, $callback, $injectArgs);
+        return $this->map([ 'POST' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for the HTTP request method `PUT` and executes the specified callback if the route matches
      *
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function put($route, $callback = null, $injectArgs = null)
+    public function put($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'put' ], $route, $callback, $injectArgs);
+        return $this->map([ 'PUT' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for the HTTP request method `PATCH` and executes the specified callback if the route matches
      *
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function patch($route, $callback = null, $injectArgs = null)
+    public function patch($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'patch' ], $route, $callback, $injectArgs);
+        return $this->map([ 'PATCH' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for the HTTP request method `DELETE` and executes the specified callback if the route matches
      *
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function delete($route, $callback = null, $injectArgs = null)
+    public function delete($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'delete' ], $route, $callback, $injectArgs);
+        return $this->map([ 'DELETE' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for the HTTP request method `HEAD` and executes the specified callback if the route matches
      *
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function head($route, $callback = null, $injectArgs = null)
+    public function head($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'head' ], $route, $callback, $injectArgs);
+        return $this->map([ 'HEAD' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for the HTTP request method `TRACE` and executes the specified callback if the route matches
      *
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function trace($route, $callback = null, $injectArgs = null)
+    public function trace($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'trace' ], $route, $callback, $injectArgs);
+        return $this->map([ 'TRACE' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for the HTTP request method `OPTIONS` and executes the specified callback if the route matches
      *
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function options($route, $callback = null, $injectArgs = null)
+    public function options($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'options' ], $route, $callback, $injectArgs);
+        return $this->map([ 'OPTIONS' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for the HTTP request method `CONNECT` and executes the specified callback if the route matches
      *
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function connect($route, $callback = null, $injectArgs = null)
+    public function connect($pattern, $callback = null, $inject = null)
     {
-        return $this->map([ 'connect' ], $route, $callback, $injectArgs);
+        return $this->map([ 'CONNECT' ], $pattern, $callback, $inject);
     }
 
     /**
      * Adds a new route for all of the specified HTTP request methods and executes the specified callback if the route matches
      *
      * @param string[] $requestMethods the request methods, one of which to match
-     * @param string $route the route to match, e.g. `/users/jane`
+     * @param string $pattern the route to match, e.g. `/users/jane`
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function any($route, $callback = null, $injectArgs = null)
+    public function any($pattern, $callback = null, $inject = null)
     {
-        return $this->map($this->methods, $route, $callback, $injectArgs);
+        return $this->map($this->methods, $pattern, $callback, $inject);
     }
 
     /**
@@ -223,18 +223,18 @@ final class Router implements RouterInterface
     /**
      * Attempts to match the route of the current request against the specified route
      *
-     * @param string $expectedRoute the route to match against
+     * @param string $pattern the route to match against
      * @return array|null the list of matched parameters or `null` if the route didn't match
      */
-    private function matchRoute($expectedRoute)
+    private function matchRoute($pattern)
     {
         $params = [];
 
         // create the regex that matches paths against the route
-        $expectedRouteRegex = $this->createRouteRegex($expectedRoute, $params);
+        $patternRegex = $this->createRouteRegex($pattern, $params);
 
         // if the route regex matches the current request path
-        if (preg_match($expectedRouteRegex, $this->route, $matches)) {
+        if (preg_match($patternRegex, $this->route, $matches)) {
             if (count($matches) > 1) {
                 // remove the first match (which is the full route match)
                 array_shift($matches);
@@ -254,36 +254,36 @@ final class Router implements RouterInterface
     /**
      * Checks the specified request method and route against the current request to see whether it matches
      *
-     * @param string[] $expectedRequestMethods the request methods, one of which must be detected in order to have a match
-     * @param string $expectedRoute the route that must be found in order to have a match
+     * @param string[] $methods the request methods, one of which must be detected in order to have a match
+     * @param string $pattern the route that must be found in order to have a match
      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null)
+    public function map(array $methods, $pattern, $callback = null, $inject = null)
     {
-        $expectedRequestMethods = array_map('strtolower', $expectedRequestMethods);
+        $methods = array_map('strtolower', $methods);
 
-        if (in_array($this->requestMethod, $expectedRequestMethods, true)) {
-            $matchedArgs = $this->matchRoute($expectedRoute);
+        if (in_array($this->requestMethod, $methods, true)) {
+            $matches = $this->matchRoute($pattern);
 
             // if the route matches the current request
-            if ($matchedArgs !== null) {
+            if ($matches !== null) {
                 // if a callback has been set
                 if (isset($callback)) {
                     // if the callback can be executed
                     if (is_callable($callback)) {
                         // use an empty array as the default value for the arguments to be injected
-                        if ($injectArgs === null) {
-                            $injectArgs = [];
+                        if ($inject === null) {
+                            $inject = [];
                         }
 
                         // execute the callback
-                        $callback(...$injectArgs, ...array_values($matchedArgs));
+                        $callback(...$inject, ...array_values($matches));
                     }
                     // if the callback is invalid
                     else {
-                        throw new \InvalidArgumentException('Invalid callback for methods `'.implode('|', $expectedRequestMethods).'` at route `'.$expectedRoute.'`');
+                        throw new \InvalidArgumentException('Invalid callback for methods `' . implode('|', $methods) . '` at route `' . $pattern . '`');
                     }
                 }
 
@@ -299,17 +299,17 @@ final class Router implements RouterInterface
     /**
      * Creates a regular expression that can be used to match the specified route
      *
-     * @param string $expectedRoute the route to create a regular expression for
+     * @param string $pattern the route to create a regular expression for
      * @param array $params the array that should receive the matched parameters
      * @return string the composed regular expression
      */
-    private function createRouteRegex($expectedRoute, &$params)
+    private function createRouteRegex($pattern, &$params)
     {
         // extract the parameters from the route (if any) and make the route a regex
-        self::processUriParams($expectedRoute, $params);
+        self::processUriParams($pattern, $params);
 
         // escape the base path for regex and prepend it to the route
-        return static::REGEX_DELIMITER . '^' . static::regexEscape($this->rootPath) . $expectedRoute . '$' . static::REGEX_DELIMITER;
+        return static::REGEX_DELIMITER . '^' . static::regexEscape($this->rootPath) . $pattern . '$' . static::REGEX_DELIMITER;
     }
 
     /**
