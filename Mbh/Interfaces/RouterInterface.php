@@ -115,7 +115,7 @@ interface RouterInterface
    * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
    * @return bool whether the route matched the current request
    */
-  public function any(array $requestMethods, $route, $callback = null, $injectArgs = null);
+  public function any($route, $callback = null, $injectArgs = null);
 
   /**
    * Checks the specified request method and route against the current request to see whether it matches

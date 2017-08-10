@@ -11,17 +11,15 @@ App::registerAutoload();
 
 $app = new App();
 
-$router = new Router();
-
 /**
   * Specific routes should be defined here
   */
 
-$router->get('/', function() {
+$app->any('/', function() {
     echo "Router is working!";
 });
 
-$router->get('/:controller', function($controller) {
+$app->map(['GET', 'POST'], '/:controller', function($controller) {
     echo $controller;
 });
 

@@ -45,6 +45,18 @@ final class Router implements RouterInterface
         $this->rootPath = (string) (new Path($rootPath))->normalize()->removeTrailingSlashes();
         $this->route = urldecode((string) (new Uri($_SERVER['REQUEST_URI']))->removeQuery());
         $this->requestMethod = strtolower($_SERVER['REQUEST_METHOD']);
+
+        $this->methods = [
+          'get',
+          'post',
+          'put',
+          'patch',
+          'delete',
+          'head',
+          'trace',
+          'options',
+          'connect'
+        ];
     }
 
     /**
@@ -173,9 +185,9 @@ final class Router implements RouterInterface
      * @param array|null $injectArgs (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function any(array $requestMethods, $route, $callback = null, $injectArgs = null)
+    public function any($route, $callback = null, $injectArgs = null)
     {
-        return $this->map($requestMethods, $route, $callback, $injectArgs);
+        return $this->map($this->methods, $route, $callback, $injectArgs);
     }
 
     /**

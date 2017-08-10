@@ -75,6 +75,61 @@ final class App
         $this->router = $router;
     }
 
+    final public function get($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->get($route, $callback, $injectArgs);
+    }
+
+    final public function post($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->post($route, $callback, $injectArgs);
+    }
+
+    final public function put($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->put($route, $callback, $injectArgs);
+    }
+
+    final public function patch($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->patch($route, $callback, $injectArgs);
+    }
+
+    final public function delete($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->delete($route, $callback, $injectArgs);
+    }
+
+    final public function head($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->head($route, $callback, $injectArgs);
+    }
+
+    final public function trace($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->trace($route, $callback, $injectArgs);
+    }
+
+    final public function options($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->options($route, $callback = null, $injectArgs = null);
+    }
+
+    final public function connect($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->connect($route, $callback, $injectArgs);
+    }
+
+    final public function any($route, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->any($route, $callback, $injectArgs);
+    }
+
+    final public function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null)
+    {
+        return $this->getRouter()->map($expectedRequestMethods, $expectedRoute, $callback, $injectArgs);
+    }
+
     final public function run()
     {
         $this->debug = !DEBUG ?: new Debug($this->startime);
