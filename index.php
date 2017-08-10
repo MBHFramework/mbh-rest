@@ -18,12 +18,4 @@ $app->any('/', function() {
     return "Router is working!";
 });
 
-$app->map(['GET', 'POST'], '/:controller', function($controller) {
-    return [ "key" => $controller ];
-});
-
-$app->get('/users/:username', function($username) {
-    return "Hello " . ucwords($username) . "!";
-});
-
 $app->run();
