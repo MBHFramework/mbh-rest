@@ -190,7 +190,7 @@ class Route implements RouteInterface
 
                 $callable = $this->getCallable();
                 $matches = $this->matchRoute($this->pattern);
-                
+
                 // execute the callback
                 return $callable(...$this->inject, ...array_values($matches));
             }

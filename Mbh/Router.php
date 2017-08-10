@@ -10,6 +10,8 @@
 
 namespace Mbh;
 
+use \Mbh\Route;
+use \Mbh\RouteCollection;
 use \Mbh\Helpers\Path;
 use \Mbh\Helpers\Uri;
 use \Mbh\Interfaces\RouterInterface;
@@ -21,9 +23,21 @@ final class Router implements RouterInterface
 {
     /** Router for PHP. Simple, lightweight and convenient. */
 
+    private $routes;
+
     public function __construct()
     {
-        $this->routes = [];
+        $this->setRoutes(new RouteCollection());
+    }
+
+    public function setRoutes(RouteCollection $routes)
+    {
+        $this->routes = $routes;
+    }
+
+    public function getRoutes()
+    {
+        return $this->routes;
     }
 
     /**
@@ -183,13 +197,13 @@ final class Router implements RouterInterface
     private function addRoute(array $methods, $pattern, $callback = null, $inject = null)
     {
       $route = new Route($methods, $pattern, $callback, $inject);
-      array_push($this->routes, $route);
+      $this->routes->attachRoute($route);
     }
 
     public function run()
   	{
     		$response = null;
-    		foreach ($this->routes as $route)
+    		foreach ($this->routes->all() as $route)
     		{
       			if ($route->checkIfMatch()) {
         				$response = $route->execute();
