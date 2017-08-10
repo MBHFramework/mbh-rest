@@ -10,15 +10,8 @@ App::registerAutoload();
 
 $app = new App();
 
-/**
-  * Specific routes should be defined here
-  */
-
 $app->any('/', function() {
     return "Router is working!";
 });
-
-$app->any('/:controller', "Mbh\\Controller::getInstance");
-
 
 $app->run();
