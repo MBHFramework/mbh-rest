@@ -177,8 +177,13 @@ final class Router implements RouterInterface
      */
     public function map(array $methods, $pattern, $callback = null, $inject = null)
     {
-        $route = new Route($methods, $pattern, $callback, $inject);
-        array_push($this->routes, $route);
+        $this->addRoute($methods, $pattern, $callback, $inject);
+    }
+
+    private function addRoute(array $methods, $pattern, $callback = null, $inject = null)
+    {
+      $route = new Route($methods, $pattern, $callback, $inject);
+      array_push($this->routes, $route);
     }
 
     public function run()

@@ -19,7 +19,7 @@ $app->any('/', function() {
 });
 
 $app->map(['GET', 'POST'], '/:controller', function($controller) {
-    return $controller;
+    return [ "key" => $controller ];
 });
 
 $app->get('/users/:username', function($username) {

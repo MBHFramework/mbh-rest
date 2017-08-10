@@ -16,5 +16,7 @@ namespace Mbh\Interfaces;
 
 interface RouteInterface
 {
+    public function checkIfMatch();
 
+    public function execute();
 }
