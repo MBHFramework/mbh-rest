@@ -65,6 +65,27 @@ final class Firewall
       'RANGE_IP_SPAM' => ['24', '186', '189', '190', '200', '201', '202', '209', '212', '213', '217', '222']
     ];
 
+    private function unset_globals()
+    {
+        if(ini_get('register_globals')) {
+            $allow = [
+              '_ENV' => 1,
+              '_GET' => 1,
+              '_POST' => 1,
+              '_COOKIE' => 1,
+              '_FILES' => 1,
+              '_SERVER' => 1,
+              '_REQUEST' => 1,
+              'GLOBALS' => 1
+            ];
+            foreach ($GLOBALS as $i => $val) {
+                if(!isset($allow[$i])) {
+                    unset($GLOBALS[$i]);
+                }
+            }
+        }
+    }
+
     /**
       * Heal global variables by removing PHP and HTML from their content.
       *
@@ -167,293 +188,295 @@ final class Firewall
     }
 
 
-      /**
-        * Send an alert email in case of an attack, WITHOUT using phpmailer
-        *
-        * @param string $subject: Subject
-        * @param string $msg: Message
-        *
-        * @return void
-      */
-      private function pushEmail(string $subject, string $msg)
-      {
-          $headers = "From: MBHFramework Firewall: ". self::FCONF['WEBMASTER_EMAIL'] ." <".self::FCONF['WEBMASTER_EMAIL'].">\r\n"
-      			."Reply-To: ".self::FCONF['WEBMASTER_EMAIL']."\r\n"
-      			."Priority: urgent\r\n"
-      			."Importance: High\r\n"
-      			."Precedence: special-delivery\r\n"
-      			."Organization: MBHFramework\r\n"
-      			."MIME-Version: 1.0\r\n"
-      			."Content-Type: text/plain\r\n"
-      			."Content-Transfer-Encoding: 8bit\r\n"
-      			."X-Priority: 1\r\n"
-      			."X-MSMail-Priority: High\r\n"
-      			."X-Mailer: PHP/" . phpversion() ."\r\n"
-      			."X-Firewall: 1.0 by MBHFramework\r\n"
-      			."Date:" . date("D, d M Y H:s:i") . " +0100\n";
-          if(self::FCONF['WEBMASTER_EMAIL'] != '') {
+    /**
+      * Send an alert email in case of an attack, WITHOUT using phpmailer
+      *
+      * @param string $subject: Subject
+      * @param string $msg: Message
+      *
+      * @return void
+    */
+    private function pushEmail(string $subject, string $msg)
+    {
+        $headers = "From: MBHFramework Firewall: ". self::FCONF['WEBMASTER_EMAIL'] ." <".self::FCONF['WEBMASTER_EMAIL'].">\r\n"
+                  ."Reply-To: ".self::FCONF['WEBMASTER_EMAIL']."\r\n"
+                  ."Priority: urgent\r\n"
+                  ."Importance: High\r\n"
+                  ."Precedence: special-delivery\r\n"
+                  ."Organization: MBHFramework\r\n"
+                  ."MIME-Version: 1.0\r\n"
+                  ."Content-Type: text/plain\r\n"
+                  ."Content-Transfer-Encoding: 8bit\r\n"
+                  ."X-Priority: 1\r\n"
+                  ."X-MSMail-Priority: High\r\n"
+                  ."X-Mailer: PHP/" . phpversion() ."\r\n"
+                  ."X-Firewall: 1.0 by MBHFramework\r\n"
+                  ."Date:" . date("D, d M Y H:s:i") . " +0100\n";
+        if (self::FCONF['WEBMASTER_EMAIL'] != '') {
             mail(self::FCONF['WEBMASTER_EMAIL'], $subject, $msg, $headers);
-          }
-      }
+        }
+    }
 
-      /**
-        * Crea un historial de Log por un ataque actual, además envía un email si está activa la acción
-        *
-        * @param string $type: Type of attack
-        * @param string $ip: Attacker IP
-        * @param string $user_agent: Attacking user agent
-        * @param string $referer: Referer
-        *
-        * @return void
-        */
-      private function logs(string $type, string $ip, string $user_agent, string $referer)
-      {
-          $f = fopen((IS_API ? '../' : './') . self::FCONF['LOG_FILE'] .'.log', 'a');
-          $msg = date('j-m-Y H:i:s') . ' | ' . $type . ' | IP: '. $ip .' ] | DNS: ' . gethostbyaddr($ip) . ' | Agent: ' . $user_agent . PHP_EOL;
-          fwrite($f, $msg);
-          fclose($f);
-          if (self::FCONF['PUSH_MAIL']) {
-            $this->pushEmail('Alert MBHFramework Firewall ' . strip_tags( $_SERVER['SERVER_NAME'] ) , "Firewall logs of " . strip_tags( $_SERVER['SERVER_NAME'] ) . "\n".str_replace('|', "\n", $msg ) );
-          }
-      }
+    /**
+      * Crea un historial de Log por un ataque actual, además envía un email si está activa la acción
+      *
+      * @param string $type: Type of attack
+      * @param string $ip: Attacker IP
+      * @param string $user_agent: Attacking user agent
+      * @param string $referer: Referer
+      *
+      * @return void
+      */
+    private function logs(string $type, string $ip, string $user_agent, string $referer)
+    {
+        $f = fopen((IS_API ? '../' : './') . self::FCONF['LOG_FILE'] .'.log', 'a');
+        $msg = date('j-m-Y H:i:s') . ' | ' . $type . ' | IP: '. $ip .' ] | DNS: ' . gethostbyaddr($ip) . ' | Agent: ' . $user_agent . PHP_EOL;
+        fwrite($f, $msg);
+        fclose($f);
+        if (self::FCONF['PUSH_MAIL']) {
+            $this->pushEmail('Alert MBHFramework Firewall ' . strip_tags($_SERVER['SERVER_NAME']), "Firewall logs of " . strip_tags($_SERVER['SERVER_NAME']) . "\n".str_replace('|', "\n", $msg));
+        }
+    }
 
 
-      const MSG_PROTECTION_OVH = 'Protection OVH Server active, this IP range is not allowed.';
-      const MSG_PROTECTION_KIMSUFI = 'Protection KIMSUFI Server active, this IP range is not allowed.';
-      const MSG_PROTECTION_DEDIBOX = 'Protection DEDIBOX Server active, this IP range is not allowed.';
-      const MSG_PROTECTION_DEDIBOX_IP = 'Protection DEDIBOX Server active, this IP is not allowed.';
-      const MSG_PROTECTION_DIGICUBE = 'Protection DIGICUBE Server active, this IP range is not allowed.';
-      const MSG_PROTECTION_DIGICUBE_IP = 'Protection DIGICUBE Server active, this IP is not allowed.';
-      const MSG_PROTECTION_BOTS = 'Bot attack detected.';
-      const MSG_PROTECTION_CLICK = 'Click attack detected.';
-      const MSG_PROTECTION_DOS = 'Invalid user agent.';
-      const MSG_PROTECTION_OTHER_SERVER = 'Posting from another server not allowed.';
-      const MSG_PROTECTION_REQUEST = 'Invalid request method check.';
-      const MSG_PROTECTION_SPAM = 'Protection SPAM IPs active, this IP range is not allowed.';
-      const MSG_PROTECTION_SPAM_IP = 'Protection died IPs active, this IP range is not allowed.';
-      const MSG_PROTECTION_UNION = 'Union attack detected.';
-      const MSG_PROTECTION_URL = 'Protection url active, string not allowed.';
-      const MSG_PROTECTION_XSS = 'XSS attack detected.';
+    const MSG_PROTECTION_OVH = 'Protection OVH Server active, this IP range is not allowed.';
+    const MSG_PROTECTION_KIMSUFI = 'Protection KIMSUFI Server active, this IP range is not allowed.';
+    const MSG_PROTECTION_DEDIBOX = 'Protection DEDIBOX Server active, this IP range is not allowed.';
+    const MSG_PROTECTION_DEDIBOX_IP = 'Protection DEDIBOX Server active, this IP is not allowed.';
+    const MSG_PROTECTION_DIGICUBE = 'Protection DIGICUBE Server active, this IP range is not allowed.';
+    const MSG_PROTECTION_DIGICUBE_IP = 'Protection DIGICUBE Server active, this IP is not allowed.';
+    const MSG_PROTECTION_BOTS = 'Bot attack detected.';
+    const MSG_PROTECTION_CLICK = 'Click attack detected.';
+    const MSG_PROTECTION_DOS = 'Invalid user agent.';
+    const MSG_PROTECTION_OTHER_SERVER = 'Posting from another server not allowed.';
+    const MSG_PROTECTION_REQUEST = 'Invalid request method check.';
+    const MSG_PROTECTION_SPAM = 'Protection SPAM IPs active, this IP range is not allowed.';
+    const MSG_PROTECTION_SPAM_IP = 'Protection died IPs active, this IP range is not allowed.';
+    const MSG_PROTECTION_UNION = 'Union attack detected.';
+    const MSG_PROTECTION_URL = 'Protection url active, string not allowed.';
+    const MSG_PROTECTION_XSS = 'XSS attack detected.';
 
-      const CT_RULES = [
-        'applet', 'base', 'bgsound', 'blink', 'embed', 'expression',
-        'frame', 'javascript', 'layer', 'link', 'meta', 'object', 'onabort', 'onactivate',
-        'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut',
-        'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint',
-        'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange',
-        'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect',
-        'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete',
-        'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave',
-        'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate',
-        'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout',
-        'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete',
-        'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave',
-        'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup',
-        'onmousewheel', 'onmove', 'onmoveend', 'onmovestart',
-        'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset',
-        'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit',
-        'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange',
-        'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload',
-        'script', 'style', 'title', 'vbscript', 'xml'
-      ];
+    const CT_RULES = [
+      'applet', 'base', 'bgsound', 'blink', 'embed', 'expression',
+      'frame', 'javascript', 'layer', 'link', 'meta', 'object', 'onabort', 'onactivate',
+      'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut',
+      'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint',
+      'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange',
+      'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect',
+      'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete',
+      'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave',
+      'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate',
+      'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout',
+      'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete',
+      'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave',
+      'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup',
+      'onmousewheel', 'onmove', 'onmoveend', 'onmovestart',
+      'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset',
+      'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit',
+      'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange',
+      'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload',
+      'script', 'style', 'title', 'vbscript', 'xml'
+    ];
 
-      public function __construct()
-      {
-          $GET_QUERY_STRING = strtolower($this->getQueryString());
-          $USER_AGENT = $this->getUserAgent();
-          $GET_IP = $this->getIp();
-          $GET_HOST = $this->getHostByAddr();
-          $GET_REFERER = $this->getReferer();
-          $GET_REQUEST_METHOD = $this->getRequestMethod();
-          $REGEX_UNION = '#\w?\s?union\s\w*?\s?(select|all|distinct|insert|update|drop|delete)#is';
+    public function __construct()
+    {
+        $GET_QUERY_STRING = strtolower($this->getQueryString());
+        $USER_AGENT = $this->getUserAgent();
+        $GET_IP = $this->getIp();
+        $GET_HOST = $this->getHostByAddr();
+        $GET_REFERER = $this->getReferer();
+        $GET_REQUEST_METHOD = $this->getRequestMethod();
+        $REGEX_UNION = '#\w?\s?union\s\w*?\s?(select|all|distinct|insert|update|drop|delete)#is';
 
-          if(self::FCONF['PROTECTION_SERVER_OVH'] and stristr($GET_HOST,'ovh') and !stristr($GET_HOST,'dsl.ovh')) {
-              $this->logs('OVH Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
-              if(IS_API) {
-                  die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
-              }
-              Functions::redirect();
-              return;
-          }
+        if (self::FCONF['PROTECTION_SERVER_OVH'] and stristr($GET_HOST, 'ovh') and !stristr($GET_HOST, 'dsl.ovh')) {
+            $this->logs('OVH Server list', $GET_IP, $USER_AGENT, $GET_REFERER);
+            if (IS_API) {
+                die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
+            }
+            Functions::redirect();
+            return;
+        }
 
-          if(self::FCONF['PROTECTION_SERVER_OVH_BY_IP']) {
-             $ip = explode('.', $GET_IP);
-             if(sizeof($ip) > 1 and in_array($ip[0].'.'.$ip[1],self::IPLIST['SERVER_OVH_BY_IP'])) {
-               $this->logs('OVH Server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
-               }
-               Functions::redirect();
-               return;
-             }
-           }
+        if (self::FCONF['PROTECTION_SERVER_OVH_BY_IP']) {
+            $ip = explode('.', $GET_IP);
+            if (sizeof($ip) > 1 and in_array($ip[0].'.'.$ip[1], self::IPLIST['SERVER_OVH_BY_IP'])) {
+                $this->logs('OVH Server IP', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
+                }
+                Functions::redirect();
+                return;
+            }
+        }
 
-           if(self::FCONF['PROTECTION_SERVER_KIMSUFI'] and stristr($GET_HOST ,'kimsufi')) {
-             $this->logs('KIMSUFI Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
-             if(IS_API) {
-               die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_KIMSUFI)));
-             }
-             Functions::redirect();
-             return;
-           }
+        if (self::FCONF['PROTECTION_SERVER_KIMSUFI'] and stristr($GET_HOST, 'kimsufi')) {
+            $this->logs('KIMSUFI Server list', $GET_IP, $USER_AGENT, $GET_REFERER);
+            if (IS_API) {
+                die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_KIMSUFI)));
+            }
+            Functions::redirect();
+            return;
+        }
 
-           if(self::FCONF['PROTECTION_SERVER_DEDIBOX'] and stristr($GET_HOST ,'dedibox')) {
-             $this->logs('DEDIBOX Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
-             if(IS_API) {
-               die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX)));
-             }
-             Functions::redirect();
-             return;
-           }
+        if (self::FCONF['PROTECTION_SERVER_DEDIBOX'] and stristr($GET_HOST, 'dedibox')) {
+            $this->logs('DEDIBOX Server list', $GET_IP, $USER_AGENT, $GET_REFERER);
+            if (IS_API) {
+                die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX)));
+            }
+            Functions::redirect();
+            return;
+        }
 
-           if(self::FCONF['PROTECTION_SERVER_DEDIBOX_BY_IP']) {
-             $ip = explode('.', $GET_IP);
-             if(sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == self::IPLIST['DEDIBOX_BY_IP']) {
-               $this->logs('DEDIBOX server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX_IP)));
-               }
-               Functions::redirect();
-               return;
-             }
-           }
+        if (self::FCONF['PROTECTION_SERVER_DEDIBOX_BY_IP']) {
+            $ip = explode('.', $GET_IP);
+            if (sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == self::IPLIST['DEDIBOX_BY_IP']) {
+                $this->logs('DEDIBOX server IP', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX_IP)));
+                }
+                Functions::redirect();
+                return;
+            }
+        }
 
-           if(self::FCONF['PROTECTION_SERVER_DIGICUBE'] and stristr($GET_HOST,'digicube')) {
-             $this->logs('DIGICUBE Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
-             if(IS_API) {
-               die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE)));
-             }
-             Functions::redirect();
-             return;
-           }
+        if (self::FCONF['PROTECTION_SERVER_DIGICUBE'] and stristr($GET_HOST, 'digicube')) {
+            $this->logs('DIGICUBE Server list', $GET_IP, $USER_AGENT, $GET_REFERER);
+            if (IS_API) {
+                die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE)));
+            }
+            Functions::redirect();
+            return;
+        }
 
-           if(self::FCONF['PROTECTION_SERVER_DIGICUBE_BY_IP']) {
-             $ip = explode('.',$GET_IP);
-             if (sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == self::IPLIST['DIGICUBE_BY_IP']) {
-               $this->logs('DIGICUBE Server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE_IP)));
-               }
-               Functions::redirect();
-               return;
-             }
-           }
+        if (self::FCONF['PROTECTION_SERVER_DIGICUBE_BY_IP']) {
+            $ip = explode('.', $GET_IP);
+            if (sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == self::IPLIST['DIGICUBE_BY_IP']) {
+                $this->logs('DIGICUBE Server IP', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE_IP)));
+                }
+                Functions::redirect();
+                return;
+            }
+        }
 
-           if(self::FCONF['PROTECTION_RANGE_IP_SPAM']) {
-             $range_ip = explode('.',$GET_IP);
-             if(in_array($range_ip[0],self::IPLIST['RANGE_IP_SPAM'])) {
-               $this->logs('IPs (ip:'.$range_ip[0].') Spam list (Comming)',$GET_IP,$USER_AGENT,$GET_REFERER);
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM)));
-               }
-               die(self::MSG_PROTECTION_SPAM);
-             }
-           }
+        if (self::FCONF['PROTECTION_RANGE_IP_SPAM']) {
+            $range_ip = explode('.', $GET_IP);
+            if (in_array($range_ip[0], self::IPLIST['RANGE_IP_SPAM'])) {
+                $this->logs('IPs (ip:'.$range_ip[0].') Spam list (Comming)', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM)));
+                }
+                die(self::MSG_PROTECTION_SPAM);
+            }
+        }
 
-           if(self::FCONF['PROTECTION_RANGE_IP_DENY']) {
-             $range_ip = explode('.',$GET_IP);
-             if(in_array($range_ip[0],self::IPLIST['RANGE_IP_DENY'])) {
-               $this->logs('IPs (ip:'.$range_ip[0].') Reserved list (Comming)',$GET_IP,$USER_AGENT,$GET_REFERER);
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM_IP)));
-               }
-               die(self::MSG_PROTECTION_SPAM_IP);
-             }
-           }
+        if (self::FCONF['PROTECTION_RANGE_IP_DENY']) {
+            $range_ip = explode('.', $GET_IP);
+            if (in_array($range_ip[0], self::IPLIST['RANGE_IP_DENY'])) {
+                $this->logs('IPs (ip:'.$range_ip[0].') Reserved list (Comming)', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM_IP)));
+                }
+                die(self::MSG_PROTECTION_SPAM_IP);
+            }
+        }
 
-           if (self::FCONF['PROTECTION_COOKIES']) {
-             foreach($_COOKIE as $i => $value) {
-               if( $value != str_replace(self::CT_RULES, '*', $value)) {
-                 if(self::FCONF['PROTECTION_COOKIES_LOGS']) {
-                   $this->logs('Cookie protect',$GET_IP,$USER_AGENT,$GET_REFERER);
-                 }
-                 $_COOKIE[$i] = htmlentities($value);
-               }
-             }
-           }
+        if (self::FCONF['PROTECTION_COOKIES']) {
+            foreach ($_COOKIE as $i => $value) {
+                if ($value != str_replace(self::CT_RULES, '*', $value)) {
+                    if (self::FCONF['PROTECTION_COOKIES_LOGS']) {
+                        $this->logs('Cookie protect', $GET_IP, $USER_AGENT, $GET_REFERER);
+                    }
+                    $_COOKIE[$i] = htmlentities($value);
+                }
+            }
+        }
 
-           if(self::FCONF['PROTECTION_POST'] and $_POST) {
-             foreach($_POST as $value ) {
-               if( $value != str_replace(self::CT_RULES, '*', $value) ) {
-                 if(self::FCONF['PROTECTION_POST_LOGS']) {
-                   $this->logs('POST protect',$GET_IP,$USER_AGENT,$GET_REFERER);
-                 }
-                 unset($value);
-               }
-             }
-           }
+        if (self::FCONF['PROTECTION_POST'] and $_POST) {
+            foreach ($_POST as $value) {
+                if ($value != str_replace(self::CT_RULES, '*', $value)) {
+                    if (self::FCONF['PROTECTION_POST_LOGS']) {
+                        $this->logs('POST protect', $GET_IP, $USER_AGENT, $GET_REFERER);
+                    }
+                    unset($value);
+                }
+            }
+        }
 
-           if(self::FCONF['PROTECTION_GET'] and $_GET) {
-             foreach($_GET as $i => $value ) {
-               if($value != str_replace(self::CT_RULES, '*', $value) ) {
-                 if(self::FCONF['PROTECTION_GET_LOGS']) {
-                   $this->logs('GET protect',$GET_IP,$USER_AGENT,$GET_REFERER);
-                 }
-                 $_GET[$i] = htmlentities($value);
-               }
-             }
-           }
+        if (self::FCONF['PROTECTION_GET'] and $_GET) {
+            foreach ($_GET as $i => $value) {
+                if ($value != str_replace(self::CT_RULES, '*', $value)) {
+                    if (self::FCONF['PROTECTION_GET_LOGS']) {
+                        $this->logs('GET protect', $GET_IP, $USER_AGENT, $GET_REFERER);
+                    }
+                    $_GET[$i] = htmlentities($value);
+                }
+            }
+        }
 
-           if (self::FCONF['PROTECTION_URL']) {
-             $ct_rules = ['absolute_path', 'ad_click', 'alert(', 'alert%20', ' and ', 'basepath', 'bash_history', '.bash_history',
-             'cgi-', 'chmod(', 'chmod%20', '%20chmod', 'chmod=', 'chown%20', 'chgrp%20',
-             'chown(', '/chown', 'chgrp(', 'chr(', 'chr=', 'chr%20', '%20chr', 'chunked',
-             'cookie=', 'cmd', 'cmd=', '%20cmd', 'cmd%20', '.conf', 'configdir', 'config.php',
-             'cp%20', '%20cp', 'cp(', 'diff%20', 'dat?', 'db_mysql.inc', 'document.location',
-             'document.cookie', 'drop%20', 'echr(', '%20echr', 'echr%20', 'echr=',
-             '}else{', '.eml', 'esystem(', 'esystem%20', '.exe',  'exploit', 'file\://',
-             'fopen', 'fwrite', '~ftp', 'ftp:', 'ftp.exe', 'getenv', '%20getenv', 'getenv%20',
-             'getenv(', 'grep%20', '_global', 'global_', 'global[', 'http:', '_globals',
-             'globals_', 'globals[', 'grep(', 'g\+\+', 'halt%20', '.history', '?hl=',
-             '.htpasswd', 'http_', 'http-equiv', 'http/1.', 'http_php', 'http_user_agent',
-             'http_host', '&icq', 'if{', 'if%20{', 'img src', 'img%20src', '.inc.php', '.inc',
-             'insert%20into', 'ISO-8859-1', 'ISO-', 'javascript\://', '.jsp', '.js', 'kill%20',
-             'kill(', 'killall', '%20like', 'like%20', 'locate%20', 'locate(', 'lsof%20', 'mdir%20',
-             '%20mdir', 'mdir(', 'mcd%20', 'motd%20', 'mrd%20', 'rm%20', '%20mcd', '%20mrd',
-             'mcd(', 'mrd(', 'mcd=', 'mod_gzip_status', 'modules/', 'mrd=', 'mv%20', 'nc.exe',
-             'new_password', 'nigga(', '%20nigga', 'nigga%20', '~nobody', 'org.apache',
-             '+outfile+', '%20outfile%20', '*/outfile/*',' outfile ','outfile',
-             'password=', 'passwd%20', '%20passwd', 'passwd(', 'phpadmin',
-             'perl%20', '/perl','p0hh',
-             'ping%20', '.pl', 'powerdown%20', 'rm(', '%20rm', 'rmdir%20',
-             'mv(', 'rmdir(', 'phpinfo()', '<?php', 'reboot%20', '/robot.txt' ,
-             '~root', 'root_path', 'rush=', '%20and%20', '%20xorg%20', '%20rush',
-             'rush%20', 'secure_site, ok', 'select%20', 'select from', 'select%20from',
-             '_server', 'server_', 'server[', 'server-info', 'server-status', 'servlet',
-             'sql=', '<script', '<script>', '</script','script>','/script', 'switch{',
-             'switch%20{', '.system', 'system(', 'telnet%20', 'traceroute%20', '.txt',
-             'union%20', '%20union', 'union(', 'union=', 'vi(', 'vi%20', 'wget', 'wget%20',
-             '%20wget', 'wget(', 'window.open', 'wwwacl', ' xor ', 'xp_enumdsn',
-             'xp_availablemedia', 'xp_filelist', 'xp_cmdshell', '$_request', '$_get',
-             '$request', '$get',  '&aim', '/etc/password','/etc/shadow',
-             '/etc/groups', '/etc/gshadow', '/bin/ps', 'uname\x20-a',
-             '/usr/bin/id', '/bin/echo', '/bin/kill',
-             '/bin/', '/chgrp', '/usr/bin', 'bin/python',
-             'bin/tclsh', 'bin/nasm', '/usr/x11r6/bin/xterm',
-             '/bin/mail', '/etc/passwd', '/home/ftp', '/home/www', '/servlet/con', '?>', '.txt'];
-             $check = str_replace($ct_rules, '*', $GET_QUERY_STRING);
-             if($GET_QUERY_STRING != $check) {
-               $this->logs('URL protect',$GET_IP,$USER_AGENT,$GET_REFERER);
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_URL)));
-               }
-               Functions::redirect();
-               return;
-             }
-           }
+        if (self::FCONF['PROTECTION_URL']) {
+            $ct_rules = [
+              'absolute_path', 'ad_click', 'alert(', 'alert%20', ' and ', 'basepath', 'bash_history', '.bash_history',
+              'cgi-', 'chmod(', 'chmod%20', '%20chmod', 'chmod=', 'chown%20', 'chgrp%20',
+              'chown(', '/chown', 'chgrp(', 'chr(', 'chr=', 'chr%20', '%20chr', 'chunked',
+              'cookie=', 'cmd', 'cmd=', '%20cmd', 'cmd%20', '.conf', 'configdir', 'config.php',
+              'cp%20', '%20cp', 'cp(', 'diff%20', 'dat?', 'db_mysql.inc', 'document.location',
+              'document.cookie', 'drop%20', 'echr(', '%20echr', 'echr%20', 'echr=',
+              '}else{', '.eml', 'esystem(', 'esystem%20', '.exe',  'exploit', 'file\://',
+              'fopen', 'fwrite', '~ftp', 'ftp:', 'ftp.exe', 'getenv', '%20getenv', 'getenv%20',
+              'getenv(', 'grep%20', '_global', 'global_', 'global[', 'http:', '_globals',
+              'globals_', 'globals[', 'grep(', 'g\+\+', 'halt%20', '.history', '?hl=',
+              '.htpasswd', 'http_', 'http-equiv', 'http/1.', 'http_php', 'http_user_agent',
+              'http_host', '&icq', 'if{', 'if%20{', 'img src', 'img%20src', '.inc.php', '.inc',
+              'insert%20into', 'ISO-8859-1', 'ISO-', 'javascript\://', '.jsp', '.js', 'kill%20',
+              'kill(', 'killall', '%20like', 'like%20', 'locate%20', 'locate(', 'lsof%20', 'mdir%20',
+              '%20mdir', 'mdir(', 'mcd%20', 'motd%20', 'mrd%20', 'rm%20', '%20mcd', '%20mrd',
+              'mcd(', 'mrd(', 'mcd=', 'mod_gzip_status', 'modules/', 'mrd=', 'mv%20', 'nc.exe',
+              'new_password', 'nigga(', '%20nigga', 'nigga%20', '~nobody', 'org.apache',
+              '+outfile+', '%20outfile%20', '*/outfile/*',' outfile ','outfile',
+              'password=', 'passwd%20', '%20passwd', 'passwd(', 'phpadmin',
+              'perl%20', '/perl','p0hh',
+              'ping%20', '.pl', 'powerdown%20', 'rm(', '%20rm', 'rmdir%20',
+              'mv(', 'rmdir(', 'phpinfo()', '<?php', 'reboot%20', '/robot.txt' ,
+              '~root', 'root_path', 'rush=', '%20and%20', '%20xorg%20', '%20rush',
+              'rush%20', 'secure_site, ok', 'select%20', 'select from', 'select%20from',
+              '_server', 'server_', 'server[', 'server-info', 'server-status', 'servlet',
+              'sql=', '<script', '<script>', '</script','script>','/script', 'switch{',
+              'switch%20{', '.system', 'system(', 'telnet%20', 'traceroute%20', '.txt',
+              'union%20', '%20union', 'union(', 'union=', 'vi(', 'vi%20', 'wget', 'wget%20',
+              '%20wget', 'wget(', 'window.open', 'wwwacl', ' xor ', 'xp_enumdsn',
+              'xp_availablemedia', 'xp_filelist', 'xp_cmdshell', '$_request', '$_get',
+              '$request', '$get',  '&aim', '/etc/password','/etc/shadow',
+              '/etc/groups', '/etc/gshadow', '/bin/ps', 'uname\x20-a',
+              '/usr/bin/id', '/bin/echo', '/bin/kill',
+              '/bin/', '/chgrp', '/usr/bin', 'bin/python',
+              'bin/tclsh', 'bin/nasm', '/usr/x11r6/bin/xterm',
+              '/bin/mail', '/etc/passwd', '/home/ftp', '/home/www', '/servlet/con', '?>', '.txt'
+            ];
+            $check = str_replace($ct_rules, '*', $GET_QUERY_STRING);
+            if ($GET_QUERY_STRING != $check) {
+                $this->logs('URL protect', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_URL)));
+                }
+                Functions::redirect();
+                return;
+            }
+        }
 
-           if(self::FCONF['PROTECTION_REQUEST_SERVER'] and $GET_REQUEST_METHOD == 'POST'
-           and isset($_SERVER['HTTP_REFERER']) and !stripos( $_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST'], 0 )) {
-             $this->logs('Posting another server',$GET_IP,$USER_AGENT,$GET_REFERER);
-             if(IS_API) {
-               die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OTHER_SERVER)));
-             }
-             Functions::redirect();
-             return;
-           }
+        if (self::FCONF['PROTECTION_REQUEST_SERVER'] and $GET_REQUEST_METHOD == 'POST'
+           and isset($_SERVER['HTTP_REFERER']) and !stripos($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST'], 0)) {
+            $this->logs('Posting another server', $GET_IP, $USER_AGENT, $GET_REFERER);
+            if (IS_API) {
+                die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OTHER_SERVER)));
+            }
+            Functions::redirect();
+            return;
+        }
 
-           if (self::FCONF['PROTECTION_BOTS']) {
-         		$ct_rules = ['@nonymouse', 'addresses.com', 'ideography.co.uk', 'adsarobot', 'ah-ha',
+        if (self::FCONF['PROTECTION_BOTS']) {
+            $ct_rules = ['@nonymouse', 'addresses.com', 'ideography.co.uk', 'adsarobot', 'ah-ha',
              'aktuelles', 'alexibot', 'almaden', 'amzn_assoc', 'anarchie', 'art-online',
              'aspseek', 'assort', 'asterias', 'attach', 'atomz', 'atspider', 'autoemailspider',
              'backweb', 'backdoorbot', 'bandit', 'batchftp', 'bdfetch', 'big.brother',
@@ -500,79 +523,78 @@ final class Firewall
              'whizbang', 'whostalking', 'wonder', 'wumpus', 'wweb', 'www-collector-e', 'wwwoffle', 'wysigot', 'xaldon', 'xenu', 'xget',
              'x-tractor', 'zeus'];
 
-         		if( strtolower($USER_AGENT) != str_replace($ct_rules, '*', strtolower($USER_AGENT))) {
-         			$this->logs('Bots attack',$GET_IP,$USER_AGENT,$GET_REFERER );
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_BOTS)));
-               }
-               Functions::redirect();
-               return;
-         		}
+            if (strtolower($USER_AGENT) != str_replace($ct_rules, '*', strtolower($USER_AGENT))) {
+                $this->logs('Bots attack', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_BOTS)));
+                }
+                Functions::redirect();
+                return;
+            }
+        }
 
-         	}
+        if (self::FCONF['PROTECTION_REQUEST_METHOD'] and !in_array(strtolower($GET_REQUEST_METHOD), ['get','head','post','put','update','delete'])) {
+            $this->logs('Invalid request', $GET_IP, $USER_AGENT, $GET_REFERER);
+            if (IS_API) {
+                die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_REQUEST)));
+            }
+            Functions::redirect();
+            return;
+        }
 
-           if(self::FCONF['PROTECTION_REQUEST_METHOD'] and !in_array(strtolower($GET_REQUEST_METHOD),['get','head','post','put','update','delete'])) {
-             $this->logs('Invalid request',$GET_IP,$USER_AGENT,$GET_REFERER);
-             if(IS_API) {
-               die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_REQUEST)));
-             }
-             Functions::redirect();
-             return;
-           }
+        if (self::FCONF['PROTECTION_DOS'] and ($USER_AGENT == '' or $USER_AGENT == '-')) {
+            $this->logs('Dos attack', $GET_IP, $USER_AGENT, $GET_REFERER);
+            if (IS_API) {
+                die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DOS)));
+            }
+            Functions::redirect();
+            return;
+        }
 
-           if(self::FCONF['PROTECTION_DOS'] and ($USER_AGENT == '' or $USER_AGENT == '-')) {
-             $this->logs('Dos attack',$GET_IP,$USER_AGENT,$GET_REFERER);
-             if(IS_API) {
-               die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DOS)));
-             }
-             Functions::redirect();
-             return;
-           }
-
-           if(self::FCONF['PROTECTION_UNION_SQL']) {
-             $stop = 0;
-             $CT = ['*/from/*', '*/insert/*', '+into+', '%20into%20', '*/into/*', ' into ', 'into', '*/limit/*',
+        if (self::FCONF['PROTECTION_UNION_SQL']) {
+            $stop = 0;
+            $CT = ['*/from/*', '*/insert/*', '+into+', '%20into%20', '*/into/*', ' into ', 'into', '*/limit/*',
              'not123exists*', '*/radminsuper/*', '*/select/*', '+select+', '%20select%20', ' select ',
              '+union+', '%20union%20', '*/union/*', ' union ', '*/update/*', '*/where/*'];
-             $check  = str_replace($CT, '*', $GET_QUERY_STRING );
-             !$GET_QUERY_STRING != $check ?: $stop++;
-             !preg_match($REGEX_UNION, $GET_QUERY_STRING) ?: $stop++;
-             !preg_match('/([OdWo5NIbpuU4V2iJT0n]{5}) /', rawurldecode($GET_QUERY_STRING)) ?: $stop++;
-             !strstr(rawurldecode($GET_QUERY_STRING ) ,'*') ?: $stop++;
-             if($stop > 0) {
-               $this->logs('Union attack',$GET_IP,$USER_AGENT,$GET_REFERER);
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_UNION)));
-               }
-               Functions::redirect();
-               return;
-             }
-           }
+            $check  = str_replace($CT, '*', $GET_QUERY_STRING);
+            !$GET_QUERY_STRING != $check ?: $stop++;
+            !preg_match($REGEX_UNION, $GET_QUERY_STRING) ?: $stop++;
+            !preg_match('/([OdWo5NIbpuU4V2iJT0n]{5}) /', rawurldecode($GET_QUERY_STRING)) ?: $stop++;
+            !strstr(rawurldecode($GET_QUERY_STRING), '*') ?: $stop++;
+            if ($stop > 0) {
+                $this->logs('Union attack', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_UNION)));
+                }
+                Functions::redirect();
+                return;
+            }
+        }
 
-           if (self::FCONF['PROTECTION_CLICK_ATTACK'] and $GET_QUERY_STRING != str_replace(['/*', 'c2nyaxb0', '/*'], '*', $GET_QUERY_STRING)) {
-             $this->logs('Click attack',$GET_IP,$USER_AGENT,$GET_REFERER);
-             if(IS_API) {
-               die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_CLICK)));
-             }
-             Functions::redirect();
-             return;
-         	}
+        if (self::FCONF['PROTECTION_CLICK_ATTACK'] and $GET_QUERY_STRING != str_replace(['/*', 'c2nyaxb0', '/*'], '*', $GET_QUERY_STRING)) {
+            $this->logs('Click attack', $GET_IP, $USER_AGENT, $GET_REFERER);
+            if (IS_API) {
+                die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_CLICK)));
+            }
+            Functions::redirect();
+            return;
+        }
 
-           if (self::FCONF['PROTECTION_XSS_ATTACK']) {
-         		$ct_rules = ['http\:\/\/', 'https\:\/\/', 'cmd=', '&cmd', 'exec', 'concat', './', '../',
+        if (self::FCONF['PROTECTION_XSS_ATTACK']) {
+            $ct_rules = ['http\:\/\/', 'https\:\/\/', 'cmd=', '&cmd', 'exec', 'concat', './', '../',
              'http:', 'h%20ttp:', 'ht%20tp:', 'htt%20p:', 'http%20:', 'https:', 'h%20ttps:',
              'ht%20tps:', 'htt%20ps:', 'http%20s:', 'https%20:', 'ftp:', 'f%20tp:', 'ft%20p:',
              'ftp%20:', 'ftps:', 'f%20tps:', 'ft%20ps:', 'ftp%20s:', 'ftps%20:'];
-         		if($GET_QUERY_STRING != str_replace($ct_rules, '*', $GET_QUERY_STRING )) {
-         			$this->logs('XSS attack',$GET_IP,$USER_AGENT,$GET_REFERER);
-               if(IS_API) {
-                 die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_XSS)));
-               }
-               Functions::redirect();
-               return;
-         		}
-         	}
+            if ($GET_QUERY_STRING != str_replace($ct_rules, '*', $GET_QUERY_STRING)) {
+                $this->logs('XSS attack', $GET_IP, $USER_AGENT, $GET_REFERER);
+                if (IS_API) {
+                    die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_XSS)));
+                }
+                Functions::redirect();
+                return;
+            }
+        }
 
-           !self::FCONF['PROTECTION_UNSET_GLOBALS'] ?: $this->unset_globals();
-      }
+        !self::FCONF['PROTECTION_UNSET_GLOBALS'] ?: $this->unset_globals();
+    }
 }

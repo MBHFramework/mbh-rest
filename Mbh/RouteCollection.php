@@ -28,6 +28,7 @@ class RouteCollection extends \SplObjectStorage
     {
         parent::attach($attachObject, null);
     }
+
     /**
      * Fetch all routes stored on this collection of routes and return it.
      *

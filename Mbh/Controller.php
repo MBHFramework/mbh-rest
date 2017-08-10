@@ -9,3 +9,15 @@
  */
 
 namespace Mbh;
+
+/**
+ * created by Ulises Jeremias Cornejo Fandos
+ */
+class Controller
+{
+
+  function __construct()
+  {
+    # code...
+  }
+}
