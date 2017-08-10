@@ -30,8 +30,8 @@ class Controller
         return self::$instance;
     }
 
-    public function __construct(App $app = null, bool $LOGED = false, bool $UNLOGED = false)
+    public function __construct(App $app = null, bool $LOGGED = false, bool $UNLOGGED = false)
     {
-        
+
     }
 }
