@@ -75,59 +75,59 @@ final class App
         $this->router = $router;
     }
 
-    final public function get($route, $callback = null, $injectArgs = null)
+    final public function get()
     {
-        return $this->getRouter()->get($route, $callback, $injectArgs);
+        return $this->getRouter()->get(...func_get_args());
     }
 
-    final public function post($route, $callback = null, $injectArgs = null)
+    final public function post()
     {
-        return $this->getRouter()->post($route, $callback, $injectArgs);
+        return $this->getRouter()->post(...func_get_args());
     }
 
-    final public function put($route, $callback = null, $injectArgs = null)
+    final public function put()
     {
-        return $this->getRouter()->put($route, $callback, $injectArgs);
+        return $this->getRouter()->put(...func_get_args());
     }
 
-    final public function patch($route, $callback = null, $injectArgs = null)
+    final public function patch()
     {
-        return $this->getRouter()->patch($route, $callback, $injectArgs);
+        return $this->getRouter()->patch(...func_get_args());
     }
 
-    final public function delete($route, $callback = null, $injectArgs = null)
+    final public function delete()
     {
-        return $this->getRouter()->delete($route, $callback, $injectArgs);
+        return $this->getRouter()->delete(...func_get_args());
     }
 
-    final public function head($route, $callback = null, $injectArgs = null)
+    final public function head()
     {
-        return $this->getRouter()->head($route, $callback, $injectArgs);
+        return $this->getRouter()->head(...func_get_args());
     }
 
-    final public function trace($route, $callback = null, $injectArgs = null)
+    final public function trace()
     {
-        return $this->getRouter()->trace($route, $callback, $injectArgs);
+        return $this->getRouter()->trace(...func_get_args());
     }
 
-    final public function options($route, $callback = null, $injectArgs = null)
+    final public function options()
     {
-        return $this->getRouter()->options($route, $callback = null, $injectArgs = null);
+        return $this->getRouter()->options();
     }
 
-    final public function connect($route, $callback = null, $injectArgs = null)
+    final public function connect()
     {
-        return $this->getRouter()->connect($route, $callback, $injectArgs);
+        return $this->getRouter()->connect(...func_get_args());
     }
 
-    final public function any($route, $callback = null, $injectArgs = null)
+    final public function any()
     {
-        return $this->getRouter()->any($route, $callback, $injectArgs);
+        return $this->getRouter()->any(...func_get_args());
     }
 
-    final public function map(array $expectedRequestMethods, $expectedRoute, $callback = null, $injectArgs = null)
+    final public function map()
     {
-        return $this->getRouter()->map($expectedRequestMethods, $expectedRoute, $callback, $injectArgs);
+        return $this->getRouter()->map(...func_get_args());
     }
 
     final public function run()
