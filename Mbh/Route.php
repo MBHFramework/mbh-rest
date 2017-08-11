@@ -43,7 +43,7 @@ class Route implements RouteInterface
 
     public function __construct(array $methods, string $pattern, $callable = null, $inject = null)
     {
-        $path = __ROOT__ . (!(defined("IS_API") and IS_API) ? "" : "api");
+        $path = __ROOT__ . (IS_API ? "api" : "");
         $this->rootPath = (string) (new Path($path))->normalize()->removeTrailingSlashes();
         $this->route = urldecode((string) (new Uri($_SERVER['REQUEST_URI']))->removeQuery());
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
