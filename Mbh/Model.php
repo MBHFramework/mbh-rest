@@ -15,7 +15,7 @@ use Mbh\Connection;
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-class Model
+abstract class Model
 {
     protected $db;
     protected $id;

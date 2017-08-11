@@ -21,7 +21,7 @@ use Mbh\Helpers\Functions;
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-class Controller
+abstract class Controller
 {
     protected $app;
 
@@ -63,10 +63,5 @@ class Controller
         if(DEBUG) {
             $_SESSION['___QUERY_DEBUG___'] = [];
         }
-    }
-
-    protected function render($template)
-    {
-        return $this->template->render($template);
     }
 }
