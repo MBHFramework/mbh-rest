@@ -10,7 +10,7 @@
 
 namespace Mbh;
 
-use Mbh\Helpers\Functions as Functions;
+use Mbh\Helpers\Functions;
 
 
 /**

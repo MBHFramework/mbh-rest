@@ -10,13 +10,12 @@
 
 namespace Mbh;
 
+use Mbh\App;
+use Mbh\Helpers\Functions;
+use Mbh\Storage\Session;
+use League\Plates\Engine;
 use Twig_Enviroment;
 use Twig_Loader_Filesystem;
-use League\Plates\Engine;
-
-use Mbh\App;
-use Mbh\Storage\Session;
-use Mbh\Helpers\Functions;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos

@@ -10,6 +10,7 @@
 
 namespace Mbh;
 
+use Response;
 use \Mbh\Route;
 use \Mbh\RouteCollection;
 use \Mbh\Helpers\Path;
@@ -221,6 +222,13 @@ final class Router implements RouterInterface
      */
     public function map(array $methods, $pattern, $callback = null, $inject = null)
     {
+        if (! is_string($pattern)) {
+          throw new Exception("Uri pattern should be a string variable", 1);
+        }
+
+        // According to RFC methods are defined in uppercase (See RFC 7231)
+        $methods = array_map("strtoupper", $methods);
+
         $this->addRoute($methods, $pattern, $callback, $inject);
     }
 
@@ -253,7 +261,7 @@ final class Router implements RouterInterface
     		{
     			   echo json_encode($response);
     		}
-    		else if ($response instanceof \Response)
+    		else if ($response instanceof Response)
     		{
     			   $response->execute();
     		}
