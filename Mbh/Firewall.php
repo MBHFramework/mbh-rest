@@ -229,7 +229,7 @@ final class Firewall
       */
     private function logs(string $type, string $ip, string $user_agent, string $referer)
     {
-        $f = fopen(__ROOT__ . self::FCONF['LOG_FILE'] .'.log', 'a');
+        $f = fopen('./' . self::FCONF['LOG_FILE'] .'.log', 'a');
         $msg = date('j-m-Y H:i:s') . ' | ' . $type . ' | IP: '. $ip .' ] | DNS: ' . gethostbyaddr($ip) . ' | Agent: ' . $user_agent . PHP_EOL;
         fwrite($f, $msg);
         fclose($f);
