@@ -2,7 +2,6 @@
 
 define('IS_API', false);
 
-
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/Mbh/Settings/config.php';
 require __DIR__ . '/Mbh/App.php';

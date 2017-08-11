@@ -22,7 +22,9 @@ use \Mbh\Interfaces\RouterInterface;
 final class App
 {
     private $router;
+
     private $startime;
+
     private $storage;
 
     final public static function autoload($class)
@@ -133,6 +135,6 @@ final class App
     final public function run()
     {
         $this->getRouter()->run();
-        $this->debug = !DEBUG ?: new Debug($this->startime);
+        !DEBUG ?: new Debug($this->startime);
     }
 }

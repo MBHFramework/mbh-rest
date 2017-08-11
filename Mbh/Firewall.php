@@ -20,7 +20,7 @@ final class Firewall
     const FCONF = [
       'WEBMASTER_EMAIL' => 'ulisescf.24@gmail.com',
       'PUSH_MAIL' => false,
-      'LOG_FILE' => '__logs__',
+      'LOG_FILE' => 'LOGFILE',
       'PROTECTION_UNSET_GLOBALS' => true,
       'PROTECTION_RANGE_IP_DENY' => false,
       'PROTECTION_RANGE_IP_SPAM' => false,

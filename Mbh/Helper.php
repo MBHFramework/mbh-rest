@@ -32,16 +32,16 @@ final class Helper
       */
     final static public function load(string $helper, Twig_Environment $object = null)
     {
-      $helper = ucwords($helper);
-      $file = self::ROUTE . $helper . '.php';
-      if(file_exists($file)) {
-        include_once($file);
-        # Twig integration
-        if($object instanceof Twig_Environment) {
-          $object->addExtension(new $helper());
+        $helper = ucwords($helper);
+        $file = self::ROUTE . $helper . '.php';
+        if(is_readable($file)) {
+            include_once($file);
+            # Twig integration
+            if($object instanceof Twig_Environment) {
+                $object->addExtension(new $helper());
+            }
+        } else {
+            trigger_error("The helper $helper does not exist in the helpers library.", E_USER_ERROR);
         }
-      } else {
-        trigger_error("The helper $helper does not exist in the helpers library.", E_USER_ERROR);
-      }
     }
 }

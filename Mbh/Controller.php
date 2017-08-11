@@ -58,6 +58,11 @@ class Controller
         } else {
             $this->template = new Engine('./www/templates/plates', 'phtml');
         }
+
+        # Debug
+        if(DEBUG) {
+            $_SESSION['___QUERY_DEBUG___'] = [];
+        }
     }
 
     protected function render($template)
