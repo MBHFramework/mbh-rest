@@ -61,25 +61,25 @@ final class Functions extends Twig_Extension
     }
 
     /**
-      * Alias of the "empty" function, more complete
-      *
-      * @param midex $var: Variable to analyze
-      *
-      * @return true if empty, false otherwise, empty space counts as empty
-      */
+     * Alias of the "empty" function, more complete
+     *
+     * @param midex $var: Variable to analyze
+     *
+     * @return true if empty, false otherwise, empty space counts as empty
+     */
     final public static function empty($var) : bool
     {
         return (isset($var) && empty(trim(str_replace(' ', '', $var))));
     }
 
     /**
-      * It analyzes that ALL the elements of an array are full, useful to analyze for example
-      * that all the elements of a form are filled passing as parameter $ _POST
-      *
-      * @param array $array, array to analyze
-      *
-      * @return true if they are all filled, false if at least one is empty
-      */
+     * It analyzes that ALL the elements of an array are full, useful to analyze for example
+     * that all the elements of a form are filled passing as parameter $ _POST
+     *
+     * @param array $array, array to analyze
+     *
+     * @return true if they are all filled, false if at least one is empty
+     */
     final public static function all_full(array $array) : bool
     {
         foreach ($array as $e) {
@@ -91,12 +91,12 @@ final class Functions extends Twig_Extension
     }
 
     /**
-      * Alias of the "empty" function, but supports more than one parameter
-      *
-      * @param infinite parameters
-      *
-      * @return true if at least one is empty, false if all are full
-      */
+     * Alias of the "empty" function, but supports more than one parameter
+     *
+     * @param infinite parameters
+     *
+     * @return true if at least one is empty, false if all are full
+     */
     final public static function e() : bool
     {
         for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
@@ -108,13 +108,13 @@ final class Functions extends Twig_Extension
     }
 
     /**
-      * Reduce string
-      *
-      * @param string $string
-      * @param int $limit
-      *
-      * @return string
-      */
+     * Reduce string
+     *
+     * @param string $string
+     * @param int $limit
+     *
+     * @return string
+     */
     final public static function reduce_string(string $string, int $limit) : string
     {
         if (strlen($string) <= $limit) {
@@ -129,12 +129,12 @@ final class Functions extends Twig_Extension
     }
 
     /**
-      * Gives units of weight to an integer according to their assumed size in bytes
-      *
-      * @param int $size
-      *
-      * @return string
-      */
+     * Gives units of weight to an integer according to their assumed size in bytes
+     *
+     * @param int $size
+     *
+     * @return string
+     */
     final public static function convert(int $size) : string
     {
         $unit = array('bytes','kb','mb','gb','tb','pb');
@@ -142,10 +142,10 @@ final class Functions extends Twig_Extension
     }
 
     /**
-      * It is obtained from Twig_Extension and is used to make each function available as a twig tag
-      *
-      * @return array
-      */
+     * It is obtained from Twig_Extension and is used to make each function available as a twig tag
+     *
+     * @return array
+     */
     public function getFunctions() : array
     {
         return [
@@ -157,11 +157,11 @@ final class Functions extends Twig_Extension
     }
 
     /**
-      *
-      * @return string
-      */
+     *
+     * @return string
+     */
     public function getName() : string
     {
-        return 'mbh_framework_func_class';
+        return 'mbh_framework_functions_class';
     }
 }

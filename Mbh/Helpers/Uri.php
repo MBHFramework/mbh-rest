@@ -20,20 +20,20 @@ final class Uri
     private $str;
 
     /**
-      * Constructor
-      *
-      * @param string $str the URI as a string
-      */
+     * Constructor
+     *
+     * @param string $str the URI as a string
+     */
     public function __construct($str)
     {
         $this->str = $str;
     }
 
     /**
-      * Removes the query component from this string
-      *
-      * @return static this instance for chaining
-      */
+     * Removes the query component from this string
+     *
+     * @return static this instance for chaining
+     */
     public function removeQuery()
     {
         $this->str = strtok($this->str, '?');

@@ -18,18 +18,18 @@ use Twig_Environment;
 final class Helper
 {
     /**
-      * const ROUTE: Constant that indicates the route according to where the loader is called, from the REST API or from the Application
-      *
-      */
+     * const ROUTE: Constant that indicates the route according to where the loader is called, from the REST API or from the Application
+     *
+     */
     const ROUTE = IS_API ? '../Mbh/Helpers/' : 'Mbh/Helpers/';
 
     /**
-      * Static load a helper hosted in the kernel folder helpers for later use
-      *
-      * @param string $helper: Helper name
-      *
-      * @return void
-      */
+     * Static load a helper hosted in the kernel folder helpers for later use
+     *
+     * @param string $helper: Helper name
+     *
+     * @return void
+     */
     final static public function load(string $helper, Twig_Environment $object = null)
     {
         $helper = ucwords($helper);

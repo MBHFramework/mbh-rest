@@ -87,12 +87,12 @@ final class Firewall
     }
 
     /**
-      * Heal global variables by removing PHP and HTML from their content.
-      *
-      * @param string $s: index of the variable to heal
-      *
-      * @return retorna $r healed
-      */
+     * Heal global variables by removing PHP and HTML from their content.
+     *
+     * @param string $s: index of the variable to heal
+     *
+     * @return retorna $r healed
+     */
     final private function getEnv(string $s)
     {
         if (isset($_SERVER[$s])) {
@@ -108,10 +108,10 @@ final class Firewall
     }
 
     /**
-      * Gets address of the page that the user agent uses for the current page
-      *
-      * @return $_SERVER['HTTP_REFERER'] healed
-      */
+     * Gets address of the page that the user agent uses for the current page
+     *
+     * @return $_SERVER['HTTP_REFERER'] healed
+     */
     private function getReferer()
     {
         return $this->getEnv('HTTP_REFERER');
@@ -133,10 +133,10 @@ final class Firewall
     }
 
     /**
-      * Gets user agent
-      *
-      * @return devuelve el agente de usuario
-      */
+     * Gets user agent
+     *
+     * @return devuelve el agente de usuario
+     */
     private function getUserAgent()
     {
         if ($this->getEnv('HTTP_USER_AGENT')) {
@@ -146,10 +146,10 @@ final class Firewall
     }
 
     /**
-      * Gets the request of the page request
-      *
-      * @return query of the request
-      */
+     * Gets the request of the page request
+     *
+     * @return query of the request
+     */
     private function getQueryString()
     {
         if (self::FCONF['PROTECTION_ROUTER_STRICT']) {
@@ -162,20 +162,20 @@ final class Firewall
     }
 
     /**
-      * 'GET', 'HEAD', 'POST', 'PUT'.
-      *
-      * @return get the request method.
-      */
+     * 'GET', 'HEAD', 'POST', 'PUT'.
+     *
+     * @return get the request method.
+     */
     private function getRequestMethod()
     {
         return $this->getEnv('REQUEST_METHOD');
     }
 
     /**
-      * Gets Internet host name
-      *
-      * @return devuelve el host de Internet según la IP actual
-      */
+     * Gets Internet host name
+     *
+     * @return devuelve el host de Internet según la IP actual
+     */
     private function getHostByAddr()
     {
         if (self::FCONF['PROTECTION_SERVER_OVH'] or self::FCONF['PROTECTION_SERVER_KIMSUFI'] or self::FCONF['PROTECTION_SERVER_DEDIBOX'] or self::FCONF['PROTECTION_SERVER_DIGICUBE']) {
@@ -189,12 +189,12 @@ final class Firewall
 
 
     /**
-      * Send an alert email in case of an attack, WITHOUT using phpmailer
-      *
-      * @param string $subject: Subject
-      * @param string $msg: Message
-      *
-      * @return void
+     * Send an alert email in case of an attack, WITHOUT using phpmailer
+     *
+     * @param string $subject: Subject
+     * @param string $msg: Message
+     *
+     * @return void
     */
     private function pushEmail(string $subject, string $msg)
     {
@@ -218,15 +218,15 @@ final class Firewall
     }
 
     /**
-      * Crea un historial de Log por un ataque actual, además envía un email si está activa la acción
-      *
-      * @param string $type: Type of attack
-      * @param string $ip: Attacker IP
-      * @param string $user_agent: Attacking user agent
-      * @param string $referer: Referer
-      *
-      * @return void
-      */
+     * Crea un historial de Log por un ataque actual, además envía un email si está activa la acción
+     *
+     * @param string $type: Type of attack
+     * @param string $ip: Attacker IP
+     * @param string $user_agent: Attacking user agent
+     * @param string $referer: Referer
+     *
+     * @return void
+     */
     private function logs(string $type, string $ip, string $user_agent, string $referer)
     {
         $f = fopen('./' . self::FCONF['LOG_FILE'] .'.log', 'a');

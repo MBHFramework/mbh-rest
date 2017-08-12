@@ -11,8 +11,6 @@
 namespace Mbh;
 
 use SplObjectStorage;
-use \Mbh\Helpers\Path;
-use \Mbh\Helpers\Uri;
 use \Mbh\Interfaces\RouteInterface;
 
 /**

@@ -7,23 +7,23 @@ declare(strict_types=1);
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 /**
-  * Settings for DB connection.
-  * @param host 'Server for connection to the database -> local/remote hosting'
-  * @param user 'Database user'
-  * @param pass 'Password of the database user'
-  * @param name 'Database name'
-  * @param port 'Database port (not required on most engines)'
-  * @param protocol 'Connection protocol (not required on most engines)'
-  * @param motor 'Default connection engine'
-  * MOTORS VALUES:
-  *        mysql
-  *        sqlite
-  *        oracle
-  *        postgresql
-  *        cubrid
-  *        firebird
-  *        odbc
-  */
+ * Settings for DB connection.
+ * @param host 'Server for connection to the database -> local/remote hosting'
+ * @param user 'Database user'
+ * @param pass 'Password of the database user'
+ * @param name 'Database name'
+ * @param port 'Database port (not required on most engines)'
+ * @param protocol 'Connection protocol (not required on most engines)'
+ * @param motor 'Default connection engine'
+ * MOTORS VALUES:
+ *        mysql
+ *        sqlite
+ *        oracle
+ *        postgresql
+ *        cubrid
+ *        firebird
+ *        odbc
+ */
 define('DATABASE', array(
   'host' => 'localhost',
   'user' => 'root',

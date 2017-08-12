@@ -54,10 +54,10 @@ final class Debug
     const FOOT = '</div>';
 
     /**
-      * Start time
-      *
-      * @return Start-Time, Start time of code execution
-      */
+     * Start time
+     *
+     * @return Start-Time, Start time of code execution
+     */
     final public static function startime()
     {
         $startime = explode(" ", microtime());
@@ -66,13 +66,13 @@ final class Debug
 
 
     /**
-      * List an array, displaying its contents
-      *
-      * @param array $VAR: Array to display
-      * @param string $variable: Written form of the variable being broken down
-      *
-      * @return void
-      */
+     * List an array, displaying its contents
+     *
+     * @param array $VAR: Array to display
+     * @param string $variable: Written form of the variable being broken down
+     *
+     * @return void
+     */
     final private function listVar(array $VAR, string $variable)
     {
         echo '<strong class="cab">',$variable,':</strong> <br />';
@@ -86,12 +86,12 @@ final class Debug
     }
 
     /**
-      * Constructor, initialize debug mode
-      *
-      * @param int $startime: Start-Time, Start time of code execution
-      *
-      * @return void
-      */
+     * Constructor, initialize debug mode
+     *
+     * @param int $startime: Start-Time, Start time of code execution
+     *
+     * @return void
+     */
     final public function __construct(int $startime)
     {
         #Templates names
@@ -152,10 +152,10 @@ final class Debug
     }
 
     /**
-      * End debug mode
-      *
-      * @return void
-      */
+     * End debug mode
+     *
+     * @return void
+     */
     final public function __destruct()
     {
         echo self::FOOT;
