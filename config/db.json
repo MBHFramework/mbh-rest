@@ -1,0 +1,11 @@
+{
+  "database": {
+    "host": "localhost",
+    "user": "root",
+    "pass": "",
+    "name": "",
+    "port": 1521,
+    "protocol": "TCP",
+    "motor": "mysql"
+  }
+}
