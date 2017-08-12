@@ -72,4 +72,4 @@ define('TWIG_TEMPLATE_ENGINE', false);
 define('E_ERNO', '69');
 
 # Current version of the framework
-define('VERSION', '1.0');
+define('VERSION', '1.5');
