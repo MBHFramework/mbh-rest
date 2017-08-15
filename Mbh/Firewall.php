@@ -15,7 +15,7 @@ use Mbh\Helpers\Functions;
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Firewall
+class Firewall
 {
     const FCONF = [
       'WEBMASTER_EMAIL' => 'ulisescf.24@gmail.com',
@@ -93,7 +93,7 @@ final class Firewall
      *
      * @return retorna $r healed
      */
-    final private function getEnv(string $s)
+    private function getEnv(string $s)
     {
         if (isset($_SERVER[$s])) {
             return strip_tags($_SERVER[$s]);

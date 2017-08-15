@@ -18,6 +18,7 @@ use Mbh\Connection;
 abstract class Model
 {
     protected $db;
+
     protected $id;
 
     protected $table;

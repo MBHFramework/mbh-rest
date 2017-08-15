@@ -15,7 +15,7 @@ use Twig_Environment;
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Helper
+class Helper
 {
     /**
      * const ROUTE: Constant that indicates the route according to where the loader is called, from the REST API or from the Application
@@ -30,7 +30,7 @@ final class Helper
      *
      * @return void
      */
-    final static public function load(string $helper, Twig_Environment $object = null)
+    static public function load(string $helper, Twig_Environment $object = null)
     {
         $helper = ucwords($helper);
         $file = self::ROUTE . $helper . '.php';

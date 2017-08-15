@@ -20,15 +20,17 @@ use \Mbh\Interfaces\RouterInterface;
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class App
+class App
 {
-    private $router;
+    protected $router;
 
-    private $startime;
+    protected $startime;
 
-    private $storage;
+    protected $storage;
 
-    final public static function autoload($class)
+    protected $settings;
+
+    public static function autoload($class)
     {
         $prefix = __NAMESPACE__ . '\\';
       	$length = strlen($prefix) - 1;
@@ -46,12 +48,12 @@ final class App
         }
     }
 
-    final public static function registerAutoload()
+    public static function registerAutoload()
     {
         spl_autoload_register(__NAMESPACE__ . "\\App::autoload");
     }
 
-    final public function __construct()
+    public function __construct()
     {
         try {
             if (version_compare(phpversion(), '7.0.0', '<'))
@@ -68,72 +70,86 @@ final class App
         $this->setRouter(new Router());
     }
 
-    final public function getRouter(): RouterInterface
+    public function getRouter(): RouterInterface
     {
         return $this->router;
     }
 
-    final public function setRouter(RouterInterface $router = null)
+    public function setRouter(RouterInterface $router = null)
     {
         $this->router = $router;
     }
 
-    final public function get()
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    public function addSettings(array $settings)
+    {
+        $this->settings = array_merge($this->settings, $settings);
+    }
+
+    /**
+     * Router methods
+     */
+
+    public function get()
     {
         $this->getRouter()->get(...func_get_args());
     }
 
-    final public function post()
+    public function post()
     {
         $this->getRouter()->post(...func_get_args());
     }
 
-    final public function put()
+    public function put()
     {
         $this->getRouter()->put(...func_get_args());
     }
 
-    final public function patch()
+    public function patch()
     {
         $this->getRouter()->patch(...func_get_args());
     }
 
-    final public function delete()
+    public function delete()
     {
         $this->getRouter()->delete(...func_get_args());
     }
 
-    final public function head()
+    public function head()
     {
         $this->getRouter()->head(...func_get_args());
     }
 
-    final public function trace()
+    public function trace()
     {
         $this->getRouter()->trace(...func_get_args());
     }
 
-    final public function options()
+    public function options()
     {
         $this->getRouter()->options();
     }
 
-    final public function connect()
+    public function connect()
     {
         $this->getRouter()->connect(...func_get_args());
     }
 
-    final public function any()
+    public function any()
     {
         $this->getRouter()->any(...func_get_args());
     }
 
-    final public function map()
+    public function map()
     {
         $this->getRouter()->map(...func_get_args());
     }
 
-    final public function run()
+    public function run()
     {
         $this->getRouter()->run();
         !DEBUG ?: new Debug($this->startime);

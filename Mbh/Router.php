@@ -20,7 +20,7 @@ use \Mbh\Interfaces\RouterInterface;
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Router implements RouterInterface
+class Router implements RouterInterface
 {
     /** Router for PHP. Simple, lightweight and convenient. */
 
@@ -223,7 +223,7 @@ final class Router implements RouterInterface
     public function map(array $methods, $pattern, $callback = null, $inject = null)
     {
         if (! is_string($pattern)) {
-          throw new Exception("Uri pattern should be a string variable", 1);
+            throw new Exception("Uri pattern should be a string variable", 1);
         }
 
         // According to RFC methods are defined in uppercase (See RFC 7231)
@@ -234,41 +234,33 @@ final class Router implements RouterInterface
 
     private function addRoute(array $methods, $pattern, $callback = null, $inject = null)
     {
-      $route = new Route($methods, $pattern, $callback, $inject);
-      $this->routes->attachRoute($route);
+        $route = new Route($methods, $pattern, $callback, $inject);
+        $this->routes->attachRoute($route);
     }
 
     public function run()
-  	{
-    		$response = null;
-    		foreach ($this->routes->all() as $route)
-    		{
-      			if ($route->checkIfMatch()) {
-        				$response = $route->execute();
-        				break;
-      			}
-    		}
-    		$this->sendResponse($response);
-  	}
+    {
+        $response = null;
+        foreach ($this->routes->all() as $route) {
+            if ($route->checkIfMatch()) {
+                $response = $route->execute();
+                break;
+            }
+        }
+        $this->sendResponse($response);
+    }
 
     private function sendResponse($response)
-  	{
-    		if (is_string($response))
-    		{
-    			   echo $response;
-    		}
-    		else if (is_array($response))
-    		{
-    			   echo json_encode($response);
-    		}
-    		else if ($response instanceof Response)
-    		{
-    			   $response->execute();
-    		}
-    		else
-    		{
-      			header("HTTP/1.1 404 Not Found");
-      			exit('404');
-    		}
-  	}
+    {
+        if (is_string($response)) {
+            echo $response;
+        } elseif (is_array($response)) {
+            echo json_encode($response);
+        } elseif ($response instanceof Response) {
+            $response->execute();
+        } else {
+            header("HTTP/1.1 404 Not Found");
+            exit('404');
+        }
+    }
 }
