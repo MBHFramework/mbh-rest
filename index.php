@@ -10,7 +10,9 @@ use \Mbh\App;
 
 App::registerAutoload();
 
-$app = new App();
+$app = new App([
+  'debug' => true
+]);
 
 $app->any('/', function() {
     return "MBHFramework working!";

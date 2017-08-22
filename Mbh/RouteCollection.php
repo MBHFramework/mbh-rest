@@ -41,4 +41,11 @@ class RouteCollection extends SplObjectStorage
         }
         return $temp;
     }
+
+    public function getThatMatch()
+    {
+        return array_values(array_filter($this->all(), function($route) {
+          return $route->checkIfMatch();
+        }));
+    }
 }

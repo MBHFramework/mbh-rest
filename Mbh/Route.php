@@ -10,6 +10,7 @@
 
 namespace Mbh;
 
+use InvalidArgumentException;
 use \Mbh\Helpers\Path;
 use \Mbh\Helpers\Uri;
 use \Mbh\Interfaces\RouteInterface;
@@ -147,12 +148,12 @@ class Route implements RouteInterface
      * @param string $pattern the route to match against
      * @return array|null the list of matched parameters or `null` if the route didn't match
      */
-    private function matchRoute($pattern)
+    private function matchRoute()
     {
         $params = [];
 
         // create the regex that matches paths against the route
-        $patternRegex = $this->createRouteRegex($pattern, $params);
+        $patternRegex = $this->createRouteRegex($this->pattern, $params);
 
         // if the route regex matches the current request path
         if (preg_match($patternRegex, $this->route, $matches)) {
@@ -166,10 +167,7 @@ class Route implements RouteInterface
                 return [];
             }
         }
-        // if the route regex does not match the current request path
-        else {
-            return null;
-        }
+        // if the route regex does not match the current request path returns null
     }
 
 
@@ -179,16 +177,13 @@ class Route implements RouteInterface
         $this->setMethods(array_map("strtoupper", $this->methods));
 
         if (in_array($this->requestMethod, $this->methods, true)) {
-            $matches = $this->matchRoute($this->pattern);
-
+            $matches = $this->matchRoute();
             // if the route matches the current request
-
             if ($matches !== null) {
                 // the route matches the current request
                 return true;
             }
         }
-
         // the route does not match the current request
         return false;
     }
@@ -196,26 +191,24 @@ class Route implements RouteInterface
     public function execute()
     {
         // if a callback has been set
-        if (isset($this->callable)) {
-            // if the callback can be executed
-            if (is_callable($this->callable)) {
-                // use an empty array as the default value for the arguments to be injected
-                if ($this->inject === null) {
-                    $this->inject = [];
-                }
-
-                $callable = $this->getCallable();
-                $matches = $this->matchRoute($this->pattern);
-
-                // execute the callback
-                return $callable(...$this->inject, ...array_values($matches));
-            }
-            // if the callback is invalid
-            else {
-                throw new \InvalidArgumentException('Invalid callback for methods `' . implode('|', $this->methods) . '` at route `' . $this->pattern . '`');
-            }
+        if (!isset($this->callable)) {
+            return "";
         }
-        return "";
+
+        // if the callback is invalid
+        if (!is_callable($this->callable)) {
+            throw new InvalidArgumentException('Invalid callback for methods `' . implode('|', $this->methods) . '` at route `' . $this->pattern . '`');
+        }
+
+        // if the callback can be executed
+        // use an empty array as the default value for the arguments to be injected
+        $this->inject = $this->inject ?? [];
+
+        $callable = $this->getCallable();
+        $matches = $this->matchRoute($this->pattern);
+
+        // execute the callback
+        return $callable(...$this->inject, ...array_values($matches));
     }
 
     /**

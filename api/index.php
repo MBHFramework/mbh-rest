@@ -2,7 +2,7 @@
 
 define('IS_API', true);
 
-$root = __DIR__ . '/..';
+$root = __DIR__ . './..';
 
 require "${root}/vendor/autoload.php";
 require "${root}/Mbh/Settings/config.php";

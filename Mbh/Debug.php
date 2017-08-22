@@ -53,6 +53,8 @@ final class Debug
 
     const FOOT = '</div>';
 
+    protected $app;
+
     /**
      * Start time
      *
@@ -92,7 +94,7 @@ final class Debug
      *
      * @return void
      */
-    final public function __construct(int $startime)
+    final public function __construct(array $settings, int $startime)
     {
         #Templates names
         $template_engine = ['PlatesPHP','Twig'];
@@ -146,7 +148,7 @@ final class Debug
 
         echo "<br /><b class=\"cab\">DB_HOST:</b> " . DATABASE['host'];
         echo "<br /><b class=\"cab\">DB_NAME:</b> " . DATABASE['name'] .  "<br />";
-        echo "<br /><b class=\"cab\">Firewall:</b> " . (FIREWALL ? "True" : "False");
+        echo "<br /><b class=\"cab\">Firewall:</b> " . ($settings['firewall'] ? "True" : "False");
         echo "<br /><b class=\"cab\">Total time:</b> " . ($endtime - $startime) . " seconds" ;
         echo "<br /><b class=\"cab\">RAM consumed:</b> ${memory}";
     }
