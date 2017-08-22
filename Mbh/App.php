@@ -34,7 +34,13 @@ class App
       'routerCacheFile' => false,
       'debug' => false,
       'firewall' => false,
-      'api' => true
+      'api' => true,
+      'session' => [
+        'use_strict_mode' => true,
+        'use_cookies' => true,
+        'cookie_lifetime' => SESSION_TIME,
+        'cookie_httponly' => true # Avoid access to the cookie using scripting languages (such as javascript)
+      ]
     ];
 
     public static function autoload($class)

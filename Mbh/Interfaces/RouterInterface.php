@@ -26,7 +26,10 @@ interface RouterInterface
    * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
    * @return bool whether the route matched the current request
    */
-  public function map(array $methods, $pattern, $callback = null, $inject = null);
+    public function map(array $methods, $pattern, $callback = null, $inject = null);
 
-  public function run();
+    /**
+     * Runner functions
+     */
+    public function run();
 }

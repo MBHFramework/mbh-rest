@@ -15,7 +15,7 @@ namespace Mbh\Storage;
  */
 final class Session
 {
-    final public function __construct(array $settings = SESSION['CONF'])
+    final public function __construct(array $settings = [])
     {
         if (!headers_sent()) {
             session_start($settings);
