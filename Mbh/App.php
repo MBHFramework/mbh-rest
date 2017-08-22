@@ -26,9 +26,16 @@ class App
 
     protected $startime;
 
-    protected $storage;
+    protected $storage = [];
 
-    protected $settings;
+    protected $settings = [
+      'httpVersion' => '1.1',
+      'responseChunkSize' => 4096,
+      'displayErrorDetails' => false,
+      'routerCacheFile' => false,
+      'debug' => false,
+      'firewall' => false,
+    ];
 
     public static function autoload($class)
     {
@@ -53,7 +60,7 @@ class App
         spl_autoload_register(__NAMESPACE__ . "\\App::autoload");
     }
 
-    public function __construct()
+    public function __construct(array $settings = [])
     {
         try {
             if (version_compare(phpversion(), '7.0.0', '<'))
@@ -62,12 +69,14 @@ class App
             die('Current <b>PHP</b> version is <b>' . phpversion() . '</b> and a version greater than or equal to <b>7.0.0</b> is required');
         }
 
-        !FIREWALL ?: new Firewall;
+        $this->addSettings($settings);
+        $this->setRouter(new Router());
 
-        $this->startime = !DEBUG ?: Debug::startime();
+        !$this->settings['firewall'] ?: new Firewall;
+
+        $this->startime = !$this->settings['debug'] ?: Debug::startime();
         $this->storage['session'] = new Session();
 
-        $this->setRouter(new Router());
     }
 
     public function getRouter(): RouterInterface
@@ -75,17 +84,17 @@ class App
         return $this->router;
     }
 
-    public function setRouter(RouterInterface $router = null)
+    public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
     }
 
-    public function getSettings()
+    public function getSettings(): array
     {
         return $this->settings;
     }
 
-    public function addSettings(array $settings)
+    public function addSettings(array $settings = [])
     {
         $this->settings = array_merge($this->settings, $settings);
     }
@@ -152,6 +161,6 @@ class App
     public function run()
     {
         $this->getRouter()->run();
-        !DEBUG ?: new Debug($this->startime);
+        !$this->settings['debug'] ?: new Debug($this->startime);
     }
 }
