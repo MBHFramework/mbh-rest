@@ -38,7 +38,7 @@ class App
       'session' => [
         'use_strict_mode' => true,
         'use_cookies' => true,
-        'cookie_lifetime' => SESSION_TIME,
+        'cookie_lifetime' => 18000, # Life time for session cookies -> 5 hs = 18000 seconds.
         'cookie_httponly' => true # Avoid access to the cookie using scripting languages (such as javascript)
       ]
     ];
@@ -76,15 +76,21 @@ class App
         }
 
         $this->addSettings($settings);
-        $this->setRouter(new Router());
 
         !$this->settings['firewall'] ?: new Firewall;
-
         $this->startime = !$this->settings['debug'] ?: Debug::startime();
     }
 
     public function getRouter(): RouterInterface
     {
+        if (! $this->router instanceof RouterInterface) {
+          $router = new Router;
+          $routerCacheFile = $this->getSetting('routerCacheFile', false);
+          $router->setCacheFile($routerCacheFile);
+
+          $this->router = $router;
+        }
+
         return $this->router;
     }
 

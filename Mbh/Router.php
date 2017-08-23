@@ -11,6 +11,9 @@
 namespace Mbh;
 
 use Response;
+use RuntimeException;
+use InvalidArgumentException;
+
 use \Mbh\Route;
 use \Mbh\RouteCollection;
 use \Mbh\Helpers\Path;
@@ -22,13 +25,69 @@ use \Mbh\Interfaces\RouterInterface;
  */
 class Router implements RouterInterface
 {
-    /** Router for PHP. Simple, lightweight and convenient. */
+    /**
+     * Parser
+     *
+     * @var \FastRoute\RouteParser
+     */
+    protected $routeParser;
 
-    private $routes = [];
+    /**
+     * @var \Slim\Interfaces\InvocationStrategyInterface
+     */
+    protected $routeInvocationStrategy;
 
-    public function __construct()
+    /**
+     * Base path used in pathFor()
+     *
+     * @var string
+     */
+    protected $basePath = '';
+
+    /**
+     * Path to fast route cache file. Set to false to disable route caching
+     *
+     * @var string|False
+     */
+    protected $cacheFile = false;
+
+    /**
+     * Routes
+     *
+     * @var Route[]
+     */
+    protected $routes = [];
+
+    /**
+     * Create new router
+     *
+     * @param RouteParser   $parser
+     */
+    public function __construct(RouteParser $parser = null)
     {
-        $this->setRoutes(new RouteCollection());
+        // $this->routeParser = $parser ?: new RouteParser;
+    }
+
+    /**
+     * Set path to fast route cache file. If this is false then route caching is disabled.
+     *
+     * @param string|false $cacheFile
+     *
+     * @return self
+     *
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     */
+    public function setCacheFile($cacheFile)
+    {
+        if (!is_string($cacheFile) && $cacheFile !== false) {
+            throw new InvalidArgumentException('Router cacheFile must be a string or false');
+        }
+        $this->cacheFile = $cacheFile;
+        if ($cacheFile !== false && !is_writable(dirname($cacheFile))) {
+            throw new RuntimeException('Router cacheFile directory must be writable');
+        }
+        return $this;
     }
 
     public function setRoutes(RouteCollection $routes)
@@ -38,6 +97,9 @@ class Router implements RouterInterface
 
     public function getRoutes()
     {
+        if (! $this->routes instanceof RouteCollection) {
+            $this->routes = new RouteCollection();
+        }
         return $this->routes;
     }
 
@@ -95,12 +157,12 @@ class Router implements RouterInterface
     private function addRoute(array $methods, $pattern, $callback = null, $inject = null)
     {
         $route = new Route($methods, $pattern, $callback, $inject);
-        $this->routes->attachRoute($route);
+        $this->getRoutes()->attachRoute($route);
     }
 
     public function run()
     {
-        $routes = $this->routes->getThatMatch();
+        $routes = $this->getRoutes()->getThatMatch();
         $route = !$routes ?: $routes[0];
         $response = !$route ?: $route->execute();
         $this->sendResponse($response);
