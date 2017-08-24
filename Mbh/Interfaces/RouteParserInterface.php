@@ -15,5 +15,5 @@ namespace Mbh\Interfaces;
  */
 interface RouteParserInterface
 {
-
+    public function handle(RouteInterface $route);
 }
