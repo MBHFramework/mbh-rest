@@ -21,11 +21,25 @@ use \Mbh\Interfaces\RouteParserInterface;
  */
 class Route implements RouteInterface
 {
-    /** @var string the root path that this instance is working under */
+    /**
+     * The root path that this instance is working under
+     *
+     * @var string
+     */
     private $rootPath;
-    /** @var string the route of the current request */
+
+    /**
+     * The route of the current request
+     *
+     * @var string
+     */
     private $route;
-    /** @var string the request method of the current request */
+
+    /**
+     * The request method of the current request
+     *
+     * @var string
+     */
     private $requestMethod;
 
     private $methods;
