@@ -146,8 +146,6 @@ final class Debug
         }
 
 
-        echo "<br /><b class=\"cab\">DB_HOST:</b> " . DATABASE['host'];
-        echo "<br /><b class=\"cab\">DB_NAME:</b> " . DATABASE['name'] .  "<br />";
         echo "<br /><b class=\"cab\">Firewall:</b> " . ($settings['firewall'] ? "True" : "False");
         echo "<br /><b class=\"cab\">Total time:</b> " . ($endtime - $startime) . " seconds" ;
         echo "<br /><b class=\"cab\">RAM consumed:</b> ${memory}";
