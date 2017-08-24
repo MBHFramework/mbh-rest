@@ -28,12 +28,12 @@ class Router implements RouterInterface
     /**
      * Parser
      *
-     * @var \FastRoute\RouteParser
+     * @var \Mbh\Handlers\RouteParser
      */
     protected $routeParser;
 
     /**
-     * @var \Slim\Interfaces\InvocationStrategyInterface
+     * @var \Mbh\Interfaces\InvocationStrategyInterface
      */
     protected $routeInvocationStrategy;
 
