@@ -8,11 +8,12 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace Mbh\Handlers\Strategies\RouteParser;
+namespace Mbh\Handlers\RouteParser;
 
 use \Mbh\Helpers\Path;
 use \Mbh\Helpers\Uri;
 use \Mbh\Interfaces\RouteInterface;
+use \Mbh\Interfaces\RouteParserInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -31,15 +32,15 @@ class StdParser implements RouteParserInterface
      *
      * @return array|null the list of matched parameters or `null` if the route didn't match
      */
-    private function handle(RouteInterface $route)
+    public function handle(RouteInterface $route)
     {
         $params = [];
 
         // create the regex that matches paths against the route
-        $patternRegex = $this->createRouteRegex($this->pattern, $params);
+        $patternRegex = $this->createRouteRegex($route, $route->getPattern(), $params);
 
         // if the route regex matches the current request path
-        if (preg_match($patternRegex, $this->route, $matches)) {
+        if (preg_match($patternRegex, $route->getRoute(), $matches)) {
             if (count($matches) > 1) {
                 // remove the first match (which is the full route match)
                 array_shift($matches);
@@ -52,20 +53,21 @@ class StdParser implements RouteParserInterface
         }
         // if the route regex does not match the current request path returns null
     }
-/**
+
+    /**
      * Creates a regular expression that can be used to match the specified route
      *
      * @param string $pattern the route to create a regular expression for
      * @param array $params the array that should receive the matched parameters
      * @return string the composed regular expression
      */
-    private function createRouteRegex($pattern, &$params)
+    private function createRouteRegex($route, $pattern, &$params)
     {
         // extract the parameters from the route (if any) and make the route a regex
         self::processUriParams($pattern, $params);
 
         // escape the base path for regex and prepend it to the route
-        return static::REGEX_DELIMITER . '^' . static::regexEscape($this->rootPath) . $pattern . '$' . static::REGEX_DELIMITER;
+        return static::REGEX_DELIMITER . '^' . static::regexEscape($route->getRootPath()) . $pattern . '$' . static::REGEX_DELIMITER;
     }
 
     /**

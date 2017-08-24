@@ -12,6 +12,7 @@ namespace Mbh;
 
 use SplObjectStorage;
 use \Mbh\Interfaces\RouteInterface;
+use \Mbh\Interfaces\RouteParserInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -42,10 +43,10 @@ class RouteCollection extends SplObjectStorage
         return $temp;
     }
 
-    public function getThatMatch()
+    public function getThatMatch(RouteParserInterface $routeParser)
     {
-        return array_values(array_filter($this->all(), function($route) {
-          return $route->checkIfMatch();
+        return array_values(array_filter($this->all(), function($route) use($routeParser) {
+          return $route->checkIfMatch($routeParser);
         }));
     }
 }

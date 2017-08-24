@@ -17,7 +17,9 @@ use \Mbh\Route;
 use \Mbh\RouteCollection;
 use \Mbh\Helpers\Path;
 use \Mbh\Helpers\Uri;
+use \Mbh\Handlers\RouteParser\StdParser;
 use \Mbh\Interfaces\RouterInterface;
+use \Mbh\Interfaces\RouteParserInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -67,11 +69,11 @@ class Router implements RouterInterface
     /**
      * Create new router
      *
-     * @param RouteParser   $parser
+     * @param RouteParserInterface $parser
      */
-    public function __construct(RouteParser $parser = null)
+    public function __construct(RouteParserInterface $parser = null)
     {
-        // $this->routeParser = $parser ?: new RouteParser;
+        $this->routeParser = $parser ?? new StdParser;
     }
 
     /**
@@ -169,11 +171,10 @@ class Router implements RouterInterface
 
     public function run()
     {
-        $routes = $this->getRoutes()
-                       ->getThatMatch();
+        $routes = $this->getRoutes()->getThatMatch($this->routeParser);
 
         $route = !$routes ?: $routes[0];
-        $response = !$route ?: $route->execute();
+        $response = !$route ?: $route->execute($this->routeParser);
         $this->sendResponse($response);
     }
 

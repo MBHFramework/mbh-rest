@@ -10,12 +10,14 @@
 
 namespace Mbh\Interfaces;
 
+use \Mbh\Interfaces\RouteParserInterface;
+
 /**
  * created by Federico Ramón Gasquez
  */
 interface RouteInterface
 {
-    public function checkIfMatch();
+    public function checkIfMatch(RouteParserInterface $routeParser);
 
-    public function execute();
+    public function execute(RouteParserInterface $routeParser);
 }
