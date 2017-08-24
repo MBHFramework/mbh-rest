@@ -11,11 +11,9 @@
 namespace Mbh\Interfaces;
 
 /**
- * created by Federico Ramón Gasquez
+ * created by Ulises Jeremias Cornejo Fandos
  */
-interface RouteInterface
+interface RouteParserInterface
 {
-    public function checkIfMatch();
 
-    public function execute();
 }

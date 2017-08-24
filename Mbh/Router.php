@@ -13,7 +13,6 @@ namespace Mbh;
 use Response;
 use RuntimeException;
 use InvalidArgumentException;
-
 use \Mbh\Route;
 use \Mbh\RouteCollection;
 use \Mbh\Helpers\Path;
@@ -57,6 +56,13 @@ class Router implements RouterInterface
      * @var Route[]
      */
     protected $routes = [];
+
+    /**
+     * Settings
+     *
+     * @var Setting[]
+     */
+    protected $settings = [];
 
     /**
      * Create new router
@@ -154,21 +160,24 @@ class Router implements RouterInterface
         $this->addRoute($methods, $pattern, $callback, $inject);
     }
 
-    private function addRoute(array $methods, $pattern, $callback = null, $inject = null)
+    protected function addRoute(array $methods, $pattern, $callback = null, $inject = null)
     {
         $route = new Route($methods, $pattern, $callback, $inject);
-        $this->getRoutes()->attachRoute($route);
+        $this->getRoutes()
+             ->attachRoute($route);
     }
 
     public function run()
     {
-        $routes = $this->getRoutes()->getThatMatch();
+        $routes = $this->getRoutes()
+                       ->getThatMatch();
+
         $route = !$routes ?: $routes[0];
         $response = !$route ?: $route->execute();
         $this->sendResponse($response);
     }
 
-    private function sendResponse($response)
+    protected function sendResponse($response)
     {
         if (is_string($response)) {
             echo $response;

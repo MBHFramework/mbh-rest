@@ -102,7 +102,6 @@ class App
     /**
      * Settings management
      */
-
     /**
      * Does app have a setting with given key?
      *
@@ -287,22 +286,25 @@ class App
       */
      public function any($pattern, $callback = null, $inject = null)
      {
-         return $this->getRouter()->map([
-           'GET',
-           'POST',
-           'PUT',
-           'PATCH',
-           'DELETE',
-           'HEAD',
-           'TRACE',
-           'OPTIONS',
-           'CONNECT'
-         ], $pattern, $callback, $inject);
+         return $this->getRouter()
+                     ->map([
+                       'GET',
+                       'POST',
+                       'PUT',
+                       'PATCH',
+                       'DELETE',
+                       'HEAD',
+                       'TRACE',
+                       'OPTIONS',
+                       'CONNECT'
+                     ], $pattern, $callback, $inject);
      }
 
     public function run()
     {
-        $this->getRouter()->run();
+        $this->getRouter()
+             ->run();
+             
         !$this->settings['debug'] ?: new Debug($this->settings, $this->startime);
     }
 }
