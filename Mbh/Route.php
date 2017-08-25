@@ -57,10 +57,10 @@ class Route implements RouteInterface
         $this->route = urldecode((string) (new Uri($_SERVER['REQUEST_URI']))->removeQuery());
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        $this->setMethods($methods);
-        $this->setPattern($pattern);
-        $this->setCallable($callable);
-        $this->setInject($inject);
+        $this->setMethods($methods)
+             ->setPattern($pattern)
+             ->setCallable($callable)
+             ->setInject($inject);
     }
 
     public function getMethods()
@@ -71,6 +71,7 @@ class Route implements RouteInterface
     public function setMethods(array $methods)
     {
         $this->methods = $methods;
+        return $this;
     }
 
     public function getPattern()
@@ -81,6 +82,7 @@ class Route implements RouteInterface
     public function setPattern(string $pattern)
     {
         $this->pattern = $pattern;
+        return $this;
     }
 
     public function getCallable()
@@ -91,6 +93,7 @@ class Route implements RouteInterface
     public function setCallable($callable)
     {
         $this->callable = $callable;
+        return $this;
     }
 
     public function getInject()
@@ -101,6 +104,7 @@ class Route implements RouteInterface
     public function setInject($inject)
     {
         $this->inject = $inject;
+        return $this;
     }
 
     ### Resolution strategies
@@ -118,6 +122,7 @@ class Route implements RouteInterface
     public function setRootPath(string $path)
     {
         $this->rootPath = $path;
+        return $this;
     }
 
     /**
@@ -133,6 +138,7 @@ class Route implements RouteInterface
     public function setRoute(string $route)
     {
         $this->route = $route;
+        return $this;
     }
 
     /**
@@ -148,6 +154,7 @@ class Route implements RouteInterface
     public function setRequestMethod(string $method)
     {
         $this->requestMethod = $method;
+        return $this;
     }
 
     public function checkIfMatch(RouteParserInterface $routeParser)
