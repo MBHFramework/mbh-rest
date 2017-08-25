@@ -25,11 +25,13 @@ final class Session
     final public function set($key, $value)
     {
         $_SESSION[$key] = $value;
+        return $this;
     }
 
     final public function setFlash($identifier, $message)
     {
         $_SESSION[$identifier] = $message;
+        return $this;
     }
 
     final public function getFlash($identifier)
@@ -56,6 +58,7 @@ final class Session
         if ($this->has($key)) {
             unset($_SESSION[$key]);
         }
+        return $this;
     }
 
     final public function destroy()
@@ -70,7 +73,7 @@ final class Session
 
     final public function offsetSet($offset, $value)
     {
-        $this->set($offset, $value);
+        return $this->set($offset, $value);
     }
 
     final public function offsetExists($offset)
@@ -80,6 +83,6 @@ final class Session
 
     final public function offsetUnset($offset)
     {
-        $this->delete($offset);
+        return $this->delete($offset);
     }
 }

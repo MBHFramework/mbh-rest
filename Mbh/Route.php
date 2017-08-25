@@ -57,10 +57,10 @@ class Route implements RouteInterface
         $this->route = urldecode((string) (new Uri($_SERVER['REQUEST_URI']))->removeQuery());
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        $this->setMethods($methods)
-             ->setPattern($pattern)
-             ->setCallable($callable)
-             ->setInject($inject);
+        $this->methods = $methods;
+        $this->pattern = $pattern;
+        $this->callable = $callable;
+        $this->inject = $inject;
     }
 
     public function getMethods()

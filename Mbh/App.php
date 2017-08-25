@@ -97,6 +97,8 @@ class App
     public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
+
+        return $this;
     }
 
     /**
@@ -302,9 +304,7 @@ class App
 
     public function run()
     {
-        $this->getRouter()
-             ->run();
-             
+        $this->getRouter()->run();
         !$this->settings['debug'] ?: new Debug($this->settings, $this->startime);
     }
 }
