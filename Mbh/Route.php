@@ -174,7 +174,7 @@ class Route implements RouteInterface
         return false;
     }
 
-    public function execute(RouteParserInterface $routeParser)
+    public function run(RouteParserInterface $routeParser)
     {
         // if a callback has been set
         if (!isset($this->callable)) {
@@ -194,6 +194,6 @@ class Route implements RouteInterface
         $matches = $routeParser->handle($this);
 
         // execute the callback
-        return $callable(...$this->inject, ...array_values($matches));
+        return $callable(...$this->inject, ...array_values($matches)) ?? "";
     }
 }

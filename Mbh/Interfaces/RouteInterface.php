@@ -19,5 +19,5 @@ interface RouteInterface
 {
     public function checkIfMatch(RouteParserInterface $routeParser);
 
-    public function execute(RouteParserInterface $routeParser);
+    public function run(RouteParserInterface $routeParser);
 }

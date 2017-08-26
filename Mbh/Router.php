@@ -174,7 +174,7 @@ class Router implements RouterInterface
         $routes = $this->getRoutes()->getThatMatch($this->routeParser);
 
         $route = !$routes ?: $routes[0];
-        $response = !$route ?: $route->execute($this->routeParser);
+        $response = !$route ?: $route->run($this->routeParser);
         $this->sendResponse($response);
     }
 
