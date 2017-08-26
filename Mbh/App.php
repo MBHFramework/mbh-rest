@@ -21,12 +21,28 @@ use \Mbh\Interfaces\RouterInterface;
  */
 class App
 {
+    /**
+     * @var \Mbh\Interfaces\RouterInterface
+     *
+     */
     protected $router;
 
+    /**
+     * @var Startime
+     *
+     */
     protected $startime;
 
+    /**
+     * @var Storage[]
+     *
+     */
     protected $storage = [];
 
+    /**
+     * @var Setting[]
+     *
+     */
     protected $settings = [
       'httpVersion' => '1.1',
       'responseChunkSize' => 4096,
@@ -34,13 +50,7 @@ class App
       'routerCacheFile' => false,
       'debug' => false,
       'firewall' => false,
-      'api' => true,
-      'session' => [
-        'use_strict_mode' => true,
-        'use_cookies' => true,
-        'cookie_lifetime' => 18000, # Life time for session cookies -> 5 hs = 18000 seconds.
-        'cookie_httponly' => true # Avoid access to the cookie using scripting languages (such as javascript)
-      ]
+      'api' => true
     ];
 
     public static function autoload($class)
@@ -68,15 +78,7 @@ class App
 
     public function __construct(array $settings = [])
     {
-        try {
-            if (version_compare(phpversion(), '7.0.0', '<'))
-                throw new Exception(true);
-        } catch (Exception $e) {
-            die('Current <b>PHP</b> version is <b>' . phpversion() . '</b> and a version greater than or equal to <b>7.0.0</b> is required');
-        }
-
         $this->addSettings($settings);
-
         !$this->settings['firewall'] ?: new Firewall;
         $this->startime = !$this->settings['debug'] ?: Debug::startime();
     }
@@ -161,150 +163,167 @@ class App
     /**
      * Router wrapper
      */
-     /**
-      * Adds a new route for the HTTP request method `GET`
-      *
-      * @param string $route the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function get($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'GET' ], $pattern, $callback, $inject);
+    /**
+     * Adds a new route for the HTTP request method `GET`
+     *
+     * @param string $route the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function get($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'GET' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for the HTTP request method `POST`
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function post($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'POST' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for the HTTP request method `PUT`
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function put($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'PUT' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for the HTTP request method `PATCH`
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function patch($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'PATCH' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for the HTTP request method `DELETE`
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function delete($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'DELETE' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for the HTTP request method `HEAD`
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function head($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'HEAD' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for the HTTP request method `TRACE`
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function trace($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'TRACE' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for the HTTP request method `OPTIONS`
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function options($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'OPTIONS' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for the HTTP request method `CONNECT`
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function connect($pattern, $callback = null, $inject = null)
+    {
+        return $this->map([ 'CONNECT' ], $pattern, $callback, $inject);
+    }
+
+    /**
+     * Adds a new route for all of the specified HTTP request methods
+     *
+     * @param string $pattern the route to match, e.g. `/users/jane`
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function any($pattern, $callback = null, $inject = null)
+    {
+        return $this->getRouter()
+                    ->map([
+                      'GET',
+                      'POST',
+                      'PUT',
+                      'PATCH',
+                      'DELETE',
+                      'HEAD',
+                      'TRACE',
+                      'OPTIONS',
+                      'CONNECT'
+                    ], $pattern, $callback, $inject);
      }
 
-     /**
-      * Adds a new route for the HTTP request method `POST`
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function post($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'POST' ], $pattern, $callback, $inject);
-     }
-
-     /**
-      * Adds a new route for the HTTP request method `PUT`
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function put($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'PUT' ], $pattern, $callback, $inject);
-     }
-
-     /**
-      * Adds a new route for the HTTP request method `PATCH`
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function patch($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'PATCH' ], $pattern, $callback, $inject);
-     }
-
-     /**
-      * Adds a new route for the HTTP request method `DELETE`
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function delete($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'DELETE' ], $pattern, $callback, $inject);
-     }
-
-     /**
-      * Adds a new route for the HTTP request method `HEAD`
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function head($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'HEAD' ], $pattern, $callback, $inject);
-     }
-
-     /**
-      * Adds a new route for the HTTP request method `TRACE`
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function trace($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'TRACE' ], $pattern, $callback, $inject);
-     }
-
-     /**
-      * Adds a new route for the HTTP request method `OPTIONS`
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function options($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'OPTIONS' ], $pattern, $callback, $inject);
-     }
-
-     /**
-      * Adds a new route for the HTTP request method `CONNECT`
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function connect($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()->map([ 'CONNECT' ], $pattern, $callback, $inject);
-     }
-
-     /**
-      * Adds a new route for all of the specified HTTP request methods
-      *
-      * @param string $pattern the route to match, e.g. `/users/jane`
-      * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-      * @return bool whether the route matched the current request
-      */
-     public function any($pattern, $callback = null, $inject = null)
-     {
-         return $this->getRouter()
-                     ->map([
-                       'GET',
-                       'POST',
-                       'PUT',
-                       'PATCH',
-                       'DELETE',
-                       'HEAD',
-                       'TRACE',
-                       'OPTIONS',
-                       'CONNECT'
-                     ], $pattern, $callback, $inject);
-     }
+    /**
+     * Checks the specified request method and route against the current request to see whether it matches
+     *
+     * @param string|string[] $methods the request methods, one of which must be detected in order to have a match
+     * @param string $pattern the route that must be found in order to have a match
+     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
+     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
+     * @return bool whether the route matched the current request
+     */
+    public function map($methods, $pattern, $callback = null, $inject = null)
+    {
+        $methods = is_string($methods) ? [$methods] : $methods;
+        return $this->getRouter->map($methods, $pattern, $callback, $inject);
+    }
 
     public function run()
     {
         $this->getRouter()->run();
         !$this->settings['debug'] ?: new Debug($this->settings, $this->startime);
+
+        return $this;
     }
 }

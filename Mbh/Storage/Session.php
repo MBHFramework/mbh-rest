@@ -15,10 +15,15 @@ namespace Mbh\Storage;
  */
 final class Session
 {
-    final public function __construct(array $settings = [])
+    final public function __construct()
     {
         if (!headers_sent()) {
-            session_start($settings);
+            session_start([
+              'use_strict_mode' => true,
+              'use_cookies' => true,
+              'cookie_lifetime' => 18000, # Life time for session cookies -> 5 hs = 18000 seconds.
+              'cookie_httponly' => true # Avoid access to the cookie using scripting languages (such as javascript)
+            ]);
         }
     }
 
