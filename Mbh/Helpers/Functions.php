@@ -10,13 +10,10 @@
 
 namespace Mbh\Helpers;
 
-use Twig_Extension;
-use Twig_Function;
-
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Functions extends Twig_Extension
+final class Functions extends \Twig_Extension
 {
     final public static function encrypt(string $e) : string
     {
@@ -142,17 +139,17 @@ final class Functions extends Twig_Extension
     }
 
     /**
-     * It is obtained from Twig_Extension and is used to make each function available as a twig tag
+     * It is obtained from \Twig_Extension and is used to make each function available as a twig tag
      *
      * @return array
      */
     public function getFunctions() : array
     {
         return [
-           new Twig_Function('convert', array($this, 'convert')),
-           new Twig_Function('empty', array($this, 'empty')),
-           new Twig_Function('e_dynamic', array($this, 'e')),
-           new Twig_Function('all_full', array($this, 'all_full'))
+           new \Twig_Function('convert', array($this, 'convert')),
+           new \Twig_Function('empty', array($this, 'empty')),
+           new \Twig_Function('e_dynamic', array($this, 'e')),
+           new \Twig_Function('all_full', array($this, 'all_full'))
         ];
     }
 

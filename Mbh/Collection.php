@@ -10,7 +10,6 @@
 
 namespace Mbh;
 
-use ArrayIterator;
 use Mbh\Interfaces\CollectionInterface;
 
 /**
@@ -193,10 +192,10 @@ class Collection implements CollectionInterface
     /**
      * Get collection iterator
      *
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->data);
+        return new \ArrayIterator($this->data);
     }
 }

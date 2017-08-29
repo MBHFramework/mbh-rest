@@ -10,8 +10,6 @@
 
 namespace Mbh;
 
-use Exception;
-use SplObjectStorage;
 use Mbh\Collection;
 use Mbh\Interfaces\ContainerInterface;
 
@@ -98,7 +96,7 @@ class Container implements ContainerInterface
      * @param string $key    The unique identifier for the parameter or object
      * @param mixed  $value The value of the parameter or a closure to define an object
      *
-     * @throws FrozenServiceException Prevent override of a frozen service
+     * @throws FrozenService\Exception Prevent override of a frozen service
      */
     public function offsetSet($key, $value)
     {
@@ -113,12 +111,12 @@ class Container implements ContainerInterface
      *
      * @return mixed The value of the parameter or an object
      *
-     * @throws Exception If the identifier is not defined
+     * @throws \Exception If the identifier is not defined
      */
     public function offsetGet($key)
     {
         if (!isset($this->keys[$key])) {
-            throw new Exception($key);
+            throw new \Exception($key);
         }
 
         if (
@@ -171,11 +169,11 @@ class Container implements ContainerInterface
     public function get($key)
     {
         if (!$this->has($key)) {
-            throw new Exception(sprintf('Identifier "%s" is not defined.', $key));
+            throw new \Exception(sprintf('Identifier "%s" is not defined.', $key));
         }
         try {
             return $this->offsetGet($key);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }

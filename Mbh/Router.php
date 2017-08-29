@@ -10,9 +10,6 @@
 
 namespace Mbh;
 
-use Response;
-use RuntimeException;
-use InvalidArgumentException;
 use Mbh\Route;
 use Mbh\RouteCollection;
 use Mbh\Helpers\Path;
@@ -83,17 +80,17 @@ class Router implements RouterInterface
      *
      * @return self
      *
-     * @throws InvalidArgumentException
-     * @throws RuntimeException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function setCacheFile($cacheFile)
     {
         if (!is_string($cacheFile) && $cacheFile !== false) {
-            throw new InvalidArgumentException('Router cacheFile must be a string or false');
+            throw new \InvalidArgumentException('Router cacheFile must be a string or false');
         }
         $this->cacheFile = $cacheFile;
         if ($cacheFile !== false && !is_writable(dirname($cacheFile))) {
-            throw new RuntimeException('Router cacheFile directory must be writable');
+            throw new \RuntimeException('Router cacheFile directory must be writable');
         }
         return $this;
     }
@@ -184,7 +181,7 @@ class Router implements RouterInterface
             echo $response;
         } elseif (is_array($response)) {
             echo json_encode($response);
-        } elseif ($response instanceof Response) {
+        } elseif ($response instanceof \Response) {
             $response->execute();
         } else {
             header("HTTP/1.1 404 Not Found");

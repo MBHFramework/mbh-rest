@@ -10,14 +10,13 @@
 
 namespace Mbh;
 
-use SplObjectStorage;
 use Mbh\Interfaces\RouteInterface;
 use Mbh\Interfaces\RouteParserInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-class RouteCollection extends SplObjectStorage
+class RouteCollection extends \SplObjectStorage
 {
     /**
      * Attach a Route to the collection.

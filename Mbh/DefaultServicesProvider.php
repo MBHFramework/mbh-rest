@@ -10,7 +10,6 @@
 
 namespace Mbh;
 
-use Exception;
 use Mbh\Firewall;
 use Mbh\Router;
 use Mbh\Storage\Session;

@@ -10,7 +10,6 @@
 
 namespace Mbh;
 
-use InvalidArgumentException;
 use Mbh\Helpers\Path;
 use Mbh\Helpers\Uri;
 use Mbh\Interfaces\RouteInterface;
@@ -183,7 +182,7 @@ class Route implements RouteInterface
 
         // if the callback is invalid
         if (!is_callable($this->callable)) {
-            throw new InvalidArgumentException('Invalid callback for methods `' . implode('|', $this->methods) . '` at route `' . $this->pattern . '`');
+            throw new \InvalidArgumentException('Invalid callback for methods `' . implode('|', $this->methods) . '` at route `' . $this->pattern . '`');
         }
 
         // if the callback can be executed

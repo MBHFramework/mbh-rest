@@ -10,8 +10,6 @@
 
 namespace Mbh;
 
-use Exception;
-use BadMethodCallException;
 use Mbh\Debug;
 use Mbh\Router;
 use Mbh\Interfaces\RouterInterface;
@@ -123,12 +121,12 @@ class App
      * @param  array $args
      * @return mixed
      *
-     * @throws BadMethodCallException
+     * @throws \BadMethodCallException
      */
     public function __call($method, $args)
     {
         if (!$this->container->has($method)) {
-            throw new BadMethodCallException("Method $method is not a valid method");
+            throw new \BadMethodCallException("Method $method is not a valid method");
         }
 
         $callable = $this->container->get($method);
