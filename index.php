@@ -10,13 +10,12 @@ use \Mbh\App;
 
 App::registerAutoload();
 
-$app = new App([
-  'debug' => true
-]);
+$app = new App;
 
 $app->any('/', function() {
-    return "MBHFramework working!";
+    /* code */
 });
 
-$app->run()
-    ->firewall();
+$app->firewall()
+    ->debug()
+    ->run();

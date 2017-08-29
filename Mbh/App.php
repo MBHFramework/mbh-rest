@@ -34,12 +34,6 @@ class App
     protected $router;
 
     /**
-     * @var Startime
-     *
-     */
-    protected $startime;
-
-    /**
      * @var Associative array
      *
      */
@@ -47,9 +41,7 @@ class App
       'httpVersion' => '1.1',
       'responseChunkSize' => 4096,
       'displayErrorDetails' => false,
-      'routerCacheFile' => false,
-      'debug' => false,
-      'firewall' => false
+      'routerCacheFile' => false
     ];
 
     public static function autoload($class)
@@ -79,8 +71,8 @@ class App
     {
         $this->addSettings($settings);
         $this->container = new Container();
-        
-        $this->startime = !$this->settings['debug'] ?: Debug::startime();
+
+        Debug::startime();
     }
 
     /**
@@ -135,13 +127,16 @@ class App
      */
     public function __call($method, $args)
     {
-        if ($this->container->has($method)) {
-            $obj = $this->container->get($method);
-            if (is_callable($obj)) {
-                return call_user_func_array($obj, $args);
-            }
+        if (!$this->container->has($method)) {
+            throw new BadMethodCallException("Method $method is not a valid method");
         }
-        throw new BadMethodCallException("Method $method is not a valid method");
+
+        $callable = $this->container->get($method);
+        if (is_callable($callable)) {
+          return call_user_func_array($callable, $args);
+        }
+
+        return $this;
     }
 
     /**
@@ -364,7 +359,6 @@ class App
     public function run()
     {
         $this->getRouter()->run();
-        !$this->settings['debug'] ?: new Debug($this->settings, $this->startime);
 
         return $this;
     }

@@ -14,6 +14,7 @@ use Exception;
 use Mbh\Firewall;
 use Mbh\Router;
 use Mbh\Storage\Session;
+use Mbh\Interfaces\ContainerInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -25,18 +26,22 @@ class DefaultServicesProvider
      *
      * @param Container $container A DI container implementing ArrayAccess and container-interop.
      */
-    public function register($container)
+    public function register(ContainerInterface $container)
     {
         if (! isset($container['firewall'])) {
-            $container['firewall'] = function ($container) {
-                if (isset($container->get('settings')['firewall'])) {
-                    return new Firewall;
-                }
+            $container['firewall'] = function (ContainerInterface $container) {
+                return new Firewall;
+            };
+        }
+
+        if (! isset($container['debug'])) {
+            $container['debug'] = function (ContainerInterface $container) {
+                return new Debug($container);
             };
         }
 
         if (! isset($container['session'])) {
-            $container['session'] = function ($container) {
+            $container['session'] = function (ContainerInterface $container) {
                 return new Session;
             };
         }
@@ -50,7 +55,7 @@ class DefaultServicesProvider
              *
              * @return RouterInterface
              */
-            $container['router'] = function ($container) {
+            $container['router'] = function (ContainerInterface $container) {
                 $routerCacheFile = false;
                 if (isset($container->get('settings')['routerCacheFile'])) {
                     $routerCacheFile = $container->get('settings')['routerCacheFile'];

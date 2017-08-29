@@ -39,8 +39,8 @@ class Container implements ContainerInterface
       'responseChunkSize' => 4096,
       'displayErrorDetails' => false,
       'routerCacheFile' => false,
+      'firewall' => false,
       'debug' => false,
-      'firewall' => false
     ];
 
     /**
@@ -121,11 +121,16 @@ class Container implements ContainerInterface
             throw new Exception($key);
         }
 
-        if (method_exists($this->values[$key], '__invoke')) {
-           return $this->values[$key]($this);
+        if (
+          !is_object($this->values[$key])
+          || !method_exists($this->values[$key], '__invoke')
+        ) {
+            return $this->values[$key];
         }
 
-        return  $this->values[$key];
+        $value = $this->values[$key]($this);
+        $this->values[$key] = $value;
+        return  $value;
     }
     /**
      * Checks if a parameter or an object is set.

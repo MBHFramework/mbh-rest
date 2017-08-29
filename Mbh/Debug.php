@@ -11,7 +11,7 @@
 namespace Mbh;
 
 use Mbh\Helpers\Functions;
-
+use Mbh\Interfaces\ContainerInterface;
 
 /**
  * created by Federico Ramón Gasquez
@@ -53,7 +53,12 @@ final class Debug
 
     const FOOT = '</div>';
 
-    protected $app;
+
+    /**
+     * @var Startime
+     *
+     */
+    protected static $startime;
 
     /**
      * Start time
@@ -63,7 +68,7 @@ final class Debug
     final public static function startime()
     {
         $startime = explode(" ", microtime());
-        return $startime[0] + $startime[1];
+        self::$startime = $startime[0] + $startime[1];
     }
 
 
@@ -90,11 +95,9 @@ final class Debug
     /**
      * Constructor, initialize debug mode
      *
-     * @param int $startime: Start-Time, Start time of code execution
-     *
      * @return void
      */
-    final public function __construct(array $settings, int $startime)
+    final public function __construct(ContainerInterface $container)
     {
         #Templates names
         $template_engine = ['PlatesPHP','Twig'];
@@ -146,8 +149,8 @@ final class Debug
         }
 
 
-        echo "<br /><b class=\"cab\">Firewall:</b> " . ($settings['firewall'] ? "True" : "False");
-        echo "<br /><b class=\"cab\">Total time:</b> " . ($endtime - $startime) . " seconds" ;
+        echo "<br /><b class=\"cab\">Firewall:</b> " . ($container['firewall'] ? "True" : "False");
+        echo "<br /><b class=\"cab\">Total time:</b> " . ($endtime - self::$startime) . " seconds" ;
         echo "<br /><b class=\"cab\">RAM consumed:</b> ${memory}";
     }
 
