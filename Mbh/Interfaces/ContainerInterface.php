@@ -15,19 +15,16 @@ namespace Mbh\Interfaces;
  *
  * created by Ulises Jeremias Cornejo Fandos
  */
-interface ContainerInterface
+interface ContainerInterface extends \ArrayAccess
 {
     /**
      * Finds an entry of the container by its identifier and returns it.
      *
-     * @param string $id Identifier of the entry to look for.
-     *
-     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
-     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     * @param $key Identifier of the entry to look for.
      *
      * @return mixed Entry.
      */
-    public function get(string $id);
+    public function get($key);
     /**
      * Returns true if the container can return an entry for the given identifier.
      * Returns false otherwise.
@@ -35,9 +32,9 @@ interface ContainerInterface
      * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
      * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
      *
-     * @param string $id Identifier of the entry to look for.
+     * @param $key Identifier of the entry to look for.
      *
      * @return bool
      */
-    public function has(string $id);
+    public function has($key);
 }

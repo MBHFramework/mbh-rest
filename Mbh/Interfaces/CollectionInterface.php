@@ -10,14 +10,10 @@
 
 namespace Mbh\Interfaces;
 
-use ArrayAccess;
-use Countable;
-use IteratorAggregate;
-
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-interface CollectionInterface extends ArrayAccess, Countable, IteratorAggregate
+interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggregate
 {
     public function set($key, $value);
 

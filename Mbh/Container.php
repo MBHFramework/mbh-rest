@@ -10,14 +10,20 @@
 
 namespace Mbh;
 
+use Exception;
 use SplObjectStorage;
+use Mbh\Collection;
 use Mbh\Interfaces\ContainerInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-class Container extends SplObjectStorage implements ContainerInterface
+class Container implements ContainerInterface
 {
+    private $values = [];
+
+    private $keys = [];
+
     /**
      * @var Storage[]
      *
@@ -28,7 +34,7 @@ class Container extends SplObjectStorage implements ContainerInterface
      * @var Setting[]
      *
      */
-    protected $settings = [
+    protected $defaultSettings = [
       'httpVersion' => '1.1',
       'responseChunkSize' => 4096,
       'displayErrorDetails' => false,
@@ -44,7 +50,9 @@ class Container extends SplObjectStorage implements ContainerInterface
      */
     public function __construct(array $values = [])
     {
-        parent::__construct($values);
+        foreach ($values as $key => $value) {
+          $this[$key] = $value;
+        }
 
         $userSettings = isset($values['settings']) ? $values['settings'] : [];
         $this->registerDefaultServices($userSettings);
@@ -76,5 +84,118 @@ class Container extends SplObjectStorage implements ContainerInterface
 
         $defaultProvider = new DefaultServicesProvider();
         $defaultProvider->register($this);
+    }
+
+    /**
+     * Sets a parameter or an object.
+     *
+     * Objects must be defined as Closures.
+     *
+     * Allowing any PHP callable leads to difficult to debug problems
+     * as function names (strings) are callable (creating a function with
+     * the same name as an existing parameter would break your container).
+     *
+     * @param string $key    The unique identifier for the parameter or object
+     * @param mixed  $value The value of the parameter or a closure to define an object
+     *
+     * @throws FrozenServiceException Prevent override of a frozen service
+     */
+    public function offsetSet($key, $value)
+    {
+        $this->values[$key] = $value;
+        $this->keys[$key] = true;
+    }
+
+    /**
+     * Gets a parameter or an object.
+     *
+     * @param string $key The unique identifier for the parameter or object
+     *
+     * @return mixed The value of the parameter or an object
+     *
+     * @throws Exception If the identifier is not defined
+     */
+    public function offsetGet($key)
+    {
+        if (!isset($this->keys[$key])) {
+            throw new Exception($key);
+        }
+        return $this->values[$key];
+    }
+    /**
+     * Checks if a parameter or an object is set.
+     *
+     * @param string $key The unique identifier for the parameter or object
+     *
+     * @return bool
+     */
+    public function offsetExists($key)
+    {
+        return isset($this->keys[$key]);
+    }
+
+    /**
+     * Unsets a parameter or an object.
+     *
+     * @param string $key The unique identifier for the parameter or object
+     */
+    public function offsetUnset($key)
+    {
+        if (isset($this->keys[$key])) {
+            unset($this->values[$key], $this->keys[$key]);
+        }
+    }
+
+    /**
+     * Methods to satisfy ContainerInterface
+     */
+
+    /**
+     * Finds an entry of the container by its identifier and returns it.
+     *
+     * @param string $key Identifier of the entry to look for.
+     *
+     * @throws ContainerValueNotFoundException  No entry was found for this identifier.
+     * @throws ContainerExceptionInterface      Error while retrieving the entry.
+     *
+     * @return mixed Entry.
+     */
+    public function get($key)
+    {
+        if (!$this->has($key)) {
+            throw new Exception(sprintf('Identifier "%s" is not defined.', $key));
+        }
+        try {
+            return $this->offsetGet($key);
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+    }
+
+    /**
+     * Returns true if the container can return an entry for the given identifier.
+     * Returns false otherwise.
+     *
+     * @param string $key Identifier of the entry to look for.
+     *
+     * @return boolean
+     */
+    public function has($key)
+    {
+        return $this->offsetExists($key);
+    }
+
+    /**
+     * Magic methods for convenience
+     */
+
+    public function __get($name)
+    {
+        return $this->get($name);
+    }
+
+    public function __isset($name)
+    {
+        return $this->has($name);
     }
 }

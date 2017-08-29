@@ -13,7 +13,6 @@ namespace Mbh;
 use Exception;
 use BadMethodCallException;
 use Mbh\Debug;
-use Mbh\Firewall;
 use Mbh\Router;
 use Mbh\Interfaces\RouterInterface;
 
@@ -23,8 +22,14 @@ use Mbh\Interfaces\RouterInterface;
 class App
 {
     /**
-     * @var Mbh\Interfaces\RouterInterface
-     *
+    * Container
+    *
+    * @var \Mbh\Interfaces\ContainerInterface
+    */
+    private $container;
+
+    /**
+     * @var \Mbh\Interfaces\RouterInterface
      */
     protected $router;
 
@@ -35,13 +40,7 @@ class App
     protected $startime;
 
     /**
-     * @var Storage[]
-     *
-     */
-    protected $storage = [];
-
-    /**
-     * @var Setting[]
+     * @var Associative array
      *
      */
     protected $settings = [
@@ -80,7 +79,7 @@ class App
     {
         $this->addSettings($settings);
         $this->container = new Container();
-        !$this->settings['firewall'] ?: new Firewall;
+        
         $this->startime = !$this->settings['debug'] ?: Debug::startime();
     }
 
@@ -132,7 +131,7 @@ class App
      * @param  array $args
      * @return mixed
      *
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function __call($method, $args)
     {
@@ -148,6 +147,7 @@ class App
     /**
      * Settings management
      */
+
     /**
      * Does app have a setting with given key?
      *
