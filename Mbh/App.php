@@ -11,10 +11,11 @@
 namespace Mbh;
 
 use Exception;
-use \Mbh\Debug;
-use \Mbh\Firewall;
-use \Mbh\Router;
-use \Mbh\Interfaces\RouterInterface;
+use BadMethodCallException;
+use Mbh\Debug;
+use Mbh\Firewall;
+use Mbh\Router;
+use Mbh\Interfaces\RouterInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -22,7 +23,7 @@ use \Mbh\Interfaces\RouterInterface;
 class App
 {
     /**
-     * @var \Mbh\Interfaces\RouterInterface
+     * @var Mbh\Interfaces\RouterInterface
      *
      */
     protected $router;
@@ -49,8 +50,7 @@ class App
       'displayErrorDetails' => false,
       'routerCacheFile' => false,
       'debug' => false,
-      'firewall' => false,
-      'api' => true
+      'firewall' => false
     ];
 
     public static function autoload($class)
@@ -79,8 +79,29 @@ class App
     public function __construct(array $settings = [])
     {
         $this->addSettings($settings);
+        $this->container = new Container();
         !$this->settings['firewall'] ?: new Firewall;
         $this->startime = !$this->settings['debug'] ?: Debug::startime();
+    }
+
+    /**
+     * Get container
+     *
+     * @return ContainerInterface|null
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Set container
+     *
+     * @param ContainerInterface $container
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
     }
 
     public function getRouter(): RouterInterface
@@ -101,6 +122,27 @@ class App
         $this->router = $router;
 
         return $this;
+    }
+
+    /**
+     * Calling a non-existant method on App checks to see if there's an item
+     * in the container that is callable and if so, calls it.
+     *
+     * @param  string $method
+     * @param  array $args
+     * @return mixed
+     *
+     * @throws \BadMethodCallException
+     */
+    public function __call($method, $args)
+    {
+        if ($this->container->has($method)) {
+            $obj = $this->container->get($method);
+            if (is_callable($obj)) {
+                return call_user_func_array($obj, $args);
+            }
+        }
+        throw new BadMethodCallException("Method $method is not a valid method");
     }
 
     /**

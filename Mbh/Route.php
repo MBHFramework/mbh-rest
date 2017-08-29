@@ -11,10 +11,10 @@
 namespace Mbh;
 
 use InvalidArgumentException;
-use \Mbh\Helpers\Path;
-use \Mbh\Helpers\Uri;
-use \Mbh\Interfaces\RouteInterface;
-use \Mbh\Interfaces\RouteParserInterface;
+use Mbh\Helpers\Path;
+use Mbh\Helpers\Uri;
+use Mbh\Interfaces\RouteInterface;
+use Mbh\Interfaces\RouteParserInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos

@@ -8,7 +8,7 @@
  * @license   https://github.com/MBHFramework/mbh-framework/blob/master/LICENSE (MIT License)
  */
 
-namespace Mbh;
+namespace Mbh\Connection;
 
 use PDO;
 use PDOException;
@@ -17,11 +17,11 @@ use PDOStatement;
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Connection extends PDO
+final class StdConnection extends PDO
 {
     private static $id;
-    private static $instance;
 
+    private static $instance;
 
     /**
      * Starts the connection instance, if it has already been declared before, does not duplicate it and saves memory.

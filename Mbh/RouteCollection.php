@@ -11,8 +11,8 @@
 namespace Mbh;
 
 use SplObjectStorage;
-use \Mbh\Interfaces\RouteInterface;
-use \Mbh\Interfaces\RouteParserInterface;
+use Mbh\Interfaces\RouteInterface;
+use Mbh\Interfaces\RouteParserInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos

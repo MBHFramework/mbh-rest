@@ -13,13 +13,13 @@ namespace Mbh;
 use Response;
 use RuntimeException;
 use InvalidArgumentException;
-use \Mbh\Route;
-use \Mbh\RouteCollection;
-use \Mbh\Helpers\Path;
-use \Mbh\Helpers\Uri;
-use \Mbh\Handlers\RouteParser\StdParser;
-use \Mbh\Interfaces\RouterInterface;
-use \Mbh\Interfaces\RouteParserInterface;
+use Mbh\Route;
+use Mbh\RouteCollection;
+use Mbh\Helpers\Path;
+use Mbh\Helpers\Uri;
+use Mbh\Handlers\RouteParser\StdParser;
+use Mbh\Interfaces\RouterInterface;
+use Mbh\Interfaces\RouteParserInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -29,12 +29,12 @@ class Router implements RouterInterface
     /**
      * Parser
      *
-     * @var \Mbh\Handlers\RouteParser
+     * @var Mbh\Handlers\RouteParser
      */
     protected $routeParser;
 
     /**
-     * @var \Mbh\Interfaces\InvocationStrategyInterface
+     * @var Mbh\Interfaces\InvocationStrategyInterface
      */
     protected $routeInvocationStrategy;
 
