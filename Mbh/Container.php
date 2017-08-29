@@ -45,12 +45,13 @@ class Container extends SplObjectStorage implements ContainerInterface
     public function __construct(array $values = [])
     {
         parent::__construct($values);
+
         $userSettings = isset($values['settings']) ? $values['settings'] : [];
         $this->registerDefaultServices($userSettings);
     }
 
     /**
-     * This function registers the default services that Slim needs to work.
+     * This function registers the default services that Mbh needs to work.
      *
      * All services are shared - that is, they are registered such that the
      * same instance is returned on subsequent calls.
@@ -62,15 +63,17 @@ class Container extends SplObjectStorage implements ContainerInterface
     private function registerDefaultServices($userSettings)
     {
         $defaultSettings = $this->defaultSettings;
+
         /**
          * This service MUST return an array or an
-         * instance of \ArrayAccess.
+         * instance of ArrayAccess.
          *
-         * @return array|\ArrayAccess
+         * @return array|ArrayAccess
          */
         $this['settings'] = function () use ($userSettings, $defaultSettings) {
             return new Collection(array_merge($defaultSettings, $userSettings));
         };
+
         $defaultProvider = new DefaultServicesProvider();
         $defaultProvider->register($this);
     }
