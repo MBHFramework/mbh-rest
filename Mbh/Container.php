@@ -120,7 +120,12 @@ class Container implements ContainerInterface
         if (!isset($this->keys[$key])) {
             throw new Exception($key);
         }
-        return $this->values[$key];
+
+        if (method_exists($this->values[$key], '__invoke')) {
+           return $this->values[$key]($this);
+        }
+
+        return  $this->values[$key];
     }
     /**
      * Checks if a parameter or an object is set.
@@ -155,8 +160,6 @@ class Container implements ContainerInterface
      *
      * @param string $key Identifier of the entry to look for.
      *
-     * @throws ContainerValueNotFoundException  No entry was found for this identifier.
-     * @throws ContainerExceptionInterface      Error while retrieving the entry.
      *
      * @return mixed Entry.
      */

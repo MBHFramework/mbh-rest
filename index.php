@@ -18,4 +18,5 @@ $app->any('/', function() {
     return "MBHFramework working!";
 });
 
-$app->run();
+$app->run()
+    ->firewall();

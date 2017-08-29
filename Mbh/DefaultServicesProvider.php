@@ -13,6 +13,7 @@ namespace Mbh;
 use Exception;
 use Mbh\Firewall;
 use Mbh\Router;
+use Mbh\Storage\Session;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
@@ -31,6 +32,12 @@ class DefaultServicesProvider
                 if (isset($container->get('settings')['firewall'])) {
                     return new Firewall;
                 }
+            };
+        }
+
+        if (! isset($container['session'])) {
+            $container['session'] = function ($container) {
+                return new Session;
             };
         }
 
