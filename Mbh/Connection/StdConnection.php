@@ -26,7 +26,7 @@ final class StdConnection extends \PDO
      *
      * @return connection instance
      */
-    final public static function start(string $DATABASE = DATABASE['name'], string $MOTOR = DATABASE['motor'], bool $new_instance = false): Conexion
+    final public static function start(string $DATABASE = DATABASE['name'], string $MOTOR = DATABASE['motor'], bool $new_instance = false)
     {
         if (!self::$instance instanceof self or $new_instance) {
             self::$instance = new self($DATABASE, $MOTOR);
