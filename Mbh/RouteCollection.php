@@ -44,8 +44,10 @@ class RouteCollection extends \SplObjectStorage
 
     public function getThatMatch(RouteParserInterface $routeParser)
     {
-        return array_values(array_filter($this->all(), function($route) use($routeParser) {
-          return $route->checkIfMatch($routeParser);
-        }));
+        foreach ($this as $route) {
+            if ($route->checkIfMatch($routeParser)) {
+                return $route;
+            }
+        }
     }
 }

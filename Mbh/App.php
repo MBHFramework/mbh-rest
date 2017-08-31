@@ -351,7 +351,7 @@ class App
     public function map($methods, $pattern, $callback = null, $inject = null)
     {
         $methods = is_string($methods) ? [$methods] : $methods;
-        return $this->getRouter->map($methods, $pattern, $callback, $inject);
+        return $this->getRouter()->map($methods, $pattern, $callback, $inject);
     }
 
     public function run()

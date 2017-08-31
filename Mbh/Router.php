@@ -168,10 +168,15 @@ class Router implements RouterInterface
 
     public function run()
     {
-        $routes = $this->getRoutes()->getThatMatch($this->routeParser);
+        $parser = $this->routeParser;
+        $route = $this->getRoutes()->getThatMatch($parser);
 
-        $route = !$routes ?: $routes[0];
-        $response = !$route ?: $route->run($this->routeParser);
+        if (is_null($route)) {
+            header("HTTP/1.1 404 Not Found");
+            exit('404');
+        }
+
+        $response = $route->run($parser);
         $this->sendResponse($response);
     }
 
