@@ -18,15 +18,15 @@ use Mbh\Interfaces\ContainerInterface;
  */
 class Container implements ContainerInterface
 {
+    /**
+     * @var callable[]
+     */
     private $values = [];
 
-    private $keys = [];
-
     /**
-     * @var Storage[]
-     *
+     * @var string[]
      */
-    protected $storage = [];
+    private $keys = [];
 
     /**
      * @var Setting[]
@@ -130,6 +130,7 @@ class Container implements ContainerInterface
         $this->values[$key] = $value;
         return  $value;
     }
+
     /**
      * Checks if a parameter or an object is set.
      *
