@@ -112,32 +112,30 @@ final class Debug
         echo self::HEAD;
         echo "<b class=\"cab\">File:</b> {$_SERVER['PHP_SELF']}<br />";
         echo "<b class=\"cab\">PHP:</b> " . phpversion() . "<br />";
-        echo "<b class=\"cab\">FRAMEWORK:</b> " . VERSION . "<br />";
-        echo "<b class=\"cab\">Template Engine:</b> {$template_engine[(int) TWIG_TEMPLATE_ENGINE]} <br />";
-
-
 
         if (isset($_SESSION)) {
             $this->listVar($_SESSION, '$_SESSION');
         } else {
             echo 'No <span class="variable">$_SESSION</span> variables<br />';
         }
+
         if ($_POST) {
             $this->listVar($_POST, '$_POST');
         } else {
             echo 'No <span class="variable">$_POST</span> variables<br />';
         }
+
         if ($_GET) {
             $this->listVar($_GET, '$_GET');
         } else {
             echo 'No <span class="variable">$_GET</span> variables<br />';
         }
+
         if ($_FILES) {
             $this->listVar($_FILES, '$_FILES');
         } else {
             echo 'No <span class="variable">$_FILES</span> variables<br />';
         }
-
 
         if (isset($_SESSION['___QUERY_DEBUG___']) and sizeof($_SESSION['___QUERY_DEBUG___']) > 0) {
             echo '<br /><strong class="cab">QUERYS:</strong><br />';
