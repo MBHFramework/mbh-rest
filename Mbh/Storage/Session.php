@@ -15,21 +15,28 @@ namespace Mbh\Storage;
  */
 final class Session
 {
-    final public function __construct(array $settings = SESSION['CONF'])
+    final public function __construct()
     {
         if (!headers_sent()) {
-            session_start($settings);
+            session_start([
+              'use_strict_mode' => true,
+              'use_cookies' => true,
+              'cookie_lifetime' => 18000, # Life time for session cookies -> 5 hs = 18000 seconds.
+              'cookie_httponly' => true # Avoid access to the cookie using scripting languages (such as javascript)
+            ]);
         }
     }
 
     final public function set($key, $value)
     {
         $_SESSION[$key] = $value;
+        return $this;
     }
 
     final public function setFlash($identifier, $message)
     {
         $_SESSION[$identifier] = $message;
+        return $this;
     }
 
     final public function getFlash($identifier)
@@ -56,6 +63,7 @@ final class Session
         if ($this->has($key)) {
             unset($_SESSION[$key]);
         }
+        return $this;
     }
 
     final public function destroy()
@@ -70,7 +78,7 @@ final class Session
 
     final public function offsetSet($offset, $value)
     {
-        $this->set($offset, $value);
+        return $this->set($offset, $value);
     }
 
     final public function offsetExists($offset)
@@ -80,6 +88,6 @@ final class Session
 
     final public function offsetUnset($offset)
     {
-        $this->delete($offset);
+        return $this->delete($offset);
     }
 }

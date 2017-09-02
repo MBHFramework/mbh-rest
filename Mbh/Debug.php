@@ -11,7 +11,7 @@
 namespace Mbh;
 
 use Mbh\Helpers\Functions;
-
+use Mbh\Interfaces\ContainerInterface;
 
 /**
  * created by Federico Ramón Gasquez
@@ -53,26 +53,33 @@ final class Debug
 
     const FOOT = '</div>';
 
+
     /**
-      * Start time
-      *
-      * @return Start-Time, Start time of code execution
-      */
+     * @var Startime
+     *
+     */
+    protected static $startime;
+
+    /**
+     * Start time
+     *
+     * @return Start-Time, Start time of code execution
+     */
     final public static function startime()
     {
         $startime = explode(" ", microtime());
-        return $startime[0] + $startime[1];
+        self::$startime = $startime[0] + $startime[1];
     }
 
 
     /**
-      * List an array, displaying its contents
-      *
-      * @param array $VAR: Array to display
-      * @param string $variable: Written form of the variable being broken down
-      *
-      * @return void
-      */
+     * List an array, displaying its contents
+     *
+     * @param array $VAR: Array to display
+     * @param string $variable: Written form of the variable being broken down
+     *
+     * @return void
+     */
     final private function listVar(array $VAR, string $variable)
     {
         echo '<strong class="cab">',$variable,':</strong> <br />';
@@ -86,13 +93,11 @@ final class Debug
     }
 
     /**
-      * Constructor, initialize debug mode
-      *
-      * @param int $startime: Start-Time, Start time of code execution
-      *
-      * @return void
-      */
-    final public function __construct(int $startime)
+     * Constructor, initialize debug mode
+     *
+     * @return void
+     */
+    final public function __construct(ContainerInterface $container)
     {
         #Templates names
         $template_engine = ['PlatesPHP','Twig'];
@@ -144,18 +149,16 @@ final class Debug
         }
 
 
-        echo "<br /><b class=\"cab\">DB_HOST:</b> " . DATABASE['host'];
-        echo "<br /><b class=\"cab\">DB_NAME:</b> " . DATABASE['name'] .  "<br />";
-        echo "<br /><b class=\"cab\">Firewall:</b> " . (FIREWALL ? "True" : "False");
-        echo "<br /><b class=\"cab\">Total time:</b> " . ($endtime - $startime) . " seconds" ;
+        echo "<br /><b class=\"cab\">Firewall:</b> " . ($container['firewall'] ? "True" : "False");
+        echo "<br /><b class=\"cab\">Total time:</b> " . ($endtime - self::$startime) . " seconds" ;
         echo "<br /><b class=\"cab\">RAM consumed:</b> ${memory}";
     }
 
     /**
-      * End debug mode
-      *
-      * @return void
-      */
+     * End debug mode
+     *
+     * @return void
+     */
     final public function __destruct()
     {
         echo self::FOOT;

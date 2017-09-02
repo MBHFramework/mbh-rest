@@ -10,25 +10,89 @@
 
 namespace Mbh;
 
-use Response;
-use \Mbh\Route;
-use \Mbh\RouteCollection;
-use \Mbh\Helpers\Path;
-use \Mbh\Helpers\Uri;
-use \Mbh\Interfaces\RouterInterface;
+use Mbh\Route;
+use Mbh\RouteCollection;
+use Mbh\Helpers\Path;
+use Mbh\Helpers\Uri;
+use Mbh\Handlers\RouteParser\StdParser;
+use Mbh\Interfaces\RouterInterface;
+use Mbh\Interfaces\RouteParserInterface;
 
 /**
  * created by Ulises Jeremias Cornejo Fandos
  */
-final class Router implements RouterInterface
+class Router implements RouterInterface
 {
-    /** Router for PHP. Simple, lightweight and convenient. */
+    /**
+     * Parser
+     *
+     * @var Mbh\Handlers\RouteParser
+     */
+    protected $routeParser;
 
-    private $routes = [];
+    /**
+     * @var Mbh\Interfaces\InvocationStrategyInterface
+     */
+    protected $routeInvocationStrategy;
 
-    public function __construct()
+    /**
+     * Base path used in pathFor()
+     *
+     * @var string
+     */
+    protected $basePath = '';
+
+    /**
+     * Path to fast route cache file. Set to false to disable route caching
+     *
+     * @var string|False
+     */
+    protected $cacheFile = false;
+
+    /**
+     * Routes
+     *
+     * @var Route[]
+     */
+    protected $routes = [];
+
+    /**
+     * Settings
+     *
+     * @var Setting[]
+     */
+    protected $settings = [];
+
+    /**
+     * Create new router
+     *
+     * @param RouteParserInterface $parser
+     */
+    public function __construct(RouteParserInterface $parser = null)
     {
-        $this->setRoutes(new RouteCollection());
+        $this->routeParser = $parser ?? new StdParser;
+    }
+
+    /**
+     * Set path to fast route cache file. If this is false then route caching is disabled.
+     *
+     * @param string|false $cacheFile
+     *
+     * @return self
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    public function setCacheFile($cacheFile)
+    {
+        if (!is_string($cacheFile) && $cacheFile !== false) {
+            throw new \InvalidArgumentException('Router cacheFile must be a string or false');
+        }
+        $this->cacheFile = $cacheFile;
+        if ($cacheFile !== false && !is_writable(dirname($cacheFile))) {
+            throw new \RuntimeException('Router cacheFile directory must be writable');
+        }
+        return $this;
     }
 
     public function setRoutes(RouteCollection $routes)
@@ -38,6 +102,9 @@ final class Router implements RouterInterface
 
     public function getRoutes()
     {
+        if (! $this->routes instanceof RouteCollection) {
+            $this->routes = new RouteCollection();
+        }
         return $this->routes;
     }
 
@@ -72,146 +139,6 @@ final class Router implements RouterInterface
     }
 
     /**
-     * Adds a new route for the HTTP request method `GET`
-     *
-     * @param string $route the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function get($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'GET' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for the HTTP request method `POST`
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function post($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'POST' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for the HTTP request method `PUT`
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function put($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'PUT' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for the HTTP request method `PATCH`
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function patch($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'PATCH' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for the HTTP request method `DELETE`
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function delete($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'DELETE' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for the HTTP request method `HEAD`
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function head($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'HEAD' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for the HTTP request method `TRACE`
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function trace($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'TRACE' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for the HTTP request method `OPTIONS`
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function options($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'OPTIONS' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for the HTTP request method `CONNECT`
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function connect($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([ 'CONNECT' ], $pattern, $callback, $inject);
-    }
-
-    /**
-     * Adds a new route for all of the specified HTTP request methods
-     *
-     * @param string $pattern the route to match, e.g. `/users/jane`
-     * @param callable|null $callback (optional) the callback to execute, e.g. an anonymous function
-     * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
-     * @return bool whether the route matched the current request
-     */
-    public function any($pattern, $callback = null, $inject = null)
-    {
-        return $this->map([
-          'GET',
-          'POST',
-          'PUT',
-          'PATCH',
-          'DELETE',
-          'HEAD',
-          'TRACE',
-          'OPTIONS',
-          'CONNECT'
-        ], $pattern, $callback, $inject);
-    }
-
-    /**
      * Adds a new route for all of the specified HTTP request methods
      *
      * @param string[] $methods the request methods, one of which must be detected in order to have a match
@@ -223,7 +150,7 @@ final class Router implements RouterInterface
     public function map(array $methods, $pattern, $callback = null, $inject = null)
     {
         if (! is_string($pattern)) {
-          throw new Exception("Uri pattern should be a string variable", 1);
+            throw new Exception("Uri pattern should be a string variable", 1);
         }
 
         // According to RFC methods are defined in uppercase (See RFC 7231)
@@ -232,43 +159,38 @@ final class Router implements RouterInterface
         $this->addRoute($methods, $pattern, $callback, $inject);
     }
 
-    private function addRoute(array $methods, $pattern, $callback = null, $inject = null)
+    protected function addRoute(array $methods, $pattern, $callback = null, $inject = null)
     {
-      $route = new Route($methods, $pattern, $callback, $inject);
-      $this->routes->attachRoute($route);
+        $route = new Route($methods, $pattern, $callback, $inject);
+        $this->getRoutes()
+             ->attachRoute($route);
     }
 
     public function run()
-  	{
-    		$response = null;
-    		foreach ($this->routes->all() as $route)
-    		{
-      			if ($route->checkIfMatch()) {
-        				$response = $route->execute();
-        				break;
-      			}
-    		}
-    		$this->sendResponse($response);
-  	}
+    {
+        $parser = $this->routeParser;
+        $route = $this->getRoutes()->getThatMatch($parser);
 
-    private function sendResponse($response)
-  	{
-    		if (is_string($response))
-    		{
-    			   echo $response;
-    		}
-    		else if (is_array($response))
-    		{
-    			   echo json_encode($response);
-    		}
-    		else if ($response instanceof Response)
-    		{
-    			   $response->execute();
-    		}
-    		else
-    		{
-      			header("HTTP/1.1 404 Not Found");
-      			exit('404');
-    		}
-  	}
+        if (is_null($route)) {
+            header("HTTP/1.1 404 Not Found");
+            exit('404');
+        }
+
+        $response = $route->run($parser);
+        $this->sendResponse($response);
+    }
+
+    protected function sendResponse($response)
+    {
+        if (is_string($response)) {
+            echo $response;
+        } elseif (is_array($response)) {
+            echo json_encode($response);
+        } elseif ($response instanceof \Response) {
+            $response->execute();
+        } else {
+            header("HTTP/1.1 404 Not Found");
+            exit('404');
+        }
+    }
 }
