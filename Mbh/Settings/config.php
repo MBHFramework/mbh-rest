@@ -39,10 +39,10 @@ define('DATABASE', array(
  * @example "/" If to access the framework we place http://url.com in the URL, or http://localhost
  * @example "/mbh-framework/" if to access the framework we place http://url.com/mbh-framework, or http://localhost/mbh-framework/
 */
-define('__ROOT__', '/mbh-framework/');
+define('__ROOT__', '/skeleton/');
 
 # App constants
-define('URL', 'http://localhost/mbh-framework/');
+define('URL', 'http://localhost/skeleton/');
 define('APP_NAME', 'MDHFramework');
 define('APP_COPY', 'Copyright &copy; ' . date('Y', time()) . APP_NAME);
 
