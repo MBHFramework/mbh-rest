@@ -12,6 +12,11 @@
         "type": "git",
         "url": "git+https://github.com/MBHFramework/mbh-framework.git"
     },
+    "autoload": {
+      "psr-4": {
+        "Mbh\\": "Mbh"
+      }
+    },
     "require": {
         "php": "^7.0",
         "twig/twig": "2.0",
