@@ -5,6 +5,14 @@
         {
             "name": "Ulises Jeremias Cornejo Fandos",
             "email": "ulisescf.24@gmail.com"
+        },
+        {
+            "name": "Juan Cruz Ocampos",
+            "email": "ocamposjuancruz23@gmail.com"
+        },
+        {
+            "name": "Lucas Di Cunzolo",
+            "email": "ldicunzolo@cespi.unlp.edu.ar"
         }
     ],
     "description": "Minimalist framework to create RESTFull Apps with php7.",
@@ -18,7 +26,6 @@
       }
     },
     "require": {
-        "php": "^7.0",
-        "mbh-framework/firewall": "1.x-dev"
+        "php": "^5.6"
     }
 }
