@@ -25,22 +25,22 @@ class DefaultServicesProvider
      *
      * @param Container $container A DI container implementing ArrayAccess and container-interop.
      */
-    public function register(ContainerInterface $container)
+    public function register($container)
     {
         if (! isset($container['firewall'])) {
-            $container['firewall'] = function (ContainerInterface $container) {
+            $container['firewall'] = function ($container) {
                 return new Firewall;
             };
         }
 
         if (! isset($container['debug'])) {
-            $container['debug'] = function (ContainerInterface $container) {
+            $container['debug'] = function ($container) {
                 return new Debug($container);
             };
         }
 
         if (! isset($container['session'])) {
-            $container['session'] = function (ContainerInterface $container) {
+            $container['session'] = function ($container) {
                 return new Session;
             };
         }
@@ -54,7 +54,7 @@ class DefaultServicesProvider
              *
              * @return RouterInterface
              */
-            $container['router'] = function (ContainerInterface $container) {
+            $container['router'] = function ($container) {
                 $routerCacheFile = false;
                 if (isset($container->get('settings')['routerCacheFile'])) {
                     $routerCacheFile = $container->get('settings')['routerCacheFile'];

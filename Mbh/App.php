@@ -88,12 +88,12 @@ class App
      *
      * @param ContainerInterface $container
      */
-    public function setContainer(ContainerInterface $container)
+    public function setContainer($container)
     {
         $this->container = $container;
     }
 
-    public function getRouter(): RouterInterface
+    public function getRouter()
     {
         if (! $this->router instanceof RouterInterface) {
           $router = new Router;
@@ -106,7 +106,7 @@ class App
         return $this->router;
     }
 
-    public function setRouter(RouterInterface $router)
+    public function setRouter($router)
     {
         $this->router = $router;
 
@@ -179,7 +179,7 @@ class App
      *
      * @param array $settings
      */
-    public function addSettings(array $settings)
+    public function addSettings($settings)
     {
         $this->settings = array_merge($this->settings, $settings);
     }

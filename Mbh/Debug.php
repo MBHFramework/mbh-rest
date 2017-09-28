@@ -80,7 +80,7 @@ final class Debug
      *
      * @return void
      */
-    final private function listVar(array $VAR, string $variable)
+    final private function listVar($VAR, $variable)
     {
         echo '<strong class="cab">',$variable,':</strong> <br />';
         echo '<ul>';
@@ -97,7 +97,7 @@ final class Debug
      *
      * @return void
      */
-    final public function __construct(ContainerInterface $container)
+    final public function __construct($container)
     {
         #Templates names
         $template_engine = ['PlatesPHP','Twig'];

@@ -23,7 +23,7 @@ class RouteCollection extends \SplObjectStorage
      *
      * @param Route $attachObject
      */
-    public function attachRoute(RouteInterface $attachObject)
+    public function attachRoute($attachObject)
     {
         parent::attach($attachObject, null);
     }
@@ -42,7 +42,7 @@ class RouteCollection extends \SplObjectStorage
         return $temp;
     }
 
-    public function getThatMatch(RouteParserInterface $routeParser)
+    public function getThatMatch($routeParser)
     {
         foreach ($this as $route) {
             if ($route->checkIfMatch($routeParser)) {

@@ -46,7 +46,7 @@ class Container implements ContainerInterface
      *
      * @param array $values The parameters or objects.
      */
-    public function __construct(array $values = [])
+    public function __construct($values = [])
     {
         foreach ($values as $key => $value) {
           $this[$key] = $value;

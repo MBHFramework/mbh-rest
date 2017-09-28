@@ -19,7 +19,7 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
 
     public function get($key, $default = null);
 
-    public function replace(array $items);
+    public function replace($items);
 
     public function all();
 

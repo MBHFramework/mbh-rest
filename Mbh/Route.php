@@ -49,7 +49,7 @@ class Route implements RouteInterface
 
     private $inject;
 
-    public function __construct(array $methods, string $pattern, $callable = null, $inject = null)
+    public function __construct($methods, $pattern, $callable = null, $inject = null)
     {
         $path = __ROOT__;
         $this->rootPath = (string) (new Path($path))->normalize()->removeTrailingSlashes();
@@ -78,7 +78,7 @@ class Route implements RouteInterface
         return $this->pattern;
     }
 
-    public function setPattern(string $pattern)
+    public function setPattern($pattern)
     {
         $this->pattern = $pattern;
         return $this;
@@ -118,7 +118,7 @@ class Route implements RouteInterface
         return $this->rootPath;
     }
 
-    public function setRootPath(string $path)
+    public function setRootPath($path)
     {
         $this->rootPath = $path;
         return $this;
@@ -134,7 +134,7 @@ class Route implements RouteInterface
         return $this->route;
     }
 
-    public function setRoute(string $route)
+    public function setRoute($route)
     {
         $this->route = $route;
         return $this;
@@ -150,13 +150,13 @@ class Route implements RouteInterface
         return $this->requestMethod;
     }
 
-    public function setRequestMethod(string $method)
+    public function setRequestMethod($method)
     {
         $this->requestMethod = $method;
         return $this;
     }
 
-    public function checkIfMatch(RouteParserInterface $routeParser)
+    public function checkIfMatch($routeParser)
     {
         // According to RFC methods are defined in uppercase (See RFC 7231)
         $this->setMethods(array_map("strtoupper", $this->methods));
@@ -173,7 +173,7 @@ class Route implements RouteInterface
         return false;
     }
 
-    public function run(RouteParserInterface $routeParser)
+    public function run($routeParser)
     {
         // if a callback has been set
         if (!isset($this->callable)) {

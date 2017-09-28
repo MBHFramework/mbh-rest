@@ -68,7 +68,7 @@ class Router implements RouterInterface
      *
      * @param RouteParserInterface $parser
      */
-    public function __construct(RouteParserInterface $parser = null)
+    public function __construct($parser = null)
     {
         $this->routeParser = $parser ?? new StdParser;
     }
@@ -95,7 +95,7 @@ class Router implements RouterInterface
         return $this;
     }
 
-    public function setRoutes(RouteCollection $routes)
+    public function setRoutes($routes)
     {
         $this->routes = $routes;
     }
@@ -147,7 +147,7 @@ class Router implements RouterInterface
      * @param array|null $inject (optional) any arguments that should be prepended to those matched in the route
      * @return bool whether the route matched the current request
      */
-    public function map(array $methods, $pattern, $callback = null, $inject = null)
+    public function map($methods, $pattern, $callback = null, $inject = null)
     {
         if (! is_string($pattern)) {
             throw new Exception("Uri pattern should be a string variable", 1);
@@ -159,7 +159,7 @@ class Router implements RouterInterface
         $this->addRoute($methods, $pattern, $callback, $inject);
     }
 
-    protected function addRoute(array $methods, $pattern, $callback = null, $inject = null)
+    protected function addRoute($methods, $pattern, $callback = null, $inject = null)
     {
         $route = new Route($methods, $pattern, $callback, $inject);
         $this->getRoutes()

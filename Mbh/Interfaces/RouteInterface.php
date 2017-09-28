@@ -17,7 +17,7 @@ use \Mbh\Interfaces\RouteParserInterface;
  */
 interface RouteInterface
 {
-    public function checkIfMatch(RouteParserInterface $routeParser);
+    public function checkIfMatch($routeParser);
 
-    public function run(RouteParserInterface $routeParser);
+    public function run($routeParser);
 }

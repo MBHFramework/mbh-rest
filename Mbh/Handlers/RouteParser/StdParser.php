@@ -32,7 +32,7 @@ class StdParser implements RouteParserInterface
      *
      * @return array|null the list of matched parameters or `null` if the route didn't match
      */
-    public function handle(RouteInterface $route)
+    public function handle($route)
     {
         $params = [];
 
