@@ -187,7 +187,7 @@ class Route implements RouteInterface
 
         // if the callback can be executed
         // use an empty array as the default value for the arguments to be injected
-        $this->inject = $this->inject ?? [];
+        $this->inject = !$this->inject ? [] : $this->inject;
 
         $callable = $this->getCallable();
         $matches = $routeParser->handle($this);
