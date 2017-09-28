@@ -193,6 +193,7 @@ class Route implements RouteInterface
         $matches = $routeParser->handle($this);
 
         // execute the callback
-        return $callable(...$this->inject, ...array_values($matches)) ?? "";
+        $result = $callable(...$this->inject, ...array_values($matches));
+        return !$result ? "" : $result; 
     }
 }
