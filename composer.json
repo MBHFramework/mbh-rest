@@ -19,7 +19,7 @@
     "description": "Minimalist framework to create RESTFull Apps with php7.",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/MBHFramework/mbh-rest.git"
+        "url": "https://github.com/MBHFramework/mbh-rest.git"
     },
     "autoload": {
       "psr-4": {
