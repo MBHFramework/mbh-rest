@@ -1,6 +1,7 @@
 {
     "name": "mbh-framework/rest",
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
             "name": "Ulises Jeremias Cornejo Fandos",
