@@ -19,10 +19,15 @@
     "description": "Minimalist framework to create RESTFull Apps with php7.",
     "autoload": {
       "psr-4": {
-        "Mbh\\": "Mbh"
+        "Mbh\\": "Mbh/"
       }
     },
     "require": {
         "php": "^5.6 || ^7.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-PHP5.6-1.x": "php5.6-1.x-dev"
+        }
     }
 }
