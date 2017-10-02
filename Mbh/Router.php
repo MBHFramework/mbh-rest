@@ -188,9 +188,6 @@ class Router implements RouterInterface
             echo json_encode($response);
         } elseif ($response instanceof \Response) {
             $response->execute();
-        } else {
-            header("HTTP/1.1 404 Not Found");
-            exit('404');
         }
     }
 }
