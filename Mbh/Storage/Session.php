@@ -15,13 +15,15 @@ namespace Mbh\Storage;
  */
 final class Session
 {
+    const SESSION_TIME = 18000;
+
     final public function __construct()
     {
         if (!headers_sent()) {
             session_start([
               'use_strict_mode' => true,
               'use_cookies' => true,
-              'cookie_lifetime' => 18000, # Life time for session cookies -> 5 hs = 18000 seconds.
+              'cookie_lifetime' => static::SESSION_TIME, # Life time for session cookies -> 5 hs = 18000 seconds.
               'cookie_httponly' => true # Avoid access to the cookie using scripting languages (such as javascript)
             ]);
         }
