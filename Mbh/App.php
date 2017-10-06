@@ -26,10 +26,6 @@ class App
     */
     private $container;
 
-    /**
-     * @var \Mbh\Interfaces\RouterInterface
-     */
-    protected $router;
 
     /**
      * @var Associative array
@@ -95,20 +91,20 @@ class App
 
     public function getRouter()
     {
-        if (! $this->router instanceof RouterInterface) {
+        if (! $this->container['router'] instanceof RouterInterface) {
           $router = new Router;
           $routerCacheFile = $this->getSetting('routerCacheFile', false);
           $router->setCacheFile($routerCacheFile);
 
-          $this->router = $router;
+          $this->container['router'] = $router;
         }
 
-        return $this->router;
+        return $this->container['router'];
     }
 
     public function setRouter($router)
     {
-        $this->router = $router;
+        $this->container['router'] = $router;
 
         return $this;
     }
