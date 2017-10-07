@@ -150,7 +150,7 @@ class Router implements RouterInterface
     public function map($methods, $pattern, $callback = null, $inject = null)
     {
         if (! is_string($pattern)) {
-            throw new Exception("Uri pattern should be a string variable", 1);
+            throw new \Exception("Uri pattern should be a string variable", 1);
         }
 
         // According to RFC methods are defined in uppercase (See RFC 7231)
