@@ -11,7 +11,7 @@
 namespace Mbh\Interfaces;
 
 /**
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 interface RouteParserInterface
 {

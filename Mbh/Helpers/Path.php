@@ -11,7 +11,7 @@
 namespace Mbh\Helpers;
 
 /**
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 final class Path
 {

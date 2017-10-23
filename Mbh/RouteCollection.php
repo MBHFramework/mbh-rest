@@ -14,7 +14,7 @@ use Mbh\Interfaces\RouteInterface;
 use Mbh\Interfaces\RouteParserInterface;
 
 /**
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 class RouteCollection extends \SplObjectStorage
 {

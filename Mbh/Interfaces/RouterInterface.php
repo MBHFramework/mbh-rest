@@ -11,7 +11,7 @@
 namespace Mbh\Interfaces;
 
 /**
- * created by Federico Ramón Gasquez
+ * @author Federico Ramón Gasquez
  */
 interface RouterInterface
 {

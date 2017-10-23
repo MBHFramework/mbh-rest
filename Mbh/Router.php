@@ -19,7 +19,7 @@ use Mbh\Interfaces\RouterInterface;
 use Mbh\Interfaces\RouteParserInterface;
 
 /**
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 class Router implements RouterInterface
 {
@@ -188,9 +188,6 @@ class Router implements RouterInterface
             echo json_encode($response);
         } elseif ($response instanceof \Response) {
             $response->execute();
-        } else {
-            header("HTTP/1.1 404 Not Found");
-            exit('404');
         }
     }
 }

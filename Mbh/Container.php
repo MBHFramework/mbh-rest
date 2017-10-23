@@ -14,7 +14,7 @@ use Mbh\Collection;
 use Mbh\Interfaces\ContainerInterface;
 
 /**
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 class Container implements ContainerInterface
 {
@@ -49,7 +49,7 @@ class Container implements ContainerInterface
     public function __construct(array $values = [])
     {
         foreach ($values as $key => $value) {
-          $this[$key] = $value;
+            $this[$key] = $value;
         }
 
         $userSettings = isset($values['settings']) ? $values['settings'] : [];

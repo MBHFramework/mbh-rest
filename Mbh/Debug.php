@@ -14,7 +14,7 @@ use Mbh\Helpers\Functions;
 use Mbh\Interfaces\ContainerInterface;
 
 /**
- * created by Federico Ramón Gasquez
+ * @author Federico Ramón Gasquez
  */
 final class Debug
 {

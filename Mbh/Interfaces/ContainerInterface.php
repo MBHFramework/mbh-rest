@@ -13,7 +13,7 @@ namespace Mbh\Interfaces;
 /**
  * Describes the interface of a container that exposes methods to read its entries.
  *
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 interface ContainerInterface extends \ArrayAccess
 {

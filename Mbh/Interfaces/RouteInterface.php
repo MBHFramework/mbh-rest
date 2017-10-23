@@ -13,7 +13,7 @@ namespace Mbh\Interfaces;
 use \Mbh\Interfaces\RouteParserInterface;
 
 /**
- * created by Federico Ramón Gasquez
+ * @author Federico Ramón Gasquez
  */
 interface RouteInterface
 {

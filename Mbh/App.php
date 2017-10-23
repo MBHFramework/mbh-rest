@@ -15,7 +15,7 @@ use Mbh\Router;
 use Mbh\Interfaces\RouterInterface;
 
 /**
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 class App
 {
@@ -45,18 +45,18 @@ class App
     public static function autoload($class)
     {
         $prefix = __NAMESPACE__ . '\\';
-      	$length = strlen($prefix) - 1;
+        $length = strlen($prefix) - 1;
         $base_directory = __DIR__;
 
-      	if(strncmp($prefix, $class, $length) !== 0) {
-          return;
+        if (strncmp($prefix, $class, $length) !== 0) {
+            return;
         }
 
         $class_end = substr($class, $length);
         $file = $base_directory . str_replace('\\', '/', $class_end) . '.php';
 
-        if(is_readable($file)) {
-          require $file;
+        if (is_readable($file)) {
+            require $file;
         }
     }
 
@@ -96,11 +96,11 @@ class App
     public function getRouter(): RouterInterface
     {
         if (! $this->router instanceof RouterInterface) {
-          $router = new Router;
-          $routerCacheFile = $this->getSetting('routerCacheFile', false);
-          $router->setCacheFile($routerCacheFile);
+            $router = new Router;
+            $routerCacheFile = $this->getSetting('routerCacheFile', false);
+            $router->setCacheFile($routerCacheFile);
 
-          $this->router = $router;
+            $this->router = $router;
         }
 
         return $this->router;
@@ -131,7 +131,7 @@ class App
 
         $callable = $this->container->get($method);
         if (is_callable($callable)) {
-          return call_user_func_array($callable, $args);
+            return call_user_func_array($callable, $args);
         }
 
         return $this;
@@ -337,7 +337,7 @@ class App
                       'OPTIONS',
                       'CONNECT'
                     ], $pattern, $callback, $inject);
-     }
+    }
 
     /**
      * Checks the specified request method and route against the current request to see whether it matches

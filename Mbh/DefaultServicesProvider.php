@@ -16,7 +16,7 @@ use Mbh\Storage\Session;
 use Mbh\Interfaces\ContainerInterface;
 
 /**
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 class DefaultServicesProvider
 {

@@ -16,7 +16,7 @@ use \Mbh\Interfaces\RouteInterface;
 use \Mbh\Interfaces\RouteParserInterface;
 
 /**
- * created by Ulises Jeremias Cornejo Fandos
+ * @author Ulises Jeremias Cornejo Fandos
  */
 class StdParser implements RouteParserInterface
 {
@@ -125,5 +125,4 @@ class StdParser implements RouteParserInterface
     {
         return preg_quote($str, static::REGEX_DELIMITER);
     }
-
 }
