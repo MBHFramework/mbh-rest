@@ -96,7 +96,7 @@ class Container implements ContainerInterface
      * @param string $key    The unique identifier for the parameter or object
      * @param mixed  $value The value of the parameter or a closure to define an object
      *
-     * @throws FrozenService\Exception Prevent override of a frozen service
+     * @throws FrozenServiceException Prevent override of a frozen service
      */
     public function offsetSet($key, $value)
     {
