@@ -27,12 +27,6 @@ class DefaultServicesProvider
      */
     public function register(ContainerInterface $container)
     {
-        if (! isset($container['firewall'])) {
-            $container['firewall'] = function (ContainerInterface $container) {
-                return new Firewall;
-            };
-        }
-
         if (! isset($container['debug'])) {
             $container['debug'] = function (ContainerInterface $container) {
                 return new Debug($container);
@@ -51,7 +45,6 @@ class DefaultServicesProvider
              * of Mbh\Interfaces\RouterInterface.
              *
              * @param Container $container
-             *
              * @return RouterInterface
              */
             $container['router'] = function (ContainerInterface $container) {
