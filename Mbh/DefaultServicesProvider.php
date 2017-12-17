@@ -27,12 +27,6 @@ class DefaultServicesProvider
      */
     public function register(ContainerInterface $container)
     {
-        if (! isset($container['debug'])) {
-            $container['debug'] = function (ContainerInterface $container) {
-                return new Debug($container);
-            };
-        }
-
         if (! isset($container['session'])) {
             $container['session'] = function (ContainerInterface $container) {
                 return new Session;

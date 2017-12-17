@@ -10,9 +10,10 @@
 
 namespace Mbh;
 
-use Mbh\Debug;
-use Mbh\Router;
+use Mbh\Interfaces\ContainerInterface;
 use Mbh\Interfaces\RouterInterface;
+use Mbh\Router;
+use BadMethodCallException;
 
 /**
  * @author Ulises Jeremias Cornejo Fandos
@@ -22,18 +23,17 @@ class App
     /**
     * Container
     *
-    * @var \Mbh\Interfaces\ContainerInterface
+    * @var ContainerInterface
     */
     private $container;
 
     /**
-     * @var \Mbh\Interfaces\RouterInterface
+     * @var RouterInterface
      */
     protected $router;
 
     /**
-     * @var Associative array
-     *
+     * @var array
      */
     protected $settings = [
       'httpVersion' => '1.1',
@@ -69,8 +69,6 @@ class App
     {
         $this->addSettings($settings);
         $this->container = new Container();
-
-        Debug::startime();
     }
 
     /**
@@ -121,12 +119,12 @@ class App
      * @param  array $args
      * @return mixed
      *
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function __call($method, $args)
     {
         if (!$this->container->has($method)) {
-            throw new \BadMethodCallException("Method $method is not a valid method");
+            throw new BadMethodCallException("Method $method is not a valid method");
         }
 
         $callable = $this->container->get($method);
@@ -140,7 +138,6 @@ class App
     /**
      * Settings management
      */
-
     /**
      * Does app have a setting with given key?
      *
